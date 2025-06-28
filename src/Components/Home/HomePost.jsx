@@ -44,9 +44,9 @@ const HomePost = () => {
 
                                 <img src={data?.photo} alt='PostIcon' className={styles.HomePostArrayIcon} />
 
-                                <text className={styles.HomePostArrayTitle}>
+                                <div className={styles.HomePostArrayTitle}>
                                     {data?.title}
-                                </text>
+                                </div>
                             </div>
 
                         )

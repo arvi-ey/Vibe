@@ -33,8 +33,10 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    border-bottom: 0.5px solid;
+    padding-bottom: 15px;
+    border-color: rgb(221, 216, 216);
 }
-
 
 .HomePostContainer {
     display: flex;
