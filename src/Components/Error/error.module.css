@@ -1,0 +1,26 @@
+.ErrorContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorImg {
+    height: 80vmin;
+    width: 80vmin;
+}
+
+.homereturnButton {
+    color: blue;
+    font-weight: 500;
+    font-size: larger;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.homereturnButton:hover {
+    background-color: aliceblue;
+}

@@ -1,0 +1,139 @@
+.HomeContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: var(--BACKGROUND-COLOR);
+}
+
+.homeOptionContainer {
+    position: fixed;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    width: 20vw;
+    flex-direction: column;
+    gap: 1vmax;
+    margin-top: 80px;
+    padding-top: 10px;
+    background-color: var(--BACKGROUND-COLOR);
+}
+
+.HomeMainContainer {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: aqua; */
+    height: 100vh;
+    margin-left: 25vw;
+    width: 80vmin;
+
+}
+
+.HomePostDiv1 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.HomePostContainer {
+    display: flex;
+    flex-direction: column;
+    width: 80vmin;
+    height: 150px;
+    border-radius: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    justify-content: center;
+    /* box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1); */
+    box-shadow: -7px -5px 35px 6px rgba(0, 0, 0, 0.1);
+    gap: 2em;
+
+}
+
+.HomepostuserImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    cursor: pointer;
+
+
+}
+
+.HomepostuserImagelogo {
+    width: 50px;
+    height: 50px;
+
+}
+
+.HomepostType {
+    background-color: rgb(237, 239, 240);
+    height: 50px;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 10px;
+    opacity: 0.7;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.HomepostType:hover {
+    background-color: rgb(232, 233, 234);
+}
+
+.iconBox {
+    display: flex;
+    gap: 0.5em;
+    width: 80%;
+    align-items: center;
+    padding: 7px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--BACKGROUND-COLOR);
+}
+
+.iconBox:hover {
+    background-color: aliceblue;
+}
+
+.iconImage {
+    height: 30px;
+    width: 30px;
+    background-color: var(--BACKGROUND-COLOR);
+}
+
+.titleText {
+    font-weight: 600;
+    opacity: 0.8;
+    background-color: var(--BACKGROUND-COLOR);
+}
+
+.HomePostArrayBox {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.HomePostArrayBox:hover {
+    background-color: rgb(237, 239, 240);
+}
+
+.HomePostArrayIcon {
+    height: 20px;
+    width: 20px;
+}
+
+.HomePostArrayTitle {
+    font-size: small;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.HomePostArrayContainer {
+    display: flex;
+    justify-content: space-around;
+}
