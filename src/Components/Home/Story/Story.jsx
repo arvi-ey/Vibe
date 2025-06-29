@@ -3,6 +3,7 @@ import StoryBox from './StoryBox';
 import styles from "./story.module.css"
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import CreateStory from './CreateStory';
 const Story = () => {
 
 
@@ -164,27 +165,23 @@ const Story = () => {
 
     const ScrollRight = () => {
         const width = boxref.current.clientWidth
-        console.log(width, "Width")
         boxref.current.scrollLeft = boxref.current.scrollLeft + width
 
     }
     const ScrollToNext = () => {
         const { scrollWidth, scrollLeft, clientWidth } = boxref.current
-        // console.log(scrollWidth, "scrollWidth")
-        // console.log(scrollLeft, "scrollLeft")
-        // console.log(clientWidth, "clientWidth")
-        // if (scrollLeft == 0) {
-        //     setHideLeft(true)
-        // }
-        // else {
-        //     setHideLeft(false)
-        // }
-        // if (scrollLeft + clientWidth + 1 >= scrollWidth) {
-        //     setHideRight(true)
-        // }
-        // else {
-        //     setHideRight(false)
-        // }
+        if (scrollLeft == 0) {
+            setHideLeft(true)
+        }
+        else {
+            setHideLeft(false)
+        }
+        if (scrollLeft + clientWidth + 1 >= scrollWidth) {
+            setHideRight(true)
+        }
+        else {
+            setHideRight(false)
+        }
 
     }
 
@@ -202,11 +199,13 @@ const Story = () => {
 
     return (
         <div style={{ position: "relative", width: "90vmin", backgroundColor: "transparent" }}>
-            <div className={styles.LeftScrollIcon} onClick={ScrollLeft}>
+            <div className={`${hideLeft ? styles.LeftScrollIconHide : styles.LeftScrollIcon}`} onClick={ScrollLeft}>
                 <KeyboardArrowLeftIcon sx={{ backgroundColor: 'transparent' }} />
             </div>
 
+
             <div className={styles.storyContainer} ref={boxref} >
+                <CreateStory />
                 {
                     posts?.map((data, index) => {
                         return (
@@ -219,7 +218,7 @@ const Story = () => {
                     })
                 }
             </div>
-            <div className={styles.RightScrollIcon} onClick={ScrollRight}>
+            <div className={`${hideRight ? styles.RightScrollIconHide : styles.RightScrollIcon}`} onClick={ScrollRight}>
                 <KeyboardArrowRightIcon sx={{ backgroundColor: 'transparent' }} />
             </div>
         </div>

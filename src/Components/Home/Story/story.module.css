@@ -21,10 +21,9 @@
     height: 180px;
     width: 120px;
     border-radius: 10px;
-    /* box-sizing: border-box; */
     position: relative;
-    flex: 0 0 auto
-        /* display: flex; */
+    flex: 0 0 auto;
+    cursor: pointer;
 }
 
 
@@ -78,6 +77,10 @@
     opacity: 0.8;
 }
 
+.LeftScrollIconHide {
+    display: none;
+}
+
 .RightScrollIcon {
     position: absolute;
     z-index: 50;
@@ -93,4 +96,70 @@
     cursor: pointer;
     background-color: white;
     opacity: 0.8;
+}
+
+.RightScrollIconHide {
+    display: none;
+}
+
+.UserprofileImage {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
+.storyUserBoxContainer {
+    height: 180px;
+    width: 110px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    position: relative;
+    gap: 1em;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 1px 1px rgba(181, 178, 178, 0.3);
+}
+
+.AddIconDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: whitesmoke;
+    border-radius: 30px;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 69%;
+    left: 40px;
+}
+
+.AddIcon {
+    background-color: var(--PRIMARY-COLOR);
+    border-radius: 20px;
+    color: whitesmoke;
+    font-weight: bold;
+    border: none;
+}
+
+.CreateStoryText {
+    font-size: small;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.CreateStoryCard {
+    width: 110px;
+    height: 180px;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
