@@ -2,6 +2,7 @@
     width: 100%;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     background-color: var(--BACKGROUND-COLOR);
 }
 
@@ -33,29 +34,29 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    border-bottom: 0.5px solid;
-    padding-bottom: 15px;
-    border-color: rgb(240, 237, 237);
+    /* background-color: blue; */
+
+
 }
 
 .HomePostContainer {
     display: flex;
     flex-direction: column;
-    width: 80vmin;
-    height: 150px;
+    width: 90vmin;
+    height: 120px;
     border-radius: 20px;
     padding-left: 15px;
     padding-right: 15px;
     justify-content: center;
     /* box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1); */
     box-shadow: -7px -5px 35px 6px rgba(0, 0, 0, 0.1);
-    gap: 2em;
+    gap: 1em;
 
 }
 
 .HomepostuserImage {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 25px;
     cursor: pointer;
 
@@ -63,14 +64,14 @@
 }
 
 .HomepostuserImagelogo {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 
 }
 
 .HomepostType {
     background-color: rgb(237, 239, 240);
-    height: 50px;
+    height: 40px;
     width: 80%;
     display: flex;
     align-items: center;
@@ -101,22 +102,22 @@
 }
 
 .iconImage {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
     background-color: var(--BACKGROUND-COLOR);
 }
 
 .titleText {
     font-weight: 600;
     opacity: 0.8;
-    background-color: var(--BACKGROUND-COLOR);
+    background-color: transparent;
 }
 
 .HomePostArrayBox {
     display: flex;
     gap: 5px;
     cursor: pointer;
-    padding: 10px;
+    padding: 7px;
     border-radius: 10px;
 }
 
@@ -125,17 +126,22 @@
 }
 
 .HomePostArrayIcon {
-    height: 20px;
-    width: 20px;
+    height: 15px;
+    width: 15px;
 }
 
 .HomePostArrayTitle {
     font-size: small;
     font-weight: 600;
+    background-color: transparent;
     opacity: 0.7;
 }
 
 .HomePostArrayContainer {
     display: flex;
     justify-content: space-around;
+    border-top: 0.5px solid;
+    border-color: rgb(229, 227, 227);
+    padding-top: 5px;
+
 }

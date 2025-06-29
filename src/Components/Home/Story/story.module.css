@@ -1,0 +1,96 @@
+.storyContainer {
+    height: 200px;
+    width: 90vmin;
+    display: flex;
+    padding: 10px;
+    margin-top: 1em;
+    align-items: center;
+    gap: 0.5em;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    position: relative;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display: none;
+}
+
+.storyBoxContainer {
+    height: 180px;
+    width: 120px;
+    border-radius: 10px;
+    /* box-sizing: border-box; */
+    position: relative;
+    flex: 0 0 auto
+        /* display: flex; */
+}
+
+
+.userStory {
+    height: 100%;
+    border-radius: 10px;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+
+}
+
+.UserName {
+    font-weight: 700;
+    font-size: small;
+    position: absolute;
+    bottom: 10px;
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    padding-left: 10px;
+    z-index: 10;
+
+}
+
+.UploaderProfileimage {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    position: absolute;
+    object-fit: cover;
+    left: 10px;
+    top: 15px;
+    border: 2px solid;
+    border-color: var(--PRIMARY-COLOR);
+}
+
+.LeftScrollIcon {
+    position: absolute;
+    z-index: 50;
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    left: 3%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.8;
+}
+
+.RightScrollIcon {
+    position: absolute;
+    z-index: 50;
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    top: 50%;
+    right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.8;
+}
