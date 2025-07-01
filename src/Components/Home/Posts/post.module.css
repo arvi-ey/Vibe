@@ -1,0 +1,125 @@
+.postContainer {
+    display: flex;
+    flex-direction: column;
+    width: 90vmin;
+    margin-top: 0.5em;
+    justify-content: space-between;
+    /* height: 100%; */
+    gap: 1em;
+    /* background-color: rgb(125, 231, 25) !important; */
+}
+
+.postBox {
+    width: 100%;
+    /* height: 600px; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+
+
+.postDiv1 {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.5em;
+
+}
+
+.User_ProfilePhoto {
+    height: 40px;
+    width: 40px;
+    border-radius: 25px;
+}
+
+.user_name {
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.user_name span:nth-child(2) {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.postOption {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5em;
+    opacity: 0.8;
+}
+
+.postDiv2 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* background-color: aquamarine; */
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.18); */
+    /* padding-bottom: 10px; */
+}
+
+.user_postedPhoto {
+    max-width: 100%;
+    max-height: 450px;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.PostCaption {
+    font-size: small;
+    font-weight: 600;
+}
+
+.postDiv3 {
+    /* border: 1px solid rgba(0, 0, 0, 0.125); */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.LikeIcon {}
+
+.LikeIcon:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.CommentIcon {}
+
+.CommentIcon:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.shareIcon {}
+
+.shareIcon:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.postOptions {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    align-items: center;
+}
+
+.PostInfo {
+    font-weight: 500;
+    font-size: 12px;
+    /* opacity: 0.8; */
+
+}

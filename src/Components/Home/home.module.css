@@ -20,11 +20,10 @@
 }
 
 .HomeMainContainer {
-    margin-top: 80px;
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
-    /* background-color: aqua; */
-    height: 100vh;
+
     margin-left: 25vw;
     width: 80vmin;
 
@@ -34,9 +33,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    /* background-color: blue; */
-
-
 }
 
 .HomePostContainer {

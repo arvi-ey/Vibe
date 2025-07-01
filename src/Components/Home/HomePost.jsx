@@ -1,12 +1,8 @@
 import React from 'react'
 import styles from "./home.module.css"
 import Boy from "../../assets/boy.png"
-// import emotion from "../../assets/emotion.png"
-// import emotion from "../../assets/emotion.svg"
 import emotion from "../../assets/emotion.png"
-// import Live from "../../assets/Live.png"
 import Live from "../../assets/Live.svg"
-// import postPhoto from "../../assets/postPhoto.png"
 import postPhoto from "../../assets/postPhoto.svg"
 
 const HomePost = () => {
