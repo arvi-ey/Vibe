@@ -6,7 +6,7 @@ const Posts = () => {
     const demoPosts = [
         {
             user_name: "Arjun Mehta",
-            user_posted: "https://images.unsplash.com/photo-1506748686214-e9df13fba066",
+            user_posted: "https://images.unsplash.com/photo-1751217052634-cd51e3519355?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             profile_photo: "https://randomuser.me/api/portraits/men/32.jpg",
             time: "2m ago",
             caption: "Exploring the wilderness. 🌲"
