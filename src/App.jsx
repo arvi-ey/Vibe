@@ -18,11 +18,13 @@ function App() {
       element: <Layout />,
       children: [
         { index: true, element: <Home /> },
-        { path: "signin", element: <Signin /> },
-        { path: "signup", element: <SignUp /> },
         { path: "friends", element: <Friendrequest /> },
         { path: "*", element: <Error /> }
       ]
+    },
+    {
+      path: "/signin",
+      element: <Signin />,
     },
   ]);
 
