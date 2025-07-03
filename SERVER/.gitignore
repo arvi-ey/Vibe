@@ -1,0 +1,9 @@
+# Node.js
+node_modules/
+Database/
+.env
+dist/
+build/
+.DS_Store
+*.log
+
