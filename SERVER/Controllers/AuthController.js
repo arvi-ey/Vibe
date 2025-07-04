@@ -1,8 +1,5 @@
-const pool = require("../Database/dbConnection")
-const { MissingData, SuccessResponse } = require("../Utils/Response")
-const { CheckUserExists, Hashedpassword, CheckPassword } = require("../Utils/UserUtil")
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
+const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
+const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, UserLogIn } = require("../Utils/UserUtil")
 
 exports.CreateUser = async (req, res) => {
     try {
@@ -12,36 +9,50 @@ exports.CreateUser = async (req, res) => {
             message: "The provided email or mobile number is already associated with an existing account."
         })
         else {
-            const keys = Object.keys(body);
             const HashedPassword = await Hashedpassword(body.password)
             if (HashedPassword) body.password = HashedPassword
-            else return res.status(400).json({ message: "Something went wrong" })
-            const values = Object.values(body);
-            const placeholders = keys.map((_, i) => `$${i + 1}`).join(", ");
-            const query = `INSERT INTO "user" (${keys.join(", ")}) VALUES (${placeholders}) RETURNING *`;
-            const result = await pool.query(query, values)
-            SuccessResponse(req, res, result)
+            const result = await RegisterUser(body)
+            SuccessResponse(res, result)
         }
     }
     catch (error) {
-        res.status(400).json({
-            message: error
-        })
+        ErrorResponse(res, error)
     }
 }
 
 
 
-
 exports.UserSignIn = async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) MissingData(req, res)
-    const user = await CheckUserExists(req, res)
-    if (user?.length < 1) return res.status(400).json({
-        message: "The provided email address is not linked to any existing account."
-    })
-    const validPassword = await CheckPassword(user[0].password, password)
-    if (!validPassword) res.send("FALSE")
-    else res.send(true)
+    try {
 
+        const { email, password } = req.body
+        if (!email || !password) MissingData(req, res)
+        const user = await CheckUserExists(req, res)
+        if (user?.length < 1) return res.status(400).json({
+            message: "The provided email address is not linked to any existing account."
+        })
+        const validPassword = await CheckPassword(user[0].password, password)
+        if (!validPassword) return res.status(400).json({ message: "Invalid password", statusCode: 400, })
+        const sessiondata = await UserLogIn(user[0], res)
+        if (sessiondata) {
+            return res.status(200).json({
+                message: "You have successfully logged in.",
+                data: user[0],
+                sessiondata,
+                statusCode: 200
+            })
+        }
+        else {
+            return res.status(200).json({
+                message: "Something went wrong",
+                data: null,
+                sessiondata: null,
+                statusCode: 500
+            })
+
+        }
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
 }
