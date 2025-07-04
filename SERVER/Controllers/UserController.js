@@ -1,4 +1,5 @@
 const pool = require("../Database/dbConnection")
+const { MissingData, SuccessResponse } = require("../Utils/Response")
 
 exports.GetUser = async (req, res) => {
     const params = req.params
@@ -10,22 +11,7 @@ exports.GetUser = async (req, res) => {
     try {
         const query = `SELECT * FROM "user" WHERE uid = $1`;
         const result = await pool.query(query, [params.uid])
-        if (result?.rows?.[0]) {
-            res.status(200).json({
-                message: "User get successfully",
-                statusCode: 200,
-                data: result.rows[0]
-            })
-        }
-        else {
-            res.status(200).json({
-                message: "Something went wrong",
-                statusCode: 200,
-                data: null
-            })
-
-        }
-
+        SuccessResponse(req, res, result)
     }
     catch (error) {
         res.status(400).json({
