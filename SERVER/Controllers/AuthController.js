@@ -1,5 +1,5 @@
 const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, UserLogIn } = require("../Utils/UserUtil")
+const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout } = require("../Utils/UserUtil")
 
 exports.CreateUser = async (req, res) => {
     try {
@@ -33,26 +33,19 @@ exports.UserSignIn = async (req, res) => {
         })
         const validPassword = await CheckPassword(user[0].password, password)
         if (!validPassword) return res.status(400).json({ message: "Invalid password", statusCode: 400, })
-        const sessiondata = await UserLogIn(user[0], res)
-        if (sessiondata) {
-            return res.status(200).json({
-                message: "You have successfully logged in.",
-                data: user[0],
-                sessiondata,
-                statusCode: 200
-            })
-        }
-        else {
-            return res.status(200).json({
-                message: "Something went wrong",
-                data: null,
-                sessiondata: null,
-                statusCode: 500
-            })
-
-        }
+        await LogIn(user[0], res)
     }
     catch (error) {
         ErrorResponse(res, error)
+    }
+}
+
+
+exports.UserSignOut = async (req, res) => {
+    try {
+        await Logout(res)
+    }
+    catch (error) {
+        ErrorResponse(error)
     }
 }
