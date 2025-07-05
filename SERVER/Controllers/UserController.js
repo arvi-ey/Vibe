@@ -1,24 +1,28 @@
-const pool = require("../Database/dbConnection")
-const { MissingData, SuccessResponse } = require("../Utils/Response")
+const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
+const { GetUserByID, UpDateUserById } = require("../Utils/UserUtil")
 
 exports.GetUser = async (req, res) => {
     const params = req.params
-    console.log(params?.uid)
-    if (!params?.uid) return res.status(400).json({
-        message: "Missing uid",
-        statusCode: 400
-    })
+    if (!params?.uid) MissingData(res)
     try {
-        const query = `SELECT * FROM "user" WHERE uid = $1`;
-        const result = await pool.query(query, [params.uid])
-        SuccessResponse(req, res, result)
+        const result = await GetUserByID(params.uid)
+        SuccessResponse(res, result)
     }
     catch (error) {
-        res.status(400).json({
-            statusCode: 400,
-            message: error
-        }
-        )
+        ErrorResponse(res, error)
+    }
+}
+
+exports.UpdateUser = async (req, res) => {
+
+    const uid = req.params.uid
+    if (!uid) MissingData(res)
+    try {
+        const result = await UpDateUserById(req.body, uid)
+        SuccessResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
     }
 
 }

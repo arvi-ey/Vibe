@@ -26,7 +26,7 @@ exports.UserSignIn = async (req, res) => {
     try {
 
         const { email, password } = req.body
-        if (!email || !password) MissingData(req, res)
+        if (!email || !password) MissingData(res)
         const user = await CheckUserExists(req, res)
         if (user?.length < 1) return res.status(400).json({
             message: "The provided email address is not linked to any existing account."
@@ -46,6 +46,6 @@ exports.UserSignOut = async (req, res) => {
         await Logout(res)
     }
     catch (error) {
-        ErrorResponse(error)
+        ErrorResponse(res, error)
     }
 }
