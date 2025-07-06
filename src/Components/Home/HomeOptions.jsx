@@ -9,11 +9,20 @@ import following from "../../assets/following.png"
 import games from "../../assets/games.png"
 import event from "../../assets/event.png"
 import Birthday from "../../assets/Birthday.png"
+import Boy from "../../assets/boy.png"
+import { useNavigate } from 'react-router'
 
 const HomeOptions = () => {
+    const navigate = useNavigate()
 
 
     const HomeOptionArray = [
+        {
+            title: "My Account",
+            img: Boy,
+            path: `/profile/${1234567890}`
+
+        },
         {
             title: "Friends",
             img: following,
@@ -68,7 +77,7 @@ const HomeOptions = () => {
             {
                 HomeOptionArray?.map((data, index) => {
                     return (
-                        <div className={styles.iconBox} key={index}>
+                        <div className={styles.iconBox} key={index} onClick={() => navigate(data?.path)} >
                             <div >
                                 <img src={data?.img}
                                     alt='homeOptionIcon'

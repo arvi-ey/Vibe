@@ -5,6 +5,7 @@ import HomeMain from './HomeMain'
 import Story from './Story/Story'
 
 const Home = () => {
+    // console.log("INSIDE HOME PAGE")
     return (
         <div className={styles.HomeContainer} >
             <HomeOptions />
