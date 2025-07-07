@@ -31,9 +31,13 @@ const Signin = () => {
     })
 
     const handleSignIn = async () => {
-        formik.handleSubmit()
-        const { email, password } = formik?.values
-        if (!email || !password || password.length < 8) return
+        formik.setTouched({
+            email: true,
+            password: true
+        })
+
+        const errors = await formik.validateForm()
+        if (Object.keys(errors).length > 0) return
         else {
             const SignInResponse = await UserSignIn(formik?.values)
             if (SignInResponse?.statusCode == 400) {
@@ -70,7 +74,7 @@ const Signin = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik?.errors?.email && formik.touched.email}
-                            helperText={formik?.errors?.email}
+                            helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
                         />
                         <TextField
                             id="password"
@@ -81,7 +85,7 @@ const Signin = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik?.errors?.password && formik.touched.password}
-                            helperText={formik?.errors?.password}
+                            helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
                         />
                         {loading ? <Loader /> :
                             <div className='w-full h-18 flex justify-between items-center flex-col' >

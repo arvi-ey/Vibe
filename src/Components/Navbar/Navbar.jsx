@@ -171,7 +171,7 @@ const Navbar = () => {
                         return (
                             <Box sx={{ p: 1, width: 250, }} key={index} >
                                 <div className='w-full flex' >
-                                    <div className='w-[95%] rounded-l flex gap-2.5 pl-5 items-center cursor-pointer hover:bg-[#F0F2F5] h-10' style={{ paddingLeft: "5px" }} onClick={() => HandleInfoArray(data.title)} >
+                                    <div className='w-[95%] rounded-l flex gap-2.5 pl-5 items-center cursor-pointer hover:bg-[#F0F2F5] h-12' style={{ paddingLeft: "10px" }} onClick={() => HandleInfoArray(data.title)} >
                                         <div className=' rounded-3xl flex justify-center  w-8 h-8 items-center' style={{ backgroundColor: "#E2E5E9" }} >
                                             <div className='opacity-90'>{data.icon}</div>
                                         </div>

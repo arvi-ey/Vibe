@@ -5,8 +5,9 @@ exports.CreateUser = async (req, res) => {
     try {
         const body = req.body;
         const userExists = await CheckUserExists(req, res)
-        if (userExists.length > 0) return res.status(400).json({
-            message: "The provided email or mobile number is already associated with an existing account."
+        if (userExists.length > 0) return res.status(200).json({
+            message: "The provided email or mobile number is already associated with an existing account.",
+            statusCode: 400
         })
         else {
             const HashedPassword = await Hashedpassword(body.password)
