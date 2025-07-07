@@ -210,9 +210,8 @@ const Story = () => {
                     posts?.map((data, index) => {
                         return (
                             <StoryBox
-                                key={data?.id}
+                                // keyID={index}
                                 data={data}
-
                             />
                         )
                     })
