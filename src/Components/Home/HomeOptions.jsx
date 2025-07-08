@@ -11,15 +11,15 @@ import event from "../../assets/event.png"
 import Birthday from "../../assets/Birthday.png"
 import Boy from "../../assets/boy.png"
 import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
 
 const HomeOptions = () => {
     const navigate = useNavigate()
-
+    const { user } = useSelector(state => state.user)
 
     const HomeOptionArray = [
         {
             title: "My Account",
-            img: Boy,
             path: `/profile/${1234567890}`
 
         },
@@ -79,13 +79,13 @@ const HomeOptions = () => {
                     return (
                         <div className={styles.iconBox} key={index} onClick={() => navigate(data?.path)} >
                             <div >
-                                <img src={data?.img}
+                                <img src={data?.title == "My Account" ? user?.profile_image : data?.img}
                                     alt='homeOptionIcon'
                                     className={styles.iconImage}
                                 />
                             </div>
                             <div className={styles.titleText} >
-                                {data?.title}
+                                {data?.title == "My Account" ? `${user?.first_name} ${user?.last_name}` : data?.title}
 
                             </div>
 

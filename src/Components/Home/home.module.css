@@ -62,6 +62,7 @@
 .HomepostuserImagelogo {
     width: 40px;
     height: 40px;
+    border-radius: 25px;
 
 }
 
@@ -98,8 +99,9 @@
 }
 
 .iconImage {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
     background-color: var(--BACKGROUND-COLOR);
 }
 

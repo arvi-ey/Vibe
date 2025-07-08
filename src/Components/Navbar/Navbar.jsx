@@ -21,6 +21,7 @@ import useSignOut from '../../Hooks/useSignOut';
 import { useDispatch } from 'react-redux';
 import { AddUserID } from '../../Redux/Slices/authSlicer';
 import { useNavigate } from 'react-router-dom';
+import { AddUserdata } from '../../Redux/Slices/userSlicer';
 const Navbar = () => {
     const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -104,6 +105,7 @@ const Navbar = () => {
             const signOutResponse = await UserSignOut()
             if (signOutResponse?.statuCode == 200) {
                 dispatch(AddUserID(null))
+                dispatch(AddUserdata(null))
                 navigate("/signin")
             }
         }
