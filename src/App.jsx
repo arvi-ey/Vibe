@@ -3,7 +3,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"; // ✅ use 'react-router-dom'
-import Layout from './Components/Layout/Layout';
 import SignUp from './Components/Auth/SignUp';
 import Signin from './Components/Auth/Signin';
 import Home from './Components/Home/Home';
@@ -17,19 +16,19 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: <ProtectedRoute />,
       children: [
         {
           index: true,
-          element: <ProtectedRoute><Home /></ProtectedRoute>
+          element: <Home />
         },
         {
           path: "friends",
-          element: <ProtectedRoute><Friendrequest /></ProtectedRoute>
+          element: <Friendrequest />
         },
         {
           path: "profile/:userId",
-          element: <ProtectedRoute><UserProfile /></ProtectedRoute>
+          element: <UserProfile />
         },
         {
           path: "*",
