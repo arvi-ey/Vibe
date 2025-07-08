@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import useUser from '../../Hooks/useUser'
 import Loader from '../../Common/Loader'
 import Backdrop from '@mui/material/Backdrop';
+import ScreenLoading from '../../Common/ScreenLoading'
 
 
 const Home = () => {
@@ -19,15 +20,11 @@ const Home = () => {
     }, [userId])
 
 
-    if (loading || !user) {
+    if (loading || !userId) {
         return (
-            <div className='w-full h-full flex justify-center items-center' >
-                <Loader />
-            </div>
+            <ScreenLoading />
         )
     }
-
-    console.log(loading)
 
     return (
         <div className={styles.HomeContainer} >

@@ -5,6 +5,8 @@ import emotion from "../../assets/emotion.png"
 import Live from "../../assets/Live.svg"
 import postPhoto from "../../assets/postPhoto.svg"
 import { useSelector } from 'react-redux'
+import DemoUser from "../../assets/demo-user.png"
+
 
 const HomePost = () => {
     const { user } = useSelector(state => state.user)
@@ -29,10 +31,10 @@ const HomePost = () => {
         <div className={styles.HomePostContainer} >
             <div className={styles.HomePostDiv1}>
                 <div className={styles.HomepostuserImage} >
-                    <img src={user?.profile_image} alt='Homeuser' className={styles.HomepostuserImagelogo} />
+                    <img src={user?.profile_image || DemoUser} alt='Homeuser' className={styles.HomepostuserImagelogo} />
                 </div>
                 <div className={styles.HomepostType}>
-                    What's on your mind, {user.first_name} ?
+                    What's on your mind, {user?.first_name} ?
                 </div>
             </div>
             <div className={styles.HomePostArrayContainer}>
