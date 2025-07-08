@@ -1,5 +1,5 @@
 const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { GetUserByID, UpDateUserById, ImageUpLoad } = require("../Utils/UserUtil")
+const { GetUserByID, UpDateUserById, ImageUpLoad, GetProfileInfo } = require("../Utils/UserUtil")
 
 exports.GetUser = async (req, res) => {
     const params = req.params
@@ -42,4 +42,17 @@ exports.UploadImage = async (req, res) => {
     catch (error) {
         ErrorResponse(res, error)
     }
+}
+
+exports.GetProfiledata = async (req, res) => {
+    const { uid } = req.params
+    if (!uid) MissingData(res)
+    try {
+        const result = await GetProfileInfo(uid)
+        SuccessResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
+
 }

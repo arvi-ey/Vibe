@@ -4,6 +4,7 @@ const app = express();
 const cookieParser = require('cookie-parser')
 const AuthRouter = require("./Routes/AuthRouter")
 const UserRouter = require("./Routes/UserRouter")
+const PostRouter = require("./Routes/PostRouter")
 const corsoptions = require("./Corsoption")
 const fileUpload = require('express-fileupload');
 
@@ -26,6 +27,7 @@ app.use(fileUpload({
 
 app.use("/auth", AuthRouter)
 app.use("/user", UserRouter)
+app.use("/post", PostRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT :${PORT}`);
