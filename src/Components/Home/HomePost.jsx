@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from "./home.module.css"
 import Boy from "../../assets/boy.png"
 import emotion from "../../assets/emotion.png"
@@ -6,9 +6,11 @@ import Live from "../../assets/Live.svg"
 import postPhoto from "../../assets/postPhoto.svg"
 import { useSelector } from 'react-redux'
 import DemoUser from "../../assets/demo-user.png"
+import CreatePost from '../CreatePost/Createpost'
 
 
 const HomePost = () => {
+    const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
 
     const HomePostArray = [
@@ -26,6 +28,10 @@ const HomePost = () => {
         },
 
     ]
+    const HandleOpenPostModal = () => {
+        console.log("helllo")
+        setOpenPostModal(true)
+    }
 
     return (
         <div className={styles.HomePostContainer} >
@@ -33,7 +39,7 @@ const HomePost = () => {
                 <div className={styles.HomepostuserImage} >
                     <img src={user?.profile_image || DemoUser} alt='Homeuser' className={styles.HomepostuserImagelogo} />
                 </div>
-                <div className={styles.HomepostType}>
+                <div className={styles.HomepostType} onClick={HandleOpenPostModal} >
                     What's on your mind, {user?.first_name} ?
                 </div>
             </div>
@@ -55,6 +61,14 @@ const HomePost = () => {
                     })
                 }
             </div>
+            {openPostModal &&
+
+
+                <CreatePost
+                    openModal={openPostModal}
+                    setOpenPostModal={setOpenPostModal}
+                />
+            }
         </div>
     )
 }
