@@ -16,6 +16,6 @@ exports.UploadPost = async (req, res) => {
         SuccessResponse(res, result)
     }
     catch (error) {
-
+        ErrorResponse(res, error)
     }
 }

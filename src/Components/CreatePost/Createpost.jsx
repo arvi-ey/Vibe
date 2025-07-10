@@ -6,12 +6,150 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import Upload_Image from "../../assets/Upload_image.png"
 import Button from "../../Common/Button"
+import { useRef } from 'react';
+import usePost from '../../Hooks/usePost';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 export default function CreatePost({ openModal, setOpenPostModal }) {
     const handleClose = () => setOpenPostModal(false);
+    const { UploadPost, loading } = usePost()
+    const { postdata } = useSelector(state => state.post)
     const { user } = useSelector(state => state.user)
+    const inputRef = useRef();
+    const [desc, setDesc] = useState("")
+    const [imageFile, setImageFile] = useState(null)
+    const [imagePreview, setImagePreview] = useState(null);
+    const [showCrop, setShowCrop] = useState()
+    const imgRef = useRef();
+    const [crop, setCrop] = useState({
+        unit: '%',
+        width: 90,
+        height: 90,
+        x: 5,
+        y: 5
+    });
+    const [completedCrop, setCompletedCrop] = useState(null);
+    const [showCropper, setShowCropper] = useState(false);
+    const [croppedImageUrl, setCroppedImageUrl] = useState(null);
 
-    console.log(user)
+    const handleClick = () => {
+        inputRef.current.click();
+    };
+
+    const HandleUploadImage = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+            setShowCrop(true)
+        }
+
+    }
+
+    const HandleDescription = (e) => {
+        setDesc(e.target.value)
+    }
+
+    const onImageLoaded = (img) => {
+        imgRef.current = img;
+        return false;
+    };
+
+    const onCropComplete = (crop) => {
+        setCompletedCrop(crop);
+    };
+
+    const onCropChange = (crop) => {
+        setCrop(crop);
+    };
+
+    const getCroppedImg = (image, crop, fileName) => {
+        const canvas = document.createElement('canvas');
+        const scaleX = image.naturalWidth / image.width;
+        const scaleY = image.naturalHeight / image.height;
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(
+            image,
+            crop.x * scaleX,
+            crop.y * scaleY,
+            crop.width * scaleX,
+            crop.height * scaleY,
+            0,
+            0,
+            crop.width,
+            crop.height
+        );
+
+        return new Promise((resolve) => {
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    console.error('Canvas is empty');
+                    return;
+                }
+                const file = new File([blob], fileName, { type: 'image/jpeg' });
+                const url = URL.createObjectURL(blob);
+                resolve({ file, url });
+            }, 'image/jpeg');
+        });
+    };
+    const handleCropImage = async () => {
+        const imgElement = imgRef.current;
+
+        if (
+            imgElement &&
+            imgElement instanceof HTMLImageElement &&
+            completedCrop?.width &&
+            completedCrop?.height
+        ) {
+            console.log(imgElement, "IMageELEMNENt")
+            const croppedResult = await getCroppedImg(
+                imgElement,
+                completedCrop,
+                'cropped-image.jpg'
+            );
+            setImageFile(croppedResult.file);
+            setCroppedImageUrl(croppedResult.url);
+            setShowCropper(false);
+        } else {
+            console.error("Image is not ready or crop is invalid.");
+        }
+        setShowCrop(false);
+    };
+
+
+    const handleCancelCrop = () => {
+        setShowCropper(false);
+        setImageFile(null);
+        setImagePreview(null);
+    };
+
+    const AddNewPost = async () => {
+        console.log(croppedImageUrl, "cropped image url")
+        const formData = new FormData()
+        formData.append("image", imageFile)
+        formData.append("type", "post")
+        formData.append("userId", user?.uid)
+        formData.append("caption", desc || "")
+        formData.append("time", Date.now())
+        const result = await UploadPost(formData)
+        console.log(result)
+        if (result?.postid) {
+            setOpenPostModal(false)
+        }
+    }
+
+    useEffect(() => {
+        return () => {
+            if (imagePreview) URL.revokeObjectURL(imagePreview);
+            if (croppedImageUrl) URL.revokeObjectURL(croppedImageUrl);
+        };
+    }, [imagePreview]);
 
 
     return (
@@ -28,44 +166,120 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
                     outline: 'none'
                 }}
             >
-                <div
-                    className="w-[90vw] sm:w-[80vw] md:w-[500px] lg:w-[550px] xl:w-[600px] max-w-[95%] h-[300px]
-                 sm:h-[300px] md:h-[300px] lg:h-[350px] xl:h-[400px] flex flex-col 
+                {
+                    showCrop ?
+                        <div className="w-auto h-auto max-w-[90vw] max-h-[90vh] 
+                flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                bg-white rounded-lg shadow-xl outline-none overflow-hidden gap-2" style={{ padding: "20px" }}>
+                            {imagePreview && (
+                                <>
+                                    <div className="flex-1 flex flex-col items-center justify-center">
+                                        <ReactCrop
+                                            crop={crop}
+                                            onChange={onCropChange}
+                                            onComplete={onCropComplete}
+                                            aspect={1}
+                                            className="w-auto h-auto max-w-full max-h-[70vh]"
+                                        >
+                                            <img
+                                                ref={(el) => {
+                                                    if (el) imgRef.current = el;
+                                                }}
+                                                src={imagePreview}
+                                                alt="Crop preview"
+                                                onLoad={onImageLoaded}
+                                                className="max-w-full max-h-[70vh] object-contain"
+                                            />
+                                        </ReactCrop>
+                                    </div>
+                                    <div className="flex justify-center pb-2">
+                                        <Button
+                                            ButtonStyle="px-6 w-[200px] h-[40px] py-2 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md"
+                                            Text="Crop Image"
+                                            TextStyle="text-[var(--BACKGROUND-COLOR)] font-medium text-sm"
+                                            Click={handleCropImage}
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                        :
+                        <div
+                            className="w-[90vw] sm:w-[80vw] md:w-[500px] lg:w-[550px] xl:w-[600px] max-w-[95%] h-[400px]
+                sm:h-[400px] md:h-[400px] lg:h-[400px] xl:h-[400px] flex flex-col 
                 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                 bg-white rounded-lg shadow-xl outline-none overflow-hidden gap-2">
-                    <div className='flex h-10 w-ful justify-center items-center relative border-b-1 border-[#eae6e6]' >
-                        <p className='font-bold opacity-80' >Create post</p>
-                        <span className='absolute right-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
-                            <CloseIcon fontSize='small' />
-                        </span>
-                    </div>
-                    <div className='w-full flex items-center gap-2' style={{ paddingLeft: "10px" }} >
-                        <img src={user?.profile_image} alt="UserAccount" className='h-8 w-8 rounded-full' />
-                        <p className='font-bold text-xs opacity-70 ' >{`${user?.first_name} ${user?.last_name}`}</p>
-                    </div>
-                    <div className='w-full h-[50%]flex' style={{ paddingLeft: "10px", marginTop: "5px" }} >
-                        <textarea
-                            placeholder={`What's on your mind, ${user?.first_name}?`}
-                            className="w-full px-4 pb-2 text-base placeholder:text-gray-500 placeholder:text-lg placeholder:font-medium resize-none outline-none 
-                           min-h-[80px] max-h-[150px] overflow-y-auto"
-                            rows={10}
-                        />
-                    </div>
-                    <div className='h-20 w-full flex justify-center items-center ' >
-                        <div className='w-[90%] h-full flex-col flex justify-center items-center cursor-pointer hover:bg-[#f7fbff] rounded-xl border-2 border-dashed border-[#e4f1fe]'>
-                            <img src={Upload_Image} alt='upload_image' className='h-8 w-8 opacity-35' />
-                            <p className='font-bold text-sm text-gray-500' > Browse image, or <span className='text-[var(--PRIMARY-COLOR)]' >browse</span> </p>
-                            <p className='font-medium text-[0.6rem] text-gray-500' > Supports: JPG ,JPEG20000,PNG</p>
+                            <div className='flex h-10 w-ful justify-center items-center relative border-b-1 border-[#eae6e6]' >
+                                <p className='font-bold opacity-80' >Create post</p>
+                                <span className='absolute right-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
+                                    <CloseIcon fontSize='small' />
+                                </span>
+                            </div>
+                            <div className='w-full flex items-center gap-2' style={{ paddingLeft: "10px" }} >
+                                <img src={user?.profile_image} alt="UserAccount" className='h-8 w-8 rounded-full' />
+                                <p className='font-bold text-xs opacity-70 ' >{`${user?.first_name} ${user?.last_name}`}</p>
+                            </div>
+                            <div className='w-full h-[50%]flex' style={{ paddingLeft: "10px", marginTop: "5px" }} >
+                                <textarea
+                                    placeholder={`What's on your mind, ${user?.first_name}?`}
+                                    className="w-full px-4 pb-2 text-base placeholder:text-gray-500 placeholder:text-lg placeholder:font-medium resize-none outline-none 
+                            min-h-[80px] max-h-[150px] overflow-y-auto"
+                                    rows={10}
+                                    value={desc}
+                                    onChange={HandleDescription}
+                                />
+                            </div>
+                            {
+                                imageFile ?
+                                    <div className='w-full' >
+                                        <div className='relative inline-flex h-20' style={{ marginLeft: "10px" }}>
+                                            <img src={croppedImageUrl} alt='preview' className='h-full object-contain rounded-xl'
+                                            />
+                                            <span
+                                                className='h-5 w-5 absolute right-0   rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]'
+                                                onClick={() => {
+                                                    setImageFile(null);
+                                                    setImagePreview(null);
+                                                    setCroppedImageUrl(null);
+                                                }}
+
+                                            >
+                                                <CloseIcon fontSize='small' />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className='h-20 w-full flex justify-center relative items-center ' >
+
+                                        <div className='w-[90%] h-full flex-col flex justify-center items-center cursor-pointer hover:bg-[#f7fbff] rounded-xl border-2 border-dashed border-[#dae6f2]'
+                                            onClick={handleClick}
+                                        >
+                                            <img src={Upload_Image} alt='upload_image' className='h-8 w-8 opacity-35' />
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                ref={inputRef}
+                                                onChange={HandleUploadImage}
+                                                className="hidden"
+                                            />
+                                            <p className='font-bold text-sm text-gray-500' >Drag image, or <span className='text-[var(--PRIMARY-COLOR)]' >browse</span> </p>
+                                            <p className='font-medium text-[0.6rem] text-gray-500' >Supports: JPG,JPEG20000,PNG</p>
+                                        </div>
+                                    </div>
+
+
+
+                            }
+                            <div className='h-10 w-full flex justify-center items-center'>
+                                <Button
+                                    ButtonStyle={`w-[90%] bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md`}
+                                    Text='Post'
+                                    TextStyle={`text-[var(--BACKGROUND-COLOR)] font-bold text-sm`}
+                                    Click={AddNewPost}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className='h-10 w-full flex justify-center items-center'>
-                        <Button
-                            ButtonStyle={`w-[90%] bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md`}
-                            Text='Post'
-                            TextStyle={`text-[var(--BACKGROUND-COLOR)] font-bold text-sm`}
-                        />
-                    </div>
-                </div>
+                }
             </Modal>
         </div>
     );
