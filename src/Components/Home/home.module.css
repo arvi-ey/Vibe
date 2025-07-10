@@ -19,15 +19,30 @@
     background-color: var(--BACKGROUND-COLOR);
 }
 
+@media (max-width: 700px) {
+    .homeOptionContainer {
+        display: none;
+    }
+}
+
 .HomeMainContainer {
     margin-top: 60px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-
     margin-left: 25vw;
     width: 80vmin;
 
 }
+
+@media (max-width: 700px) {
+    .HomeMainContainer {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
 
 .HomePostDiv1 {
     display: flex;
@@ -113,6 +128,8 @@
 
 .HomePostArrayBox {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
     cursor: pointer;
     padding: 7px;
@@ -133,6 +150,14 @@
     font-weight: 600;
     background-color: transparent;
     opacity: 0.7;
+}
+
+@media (max-width: 400px) {
+    .HomePostArrayTitle {
+        font-size: 7px;
+        font-weight: bold;
+
+    }
 }
 
 .HomePostArrayContainer {

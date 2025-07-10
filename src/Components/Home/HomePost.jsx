@@ -45,7 +45,7 @@ const HomePost = () => {
                 <div className={styles.HomepostuserImage} >
                     <img src={user?.profile_image || DemoUser} alt='Homeuser' className={styles.HomepostuserImagelogo} />
                 </div>
-                <div className={styles.HomepostType} onClick={HandleOpenPostModal} >
+                <div className={`text-sm ${styles.HomepostType}`} onClick={HandleOpenPostModal} >
                     What's on your mind, {user?.first_name} ?
                 </div>
             </div>
@@ -58,9 +58,9 @@ const HomePost = () => {
 
                                 <img src={data?.photo} alt='PostIcon' className={styles.HomePostArrayIcon} />
 
-                                <div className={styles.HomePostArrayTitle}>
+                                <p className={styles.HomePostArrayTitle}>
                                     {data?.title}
-                                </div>
+                                </p>
                             </div>
 
                         )
