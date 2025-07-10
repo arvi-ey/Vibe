@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./home.module.css"
 import Boy from "../../assets/boy.png"
 import emotion from "../../assets/emotion.png"
@@ -7,11 +7,13 @@ import postPhoto from "../../assets/postPhoto.svg"
 import { useSelector } from 'react-redux'
 import DemoUser from "../../assets/demo-user.png"
 import CreatePost from '../CreatePost/Createpost'
+import Alert from '../../Common/Alert'
 
 
 const HomePost = () => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
+    const [uploadpost, setUploadpost] = useState(false)
 
     const HomePostArray = [
         {
@@ -32,6 +34,10 @@ const HomePost = () => {
         console.log("helllo")
         setOpenPostModal(true)
     }
+
+    useEffect(() => {
+        if (uploadpost) setTimeout(() => { setUploadpost(false) }, 2000)
+    }, [uploadpost])
 
     return (
         <div className={styles.HomePostContainer} >
@@ -62,13 +68,16 @@ const HomePost = () => {
                 }
             </div>
             {openPostModal &&
-
-
                 <CreatePost
                     openModal={openPostModal}
                     setOpenPostModal={setOpenPostModal}
+                    setUploadpost={setUploadpost}
                 />
             }
+            <Alert
+                message="Post was uploaded successfully."
+                open={uploadpost}
+            />
         </div>
     )
 }

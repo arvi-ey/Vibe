@@ -12,8 +12,11 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import DemoUser from "../../assets/demo-user.png"
+import ProgressBar from '../../Common/ProgressBar';
+import Alert from '../../Common/Alert';
 
-export default function CreatePost({ openModal, setOpenPostModal }) {
+export default function CreatePost({ openModal, setOpenPostModal, setUploadpost }) {
     const handleClose = () => setOpenPostModal(false);
     const { UploadPost, loading } = usePost()
     const { postdata } = useSelector(state => state.post)
@@ -55,6 +58,7 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
 
     const onImageLoaded = (img) => {
         imgRef.current = img;
+        setCompletedCrop(crop);
         return false;
     };
 
@@ -64,6 +68,7 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
 
     const onCropChange = (crop) => {
         setCrop(crop);
+        console.log("THis is triggering", crop)
     };
 
     const getCroppedImg = (image, crop, fileName) => {
@@ -142,6 +147,7 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
         if (result?.postid) {
             setOpenPostModal(false)
         }
+        setUploadpost(true)
     }
 
     useEffect(() => {
@@ -216,7 +222,7 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
                                 </span>
                             </div>
                             <div className='w-full flex items-center gap-2' style={{ paddingLeft: "10px" }} >
-                                <img src={user?.profile_image} alt="UserAccount" className='h-8 w-8 rounded-full' />
+                                <img src={user?.profile_image || DemoUser} alt="UserAccount" className='h-8 w-8 rounded-full' />
                                 <p className='font-bold text-xs opacity-70 ' >{`${user?.first_name} ${user?.last_name}`}</p>
                             </div>
                             <div className='w-full h-[50%]flex' style={{ paddingLeft: "10px", marginTop: "5px" }} >
@@ -271,12 +277,22 @@ export default function CreatePost({ openModal, setOpenPostModal }) {
 
                             }
                             <div className='h-10 w-full flex justify-center items-center'>
-                                <Button
-                                    ButtonStyle={`w-[90%] bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md`}
-                                    Text='Post'
-                                    TextStyle={`text-[var(--BACKGROUND-COLOR)] font-bold text-sm`}
-                                    Click={AddNewPost}
-                                />
+                                {
+                                    loading ?
+                                        <div className='w-full flex justify-center items-center flex-col'>
+                                            <ProgressBar
+                                                width="90%"
+                                            />
+                                            <p className='font-bold opacity-60'>Uploading</p>
+                                        </div>
+                                        :
+                                        <Button
+                                            ButtonStyle={`w-[90%] bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md`}
+                                            Text='Post'
+                                            TextStyle={`text-[var(--BACKGROUND-COLOR)] font-bold text-sm`}
+                                            Click={AddNewPost}
+                                        />
+                                }
                             </div>
                         </div>
                 }
