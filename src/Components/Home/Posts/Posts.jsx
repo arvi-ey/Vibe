@@ -2,7 +2,8 @@ import React from 'react'
 import PostBox from './PostBox';
 import styles from "./post.module.css"
 
-const Posts = () => {
+
+const Posts = ({ homeposts }) => {
     const demoPosts = [
         {
             user_name: "Arjun Mehta",
@@ -165,7 +166,7 @@ const Posts = () => {
     return (
         <div className={styles.postContainer} >
             {
-                demoPosts?.map((data, index) => {
+                homeposts?.map((data, index) => {
                     return (
                         <PostBox
                             data={data}

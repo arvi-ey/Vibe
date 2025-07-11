@@ -11,6 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MessageCircle } from 'lucide-react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import DemoUser from "../../../assets/demo-user.png"
 
 
 
@@ -20,10 +21,10 @@ const PostBox = ({ data, key }) => {
         <Card sx={{ minWidth: 275 }} className={styles.postBox}>
             <CardContent className={styles.postContainer} >
                 <div className={styles.postDiv1} >
-                    <img src={data?.profile_photo} alt='profile_photo' className={styles.User_ProfilePhoto} />
+                    <img src={data?.profile_image || DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} />
                     <div className={styles.user_name}>
                         <span>
-                            {data?.user_name}
+                            {`${data?.first_name}  ${data?.last_name}`}
                         </span>
                         <span>
                             {data?.time}
@@ -37,7 +38,7 @@ const PostBox = ({ data, key }) => {
                 </div>
                 <div className={styles.PostCaption} >{data?.caption}</div>
                 <div className={styles.postDiv2}>
-                    <img src={data?.user_posted} alt='user_posted' className={styles.user_postedPhoto} />
+                    <img src={data?.image} alt='user_posted' className={styles.user_postedPhoto} />
                 </div>
                 <div className={styles.postDiv3}>
                     <div className={styles.postOptions}>

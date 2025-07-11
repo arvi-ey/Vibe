@@ -87,7 +87,7 @@ const SignUp = () => {
                 setTimeout(() => {
                     navigate("/signin")
                     setAlertOpen(false)
-                }, 2000)
+                }, 1500)
             }
         }
     }
