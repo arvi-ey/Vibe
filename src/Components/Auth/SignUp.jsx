@@ -11,7 +11,11 @@ import { RegisterValidationSchema } from '../../Validations/AuthValidationSchema
 import useSignup from '../../Hooks/useSignup';
 import Loader from '../../Common/Loader';
 import Alert from '../../Common/Alert';
-
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -19,12 +23,14 @@ const SignUp = () => {
     const [errortext, setErrortext] = useState(null)
     const [alertOpen, setAlertOpen] = useState(false)
     const [alertText, setAlertText] = useState("")
+    const [countryList, setCountryList] = useState()
     const formik = useFormik({
         initialValues: {
             first_name: '',
             last_name: '',
             mobile: '',
             email: '',
+            country: "",
             password: '',
             confirm_password: '',
         },
@@ -34,6 +40,24 @@ const SignUp = () => {
         validateOnBlur: true
     });
 
+    useEffect(() => {
+        fetch('https://restcountries.com/v3.1/all?fields=name,flags')
+            .then(res => res.json())
+            .then(data => {
+                const countries = data.map(c => ({
+                    name: c.name.common,
+                    flag: c.flags.png
+                }));
+                setCountryList(countries);
+            });
+
+    }, [])
+
+    const HandleCountryChange = (e) => {
+        formik.setFieldValue("country", e.target.value)
+
+    }
+
     const HandleSignUp = async () => {
         formik.setTouched({
             first_name: true,
@@ -42,6 +66,7 @@ const SignUp = () => {
             email: true,
             password: true,
             confirm_password: true,
+            country: true
         });
         const errors = await formik.validateForm()
         if (Object.keys(errors).length > 0) return
@@ -51,6 +76,7 @@ const SignUp = () => {
                 last_name: formik?.values?.last_name,
                 mobile: formik?.values?.mobile,
                 email: formik?.values?.email,
+                country: formik?.values?.country,
                 password: formik?.values?.password
             }
             const signUpres = await UserSignUp(values)
@@ -69,12 +95,13 @@ const SignUp = () => {
 
     return (
         <div className={styles.AuthContainer}>
-            <div className={` h-full w-full flex flex-col justify-center items-center `} >
+            <div className={` h-full w-full flex flex-col justify-center items-center gap-2.5 `}  >
                 <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
-                <Card sx={{ minWidth: 280 }} className={` h-[80%] ${styles.AuthBox}`} >
+                <Card sx={{ minWidth: 280, }} className={` h-[80%] w-[60%] ${styles.AuthBox}`} >
                     <CardContent className={`flex flex-col items-center justify-evenly h-full`}>
-                        <div className='w-full flex gap-4'>
+                        <div className='w-full flex flex-col sm:flex-row gap-4'>
                             <TextField
+                                fullWidth
                                 id="first_name"
                                 name='first_name'
                                 label="FirstName"
@@ -85,6 +112,7 @@ const SignUp = () => {
                                 helperText={(formik?.errors?.first_name && formik.touched.first_name) ? formik?.errors?.first_name : null}
                             />
                             <TextField
+                                fullWidth
                                 id="last_name"
                                 name='last_name'
                                 label="LastName"
@@ -94,54 +122,89 @@ const SignUp = () => {
                                 error={formik?.errors?.last_name && formik.touched.last_name}
                                 helperText={(formik?.errors?.last_name && formik.touched.last_name) ? formik?.errors?.last_name : null}
                             />
+                            <TextField
+                                fullWidth
+                                id="email"
+                                name='email'
+                                label="Email address"
+                                variant="outlined"
+                                // className={` w-full`}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik?.errors?.email && formik.touched.email}
+                                helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
+                            />
                         </div>
-                        <TextField
-                            id="email"
-                            name='email'
-                            label="Email address"
-                            variant="outlined"
-                            className={` w-full`}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik?.errors?.email && formik.touched.email}
-                            helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
-                        />
-                        <TextField
-                            id="mobile"
-                            name='mobile'
-                            label="Phone number"
-                            variant="outlined"
-                            type='number'
-                            className={` w-full`}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik?.errors?.mobile && formik.touched.mobile}
-                            helperText={(formik?.errors?.mobile && formik.touched.mobile) ? formik?.errors?.mobile : null}
-                        />
-                        <TextField
-                            id="password"
-                            name='password'
-                            label="Create password"
-                            variant="outlined"
-                            type='password'
-                            className={` w-full`}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik?.errors?.password && formik.touched.password}
-                            helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
-                        />
-                        <TextField
-                            id="confirm_password"
-                            name='confirm_password'
-                            label="Re enter password"
-                            variant="outlined"
-                            type='password'
-                            className={` w-full`}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik?.errors?.confirm_password && formik.touched.confirm_password}
-                            helperText={(formik?.errors?.confirm_password && formik.touched.confirm_password) ? formik?.errors?.confirm_password : null}
-                        />
+                        <div className='w-full flex flex-col sm:flex-row gap-4'>
+                            <TextField
+                                fullWidth
+                                id="mobile"
+                                name='mobile'
+                                label="Phone number"
+                                variant="outlined"
+                                type='number'
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik?.errors?.mobile && formik.touched.mobile}
+                                helperText={(formik?.errors?.mobile && formik.touched.mobile) ? formik?.errors?.mobile : null}
+                            />
+                            <FormControl fullWidth>
+                                <Autocomplete
+                                    id="country"
+                                    options={countryList}
+                                    getOptionLabel={(option) => option.name}
+                                    onChange={(event, value) => {
+                                        formik.setFieldValue("country", value?.name || "");
+                                    }}
+                                    onBlur={formik.handleBlur}
+                                    renderOption={(props, option) => (
+                                        <li {...props} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]" style={{ marginLeft: "10px", padding: "10px", marginTop: "2px" }}>
+                                            <img src={option.flag} alt="flag" className="w-6 h-6 rounded-sm" />
+                                            {option.name}
+                                        </li>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Select your Country"
+                                            variant="outlined"
+                                            error={formik?.errors?.country && formik.touched.country}
+                                            helperText={
+                                                formik?.errors?.country && formik.touched.country
+                                                    ? formik.errors.country
+                                                    : null
+                                            }
+                                        />
+                                    )}
+                                />
+                            </FormControl>
+                        </div>
+                        <div className='w-full flex flex-col sm:flex-row gap-4'>
+                            <TextField
+                                id="password"
+                                name='password'
+                                label="Create password"
+                                variant="outlined"
+                                type='password'
+                                className={` w-full`}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik?.errors?.password && formik.touched.password}
+                                helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
+                            />
+                            <TextField
+                                id="confirm_password"
+                                name='confirm_password'
+                                label="Re enter password"
+                                variant="outlined"
+                                type='password'
+                                className={` w-full`}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik?.errors?.confirm_password && formik.touched.confirm_password}
+                                helperText={(formik?.errors?.confirm_password && formik.touched.confirm_password) ? formik?.errors?.confirm_password : null}
+                            />
+                        </div>
                         {loading ? <Loader /> :
                             <div className='w-full h-18 flex justify-between items-center flex-col' >
                                 <Button
