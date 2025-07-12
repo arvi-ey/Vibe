@@ -112,7 +112,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
             completedCrop?.width &&
             completedCrop?.height
         ) {
-            console.log(imgElement, "IMageELEMNENt")
             const croppedResult = await getCroppedImg(
                 imgElement,
                 completedCrop,

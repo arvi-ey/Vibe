@@ -1,10 +1,72 @@
-import React from 'react'
+import React from 'react';
+import Cover from "../../assets/cover.jpg";
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import DemoUser from "../../assets/demo-user.png";
+import styles from "./profile.module.css";
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Devider from '../../Common/Devider';
 
 const ProfileCover = ({ profileInfo }) => {
-    console.log(profileInfo)
     return (
-        <div>ProfileCover</div>
-    )
-}
+        <>
+            <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
+                <img
+                    src={profileInfo?.cover_photo || Cover}
+                    alt='cover-photo'
+                    className='w-full h-full object-cover rounded-xl'
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-xl"></div>
+                <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                    <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                    <p className="text-xs font-bold whitespace-nowrap hidden sm:block">
+                        {profileInfo?.cover_photo ? "Edit cover photo" : "Add cover photo"}
+                    </p>
+                </div>
+            </div>
 
-export default ProfileCover
+            <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
+                <div className={`w-40 bg-amber-400 ${styles.profilePic_box} `}>
+                    <div className='absolute h-24 w-24 sm:h-32 sm:w-32 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
+                        <img
+                            src={profileInfo?.profile_image || DemoUser}
+                            alt='profile-photo'
+                            className='h-full w-full object-cover rounded-full'
+                        />
+                        <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center">
+                            <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`w-full h-full ${styles.Profile_pic_content}`}>
+                    <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10'>
+                        {`${profileInfo?.first_name} ${profileInfo?.last_name}`}
+                    </p>
+                    <div className={`gap-2 ${styles.otherProfileInfo}`}>
+                        <div className="cursor-pointer rounded-md h-7 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] min-w-30 sm:w-30 flex justify-center items-center px-2 sm:px-4">
+                            <AddIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
+                            <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                Add to story
+                            </p>
+                        </div>
+
+                        <div className="cursor-pointer rounded-md h-7 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                            <EditIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                            <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                Edit profile
+                            </p>
+                        </div>
+
+                        <div className="cursor-pointer rounded-md h-7 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] min-w-[2.5rem] sm:w-12 flex justify-center items-center px-2 sm:px-4">
+                            <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default ProfileCover;
