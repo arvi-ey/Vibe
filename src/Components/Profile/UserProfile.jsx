@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, Outlet } from 'react-router-dom';
+
 import ProfileCover from './ProfileCover';
 import useProfile from '../../Hooks/useProfile';
 import { useSelector } from 'react-redux';
@@ -37,12 +38,41 @@ const UserProfile = () => {
         )
     }
     return (
-        <div className='w-full h-full flex flex-col justify-center items-center' >
-            <ProfileCover
-                profileInfo={user}
-            />
+        <div className='w-full h-full flex flex-col justify-center items-center'>
+            <ProfileCover profileInfo={user} />
+            <div className="w-[90%] max-w-5xl mt-6 flex h-16 items-center  gap-6 ">
+                <NavLink
+                    to='.'
+                    end
+                    className={({ isActive }) =>
+                        isActive ? 'text-blue-600  border-b-2 border-blue-600 pb-2 font-bold' : 'pb-2 font-semibold'
+                    }
+                >
+                    About
+                </NavLink>
+                <NavLink
+                    to="photos"
+                    className={({ isActive }) =>
+                        isActive ? 'text-blue-600 border-b-2 border-blue-600 pb-2 font-bold' : 'pb-2 font-semibold'
+                    }
+                >
+                    Photos
+                </NavLink>
+                <NavLink
+                    to="friends"
+                    className={({ isActive }) =>
+                        isActive ? 'text-blue-600 border-b-2 border-blue-600 pb-2 font-bold' : 'pb-2 font-semibold'
+                    }
+                >
+                    Friends
+                </NavLink>
+            </div>
+            <div className="w-[90%] max-w-5xl mt-6">
+                <Outlet />
+            </div>
         </div>
-    )
+    );
+
 }
 
 export default UserProfile

@@ -10,7 +10,9 @@ import Friendrequest from './Components/FriendRequest/Friendrequest';
 import Error from './Components/Error/Error';
 import UserProfile from './Components/Profile/UserProfile';
 import ProtectedRoute from './Components/ProtectedRoute';
-
+import About from './Components/Profile/About';
+import Friends from './Components/Profile/Friends';
+import Photos from './Components/Profile/Photos';
 function App() {
 
   const router = createBrowserRouter([
@@ -27,8 +29,13 @@ function App() {
           element: <Friendrequest />
         },
         {
-          path: "profile/:userId",
-          element: <UserProfile />
+          path: "profile/:userId/",
+          element: <UserProfile />,
+          children: [
+            { index: true, element: <About /> },
+            { path: "photos", element: <Photos /> },
+            { path: "friends", element: <Friends /> }
+          ]
         },
         {
           path: "*",

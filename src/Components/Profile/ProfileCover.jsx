@@ -27,8 +27,8 @@ const ProfileCover = ({ profileInfo }) => {
             </div>
 
             <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
-                <div className={`w-40 bg-amber-400 ${styles.profilePic_box} `}>
-                    <div className='absolute h-24 w-24 sm:h-32 sm:w-32 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
+                <div className={`w-40 ${styles.profilePic_box} `}>
+                    <div className='absolute size-24 sm:size-32 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
                         <img
                             src={profileInfo?.profile_image || DemoUser}
                             alt='profile-photo'
@@ -40,26 +40,26 @@ const ProfileCover = ({ profileInfo }) => {
                     </div>
                 </div>
 
-                <div className={`w-full h-full ${styles.Profile_pic_content}`}>
+                <div className={`w-full h-full lg:pb-20  ${styles.Profile_pic_content}`}>
                     <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10'>
                         {`${profileInfo?.first_name} ${profileInfo?.last_name}`}
                     </p>
-                    <div className={`gap-2 ${styles.otherProfileInfo}`}>
-                        <div className="cursor-pointer rounded-md h-7 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] min-w-30 sm:w-30 flex justify-center items-center px-2 sm:px-4">
+                    <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
+                        <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
                             <AddIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
                             <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
                                 Add to story
                             </p>
                         </div>
 
-                        <div className="cursor-pointer rounded-md h-7 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                        <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
                             <EditIcon fontSize="small" sx={{ opacity: "0.8" }} />
                             <p className="text-xs font-bold whitespace-nowrap  sm:block">
                                 Edit profile
                             </p>
                         </div>
 
-                        <div className="cursor-pointer rounded-md h-7 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] min-w-[2.5rem] sm:w-12 flex justify-center items-center px-2 sm:px-4">
+                        <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%] sm:h-9 sm:w-12 flex justify-center items-center px-2 sm:px-4">
                             <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />
                         </div>
                     </div>

@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex: 1
+    flex: 1;
 }
 
 .otherProfileInfo {
@@ -57,5 +57,15 @@
         width: 100%;
         flex-direction: column;
         flex-wrap: wrap;
+    }
+}
+
+.postIconBox {
+    display: block;
+}
+
+@media (max-width:435px) {
+    .postIconBox {
+        display: none;
     }
 }
