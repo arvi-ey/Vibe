@@ -7,16 +7,6 @@ import { useSelector } from 'react-redux';
 const Posts = () => {
     const { homeposts } = useSelector(state => state.post)
 
-
-
-    useEffect(() => {
-        console.log(homeposts, "LLLLL")
-
-    }, [homeposts])
-
-
-
-
     return (
         <div className={styles.postContainer} >
             {
