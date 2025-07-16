@@ -14,9 +14,12 @@ const profileSlice = createSlice({
         },
         SetProfilePosts: (state, action) => {
             state.profileposts = action.payload
+        },
+        AddProfilePost: (state, action) => {
+            state.profileposts = [action.payload, ...state.profileposts]
         }
     }
 })
 
-export const { AddProfileInfo, SetProfilePosts } = profileSlice.actions
+export const { AddProfileInfo, SetProfilePosts, AddProfilePost } = profileSlice.actions
 export default profileSlice.reducer
