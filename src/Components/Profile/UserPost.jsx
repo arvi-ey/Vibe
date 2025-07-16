@@ -1,10 +1,16 @@
 import React from 'react'
 import CreateProfilePost from './CreateProfilePost'
+import ProfilePost from './ProfilePost'
 
-const UserPost = () => {
+const UserPost = ({ userId }) => {
     return (
-        <div className='lg:w-[60%] h-[100%] flex  w-[100%] '>
-            <CreateProfilePost />
+        <div className='lg:w-[60%] h-[full] gap-9 flex flex-col w-[100%] '>
+            <CreateProfilePost
+                userId={userId}
+            />
+            <ProfilePost
+                userId={userId}
+            />
         </div>
     )
 }

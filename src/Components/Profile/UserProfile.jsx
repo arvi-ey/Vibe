@@ -68,7 +68,7 @@ const UserProfile = () => {
                 </NavLink>
             </div>
             <div className="w-[90%] max-w-5xl mt-6">
-                <Outlet />
+                <Outlet context={{ userId }} />
             </div>
         </div>
     );

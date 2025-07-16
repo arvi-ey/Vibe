@@ -18,8 +18,8 @@ import DemoUser from "../../../assets/demo-user.png"
 
 const PostBox = ({ data, key }) => {
     return (
-        <Card sx={{ minWidth: 275 }} className={styles.postBox}>
-            <CardContent className={styles.postContainer} >
+        <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={key}>
+            <CardContent className={`shadow-2xl ${styles.postContainer}`} >
                 <div className={styles.postDiv1} >
                     <img src={data?.profile_image || DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} />
                     <div className={styles.user_name}>

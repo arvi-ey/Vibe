@@ -10,7 +10,7 @@ import CreatePost from '../CreatePost/Createpost'
 import Alert from '../../Common/Alert'
 
 
-const CreateProfilePost = () => {
+const CreateProfilePost = ({ userId }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
     const [uploadpost, setUploadpost] = useState(false)
@@ -31,7 +31,6 @@ const CreateProfilePost = () => {
 
     ]
     const HandleOpenPostModal = () => {
-        console.log("helllo")
         setOpenPostModal(true)
     }
 
@@ -54,8 +53,8 @@ const CreateProfilePost = () => {
                 {
                     HomePostArray?.map((data, index) => {
                         return (
-                            <div className={`flex justify-center items-center cursor-pointer gap-2 rounded-lg  hover:bg-[#edeff0] ${styles.postIconBox} `} key={index} style={{ padding: "7px" }}>
-                                <img src={data?.photo} alt='PostIcon' className='size-5' />
+                            <div className={`flex flex-row justify-center items-center cursor-pointer gap-2 rounded-lg  hover:bg-[#edeff0] ${data?.title !== "Photo/Video" ? styles.postIconBox : ""} `} key={index} style={{ padding: "7px", marginTop: "10px" }} >
+                                <img src={data?.photo} alt='PostIcon' className={`size-5 ${styles.profile_post_icon}`} />
 
                                 <p className='text-xs sm:text-sm font-semibold opacity-70'>
                                     {data?.title}

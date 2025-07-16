@@ -15,10 +15,13 @@ const postSlice = createSlice({
         },
         GetAllPost: (state, action) => {
             state.homeposts = action.payload
+        },
+        AddRecentPost: (state, action) => {
+            state.homeposts = [action.payload, ...state.homeposts]
         }
     }
 })
 
-export const { AddPost, GetAllPost } = postSlice.actions
+export const { AddPost, GetAllPost, AddRecentPost } = postSlice.actions
 export default postSlice.reducer
 

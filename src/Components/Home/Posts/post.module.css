@@ -1,10 +1,9 @@
 .postContainer {
     display: flex;
     flex-direction: column;
-    width: 90vmin;
+    width: 100%;
     margin-top: 0.5em;
     justify-content: space-between;
-    /* height: 100%; */
     gap: 1em;
     /* background-color: rgb(125, 231, 25) !important; */
 }
@@ -14,7 +13,10 @@
     /* height: 600px; */
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
     gap: 0.5em;
+    /* background-color: blue; */
+    align-items: center;
 }
 
 
@@ -79,12 +81,26 @@
     font-weight: 600;
 }
 
+@media (max-width:300px) {
+    .PostCaption {
+        font-size: x-small;
+        font-weight: 600;
+    }
+}
+
 .postDiv3 {
     /* border: 1px solid rgba(0, 0, 0, 0.125); */
     width: 100%;
     display: flex;
     justify-content: space-around;
 
+}
+
+@media(max-width:300px) {
+    .postDiv3 {
+        padding: 10px;
+        width: 100%;
+    }
 }
 
 .LikeIcon {}
@@ -121,5 +137,16 @@
     font-weight: 500;
     font-size: 12px;
     /* opacity: 0.8; */
+}
 
+@media(max-width:300px) {
+    .postOptions {
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+    }
+
+    .PostInfo {
+        font-size: x-small;
+    }
 }

@@ -8,9 +8,11 @@ import { useSelector } from 'react-redux'
 import DemoUser from "../../assets/demo-user.png"
 import CreatePost from '../CreatePost/Createpost'
 import Alert from '../../Common/Alert'
+import { useNavigate } from 'react-router'
 
 
 const HomePost = () => {
+    const navigate = useNavigate()
     const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
     const [uploadpost, setUploadpost] = useState(false)
@@ -42,7 +44,7 @@ const HomePost = () => {
     return (
         <div className={styles.HomePostContainer} >
             <div className={styles.HomePostDiv1}>
-                <div className={styles.HomepostuserImage} >
+                <div className={styles.HomepostuserImage} onClick={() => { navigate(`/profile/${user?.uid}`) }} >
                     <img src={user?.profile_image || DemoUser} alt='Homeuser' className={styles.HomepostuserImagelogo} />
                 </div>
                 <div className={`text-sm ${styles.HomepostType}`} onClick={HandleOpenPostModal} >

@@ -18,6 +18,7 @@ import Alert from '../../Common/Alert';
 
 export default function CreatePost({ openModal, setOpenPostModal, setUploadpost }) {
     const handleClose = () => setOpenPostModal(false);
+    const { GetHomePosts } = usePost()
     const { UploadPost, loading } = usePost()
     const { postdata } = useSelector(state => state.post)
     const { user } = useSelector(state => state.user)
@@ -142,7 +143,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
         formData.append("caption", desc || "")
         formData.append("time", Date.now())
         const result = await UploadPost(formData)
-        console.log(result)
         if (result?.postid) {
             setOpenPostModal(false)
         }

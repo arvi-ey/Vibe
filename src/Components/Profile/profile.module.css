@@ -61,11 +61,57 @@
 }
 
 .postIconBox {
-    display: block;
+    /* display: block; */
 }
 
 @media (max-width:435px) {
     .postIconBox {
         display: none;
+    }
+}
+
+@media (max-width:435px) {
+    .profile_post_icon {
+        height: 30px;
+        width: 30px;
+    }
+}
+
+.infoTitle {
+    /* font-weight: bolder; */
+}
+
+.info_image_user {}
+
+.info_box {}
+
+@media(max-width:320px) {
+    .infoTitle {
+        font-size: small;
+    }
+
+    .info_image_user {
+        height: 15px;
+        width: 15px;
+    }
+
+    .info_box {
+        gap: 10px;
+    }
+}
+
+@media(max-width:280px) {
+    .infoTitle {
+        font-size: x-small;
+        font-weight: 600;
+    }
+
+    .info_image_user {
+        height: 10px;
+        width: 10px;
+    }
+
+    .info_box {
+        gap: 10px;
     }
 }

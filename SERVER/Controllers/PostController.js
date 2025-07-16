@@ -1,4 +1,4 @@
-const { CreatePost, ImageUpLoad, GetHomePost, GetUserPosts } = require("../Utils/PostUtil")
+const { CreatePost, ImageUpLoad, GetHomePost, GetUserPosts, GetUserRecentPost } = require("../Utils/PostUtil")
 const { MissingData, SuccessResponse, SuccessMultiResponse, ErrorResponse } = require("../Utils/Response")
 
 
@@ -41,6 +41,19 @@ exports.GetProfilePosts = async (req, res) => {
     try {
         const result = await GetUserPosts(uid, res)
         SuccessMultiResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
+}
+
+
+exports.GetRecentPost = async (req, res) => {
+    const { postid } = req.body
+    if (!postid) MissingData(res)
+    try {
+        const result = await GetUserRecentPost(postid, res)
+        SuccessResponse(res, result)
     }
     catch (error) {
         ErrorResponse(res, error)

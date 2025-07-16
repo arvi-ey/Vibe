@@ -23,6 +23,12 @@ const HomeMain = () => {
         }
     }, [user])
 
+    useEffect(() => {
+        console.log(homeposts, "LLLLL")
+
+    }, [homeposts])
+
+
     return (
         <div className={styles.HomeMainContainer} >
             <HomePost />
