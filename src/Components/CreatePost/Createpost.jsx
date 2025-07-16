@@ -56,11 +56,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
     const HandleDescription = (e) => {
         setDesc(e.target.value)
     }
-
-    useEffect(() => {
-        console.log(completedCrop, "COMPLETED CROP")
-    }, [completedCrop])
-
     const onImageLoaded = (img) => {
         imgRef.current = img;
         setCrop({
