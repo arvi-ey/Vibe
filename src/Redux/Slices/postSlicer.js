@@ -12,16 +12,14 @@ const postSlice = createSlice({
     reducers: {
         AddPost: (state, action) => {
             state.postdata = action.payload
+            state.homeposts = [action.payload, ...state.homeposts]
         },
         GetAllPost: (state, action) => {
             state.homeposts = action.payload
         },
-        AddRecentPost: (state, action) => {
-            state.homeposts = [action.payload, ...state.homeposts]
-        }
     }
 })
 
-export const { AddPost, GetAllPost, AddRecentPost } = postSlice.actions
+export const { AddPost, GetAllPost } = postSlice.actions
 export default postSlice.reducer
 
