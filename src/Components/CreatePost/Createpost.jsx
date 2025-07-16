@@ -57,8 +57,19 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
         setDesc(e.target.value)
     }
 
+    useEffect(() => {
+        console.log(completedCrop, "COMPLETED CROP")
+    }, [completedCrop])
+
     const onImageLoaded = (img) => {
         imgRef.current = img;
+        setCrop({
+            "x": 31.160037231445312,
+            "y": 28.746249389648426,
+            "width": 388.08001098632815,
+            "height": 258.71624450683595,
+            "unit": "px"
+        })
         setCompletedCrop(crop);
         return false;
     };
@@ -69,7 +80,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
 
     const onCropChange = (crop) => {
         setCrop(crop);
-        console.log("THis is triggering", crop)
     };
 
     const getCroppedImg = (image, crop, fileName) => {
