@@ -17,9 +17,13 @@ const postSlice = createSlice({
         GetAllPost: (state, action) => {
             state.homeposts = action.payload
         },
+        DeleteHomePost: (state, action) => {
+            const { postid } = action.payload
+            state.homeposts = state.homeposts.filter(data => data.postid !== postid)
+        }
     }
 })
 
-export const { AddPost, GetAllPost } = postSlice.actions
+export const { AddPost, GetAllPost, DeleteHomePost } = postSlice.actions
 export default postSlice.reducer
 

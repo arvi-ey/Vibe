@@ -16,7 +16,7 @@ import DemoUser from "../../assets/demo-user.png"
 import ProgressBar from '../../Common/ProgressBar';
 import Alert from '../../Common/Alert';
 
-export default function CreatePost({ openModal, setOpenPostModal, setUploadpost }) {
+export default function CreatePost({ openModal, setOpenPostModal, setUploadpost, clickedicon }) {
     const handleClose = () => setOpenPostModal(false);
     const { GetHomePosts } = usePost()
     const { UploadPost, loading } = usePost()
@@ -140,7 +140,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
     };
 
     const AddNewPost = async () => {
-        console.log(croppedImageUrl, "cropped image url")
         const formData = new FormData()
         formData.append("image", imageFile)
         formData.append("type", "post")
@@ -219,8 +218,14 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost 
                 sm:h-[400px] md:h-[400px] lg:h-[400px] xl:h-[400px] flex flex-col 
                 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                 bg-white rounded-lg shadow-xl outline-none overflow-hidden gap-2">
-                            <div className='flex h-10 w-ful justify-center items-center relative border-b-1 border-[#eae6e6]' >
+                            <div className='flex flex-col h-12 w-ful justify-center items-center relative border-b-1 border-[#eae6e6]' >
                                 <p className='font-bold opacity-80' >Create post</p>
+                                {(clickedicon && clickedicon == "Live Video") &&
+                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >The live video feature is not currently supported, but photo uploads are fully available.</p>
+                                }
+                                {(clickedicon && clickedicon == "Photo/Video") &&
+                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >Video uploads are not currently supported, but photo uploads are fully available.</p>
+                                }
                                 <span className='absolute right-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
                                     <CloseIcon fontSize='small' />
                                 </span>

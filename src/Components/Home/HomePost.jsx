@@ -9,6 +9,7 @@ import DemoUser from "../../assets/demo-user.png"
 import CreatePost from '../CreatePost/Createpost'
 import Alert from '../../Common/Alert'
 import { useNavigate } from 'react-router'
+import ProgressBar from '../../Common/ProgressBar'
 
 
 const HomePost = () => {
@@ -16,6 +17,7 @@ const HomePost = () => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
     const [uploadpost, setUploadpost] = useState(false)
+    const [clickedicon, setClickedIcon] = useState(null)
 
     const HomePostArray = [
         {
@@ -32,8 +34,9 @@ const HomePost = () => {
         },
 
     ]
-    const HandleOpenPostModal = () => {
-        console.log("helllo")
+    const HandleOpenPostModal = (clickedobj) => {
+        if (clickedobj.title) setClickedIcon(clickedobj.title)
+        else setClickedIcon(null)
         setOpenPostModal(true)
     }
 
@@ -56,7 +59,7 @@ const HomePost = () => {
                 {
                     HomePostArray?.map((data, index) => {
                         return (
-                            <div className={styles.HomePostArrayBox} key={index}>
+                            <div className={styles.HomePostArrayBox} key={index} onClick={() => HandleOpenPostModal(data)}>
 
                                 <img src={data?.photo} alt='PostIcon' className={styles.HomePostArrayIcon} />
 
@@ -74,12 +77,14 @@ const HomePost = () => {
                     openModal={openPostModal}
                     setOpenPostModal={setOpenPostModal}
                     setUploadpost={setUploadpost}
+                    clickedicon={clickedicon}
                 />
             }
             <Alert
                 message="Post was uploaded successfully."
                 open={uploadpost}
             />
+
         </div>
     )
 }

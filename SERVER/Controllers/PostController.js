@@ -1,4 +1,4 @@
-const { CreatePost, ImageUpLoad, GetHomePost, GetUserPosts } = require("../Utils/PostUtil")
+const { CreatePost, ImageUpLoad, GetHomePost, GetUserPosts, DeletePost } = require("../Utils/PostUtil")
 const { MissingData, SuccessResponse, SuccessMultiResponse, ErrorResponse } = require("../Utils/Response")
 
 
@@ -47,3 +47,17 @@ exports.GetProfilePosts = async (req, res) => {
     }
 }
 
+
+exports.DeleteUserPost = async (req, res) => {
+    console.log(req.body)
+    const { image_public_id, postid } = req.body
+    if (!image_public_id || !postid) MissingData(res)
+    try {
+        const result = await DeletePost(image_public_id, postid, res)
+        SuccessResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
+
+}

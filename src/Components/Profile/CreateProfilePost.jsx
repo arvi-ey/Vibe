@@ -13,6 +13,7 @@ import Alert from '../../Common/Alert'
 const CreateProfilePost = ({ userId }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const { user } = useSelector(state => state.user)
+    const [clickedicon, setClickedIcon] = useState(null)
     const [uploadpost, setUploadpost] = useState(false)
 
     const HomePostArray = [
@@ -30,7 +31,9 @@ const CreateProfilePost = ({ userId }) => {
         },
 
     ]
-    const HandleOpenPostModal = () => {
+    const HandleOpenPostModal = (clickedobj) => {
+        if (clickedobj.title) setClickedIcon(clickedobj.title)
+        else setClickedIcon(null)
         setOpenPostModal(true)
     }
 
@@ -53,7 +56,9 @@ const CreateProfilePost = ({ userId }) => {
                 {
                     HomePostArray?.map((data, index) => {
                         return (
-                            <div className={`flex flex-row justify-center items-center cursor-pointer gap-2 rounded-lg  hover:bg-[#edeff0] ${data?.title !== "Photo/Video" ? styles.postIconBox : ""} `} key={index} style={{ padding: "7px", marginTop: "10px" }} >
+                            <div className={`flex flex-row justify-center items-center cursor-pointer gap-2 rounded-lg  hover:bg-[#edeff0] ${data?.title !== "Photo/Video" ? styles.postIconBox : ""} `} key={index} style={{ padding: "7px", marginTop: "10px" }}
+                                onClick={() => HandleOpenPostModal(data)}
+                            >
                                 <img src={data?.photo} alt='PostIcon' className={`size-5 ${styles.profile_post_icon}`} />
 
                                 <p className='text-xs sm:text-sm font-semibold opacity-70'>
@@ -71,6 +76,7 @@ const CreateProfilePost = ({ userId }) => {
                     openModal={openPostModal}
                     setOpenPostModal={setOpenPostModal}
                     setUploadpost={setUploadpost}
+                    clickedicon={clickedicon}
                 />
             }
             <Alert

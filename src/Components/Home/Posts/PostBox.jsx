@@ -12,14 +12,63 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MessageCircle } from 'lucide-react';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import DemoUser from "../../../assets/demo-user.png"
+import MenuBox from '../../../Common/MenuBox';
+import { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useSelector } from 'react-redux';
+import usePost from '../../../Hooks/usePost';
+import Alert from '../../../Common/Alert';
+import { useEffect } from 'react';
+import ProgressBar from '../../../Common/ProgressBar';
 
 
 
 
 const PostBox = ({ data, key }) => {
+    const { user } = useSelector(state => state.user)
+    const { DeletePost, loading } = usePost()
+    const [showMenu, setShowMenu] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [deletedpost, setDeletedPost] = useState(false)
+
+    const HandleOpenMenu = (e) => {
+        setAnchorEl(e.target)
+        setShowMenu(true)
+    }
+    const MenuItems = [
+        {
+            title: "Delete",
+            icon: <DeleteIcon sx={{ color: "red", opacity: "0.6" }} />
+        },
+    ]
+
+    const OnClickMenu = async (title) => {
+        if (title == "Delete") {
+            const { image_public_id, postid } = data
+            setAnchorEl(null)
+            const result = await DeletePost({ image_public_id, postid })
+            if (result && result?.postid && !loading) {
+                setDeletedPost(true)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (deletedpost) {
+            setTimeout(() => {
+                setDeletedPost(false)
+            }, 1000)
+        }
+    })
+
     return (
         <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={key}>
             <CardContent className={`shadow-2xl ${styles.postContainer}`} >
+                {
+                    loading &&
+
+                    <ProgressBar width="100%" />
+                }
                 <div className={styles.postDiv1} >
                     <img src={data?.profile_image || DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} />
                     <div className={styles.user_name}>
@@ -31,8 +80,10 @@ const PostBox = ({ data, key }) => {
                         </span>
                     </div>
                     <div className={styles.postOption} >
-                        <MoreHorizIcon style={{ cursor: "pointer", }} />
-                        <CloseIcon style={{ cursor: "pointer", }} />
+                        {user.uid == data?.userid &&
+                            <MoreHorizIcon style={{ cursor: "pointer", }} onClick={HandleOpenMenu} />
+                        }
+                        {/* <CloseIcon style={{ cursor: "pointer", }} /> */}
                     </div>
 
                 </div>
@@ -53,8 +104,22 @@ const PostBox = ({ data, key }) => {
                         <BookmarkBorderIcon className={styles.shareIcon} />
                     </div>
                 </div>
+                {
+                    showMenu &&
+                    <MenuBox
+                        anchorEl={anchorEl}
+                        items={MenuItems}
+                        setAnchorEl={setAnchorEl}
+                        OnClickMenu={OnClickMenu}
+                        loading={loading}
+                    />
+                }
 
             </CardContent>
+            <Alert
+                message="Post deleted successfully."
+                open={deletedpost}
+            />
         </Card>
     )
 }

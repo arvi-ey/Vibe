@@ -1,9 +1,10 @@
 const express = require("express")
 const Router = express.Router()
-const { UploadPost, GetHomePosts, GetProfilePosts, } = require("../Controllers/PostController")
+const { UploadPost, GetHomePosts, GetProfilePosts, DeleteUserPost } = require("../Controllers/PostController")
 
 Router.post("/uploadpost", UploadPost)
 Router.post("/gethomepost", GetHomePosts)
 Router.post("/getuserposts", GetProfilePosts)
+Router.delete("/deleteuserpost", DeleteUserPost)
 
 module.exports = Router
