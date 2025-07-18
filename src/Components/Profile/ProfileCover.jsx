@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Cover from "../../assets/cover.jpg";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import DemoUser from "../../assets/demo-user.png";
@@ -6,9 +6,24 @@ import styles from "./profile.module.css";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Devider from '../../Common/Devider';
+import CreatePost from '../CreatePost/Createpost';
+import { useState } from 'react';
+import Alert from '../../Common/Alert';
 
 const ProfileCover = ({ profileInfo }) => {
+    const [openPostModal, setOpenPostModal] = useState(false)
+    const [uploadpost, setUploadpost] = useState(false)
+    const [modalSource, setModalSource] = useState(null)
+
+
+    const HandleOpenPostModal = (source) => {
+        setOpenPostModal(true)
+        setModalSource(source)
+    }
+    useEffect(() => {
+        if (uploadpost) setTimeout(() => { setUploadpost(false) }, 2000)
+    }, [uploadpost])
+
     return (
         <>
             <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
@@ -18,7 +33,9 @@ const ProfileCover = ({ profileInfo }) => {
                     className='w-full h-full object-cover rounded-xl'
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-xl"></div>
-                <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                    onClick={() => HandleOpenPostModal("cover_photo")}
+                >
                     <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
                     <p className="text-xs font-bold whitespace-nowrap hidden sm:block">
                         {profileInfo?.cover_photo ? "Edit cover photo" : "Add cover photo"}
@@ -34,7 +51,9 @@ const ProfileCover = ({ profileInfo }) => {
                             alt='profile-photo'
                             className='h-full w-full object-cover rounded-full'
                         />
-                        <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center">
+                        <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center"
+                            onClick={() => HandleOpenPostModal("profile_image")}
+                        >
                             <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
                         </div>
                     </div>
@@ -65,6 +84,18 @@ const ProfileCover = ({ profileInfo }) => {
                     </div>
                 </div>
             </div>
+            {openPostModal &&
+                <CreatePost
+                    openModal={openPostModal}
+                    setOpenPostModal={setOpenPostModal}
+                    setUploadpost={setUploadpost}
+                    postType={modalSource}
+                />
+            }
+            <Alert
+                message="Post was uploaded successfully."
+                open={uploadpost}
+            />
         </>
     );
 };

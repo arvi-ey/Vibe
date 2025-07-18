@@ -16,10 +16,9 @@ import DemoUser from "../../assets/demo-user.png"
 import ProgressBar from '../../Common/ProgressBar';
 import Alert from '../../Common/Alert';
 
-export default function CreatePost({ openModal, setOpenPostModal, setUploadpost, clickedicon }) {
+export default function CreatePost({ openModal, setOpenPostModal, setUploadpost, clickedicon, postType }) {
     const handleClose = () => setOpenPostModal(false);
-    const { GetHomePosts } = usePost()
-    const { UploadPost, loading } = usePost()
+    const { UploadPost, loading, UploadUserImage } = usePost()
     const { postdata } = useSelector(state => state.post)
     const { user } = useSelector(state => state.user)
     const inputRef = useRef();
@@ -140,18 +139,32 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
     };
 
     const AddNewPost = async () => {
+
         const formData = new FormData()
-        formData.append("image", imageFile)
-        formData.append("type", "post")
-        formData.append("userId", user?.uid)
+        if (imageFile) formData.append("image", imageFile)
+        formData.append("userid", user?.uid)
         formData.append("caption", desc || "")
         formData.append("time", Date.now())
-        const result = await UploadPost(formData)
-        if (result?.postid) {
-            setOpenPostModal(false)
+        formData.append("post_type", postType)
+        if (postType == "Feed") {
+            const result = await UploadPost(formData)
+            if (result?.postid) {
+                setOpenPostModal(false)
+                setUploadpost(true)
+            }
         }
-        setUploadpost(true)
+        else {
+            const result = await UploadUserImage(formData)
+            if (result?.postid) {
+                console.log("HELLo")
+                setOpenPostModal(false)
+                setUploadpost(true)
+            }
+
+        }
     }
+
+
 
     useEffect(() => {
         return () => {
@@ -186,6 +199,7 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
                                         <ReactCrop
                                             crop={crop}
                                             onChange={onCropChange}
+                                            circularCrop={postType == "profile_image"}
                                             onComplete={onCropComplete}
                                             aspect={1}
                                             className="w-auto h-auto max-w-full max-h-[70vh]"
@@ -219,12 +233,19 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
                 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                 bg-white rounded-lg shadow-xl outline-none overflow-hidden gap-2">
                             <div className='flex flex-col h-12 w-ful justify-center items-center relative border-b-1 border-[#eae6e6]' >
-                                <p className='font-bold opacity-80' >Create post</p>
+                                {
+                                    postType == "profile_image" ?
+                                        <p className='font-bold opacity-80' >Upload Profile Photo</p> :
+
+                                        postType == "cover_photo" ?
+                                            <p className='font-bold opacity-80' >Upload Cover Photo</p> :
+                                            <p className='font-bold opacity-80' >Create post</p>
+                                }
                                 {(clickedicon && clickedicon == "Live Video") &&
-                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >The live video feature is not currently supported, but photo uploads are fully available.</p>
+                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >The live video feature is not currently available, but photo uploads are fully supported.</p>
                                 }
                                 {(clickedicon && clickedicon == "Photo/Video") &&
-                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >Video uploads are not currently supported, but photo uploads are fully available.</p>
+                                    <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >Video uploads are not currently available, but photo uploads are fully suppported</p>
                                 }
                                 <span className='absolute right-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
                                     <CloseIcon fontSize='small' />

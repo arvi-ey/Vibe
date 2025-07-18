@@ -78,6 +78,7 @@ const HomePost = () => {
                     setOpenPostModal={setOpenPostModal}
                     setUploadpost={setUploadpost}
                     clickedicon={clickedicon}
+                    postType="Feed"
                 />
             }
             <Alert

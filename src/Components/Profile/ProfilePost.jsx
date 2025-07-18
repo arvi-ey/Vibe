@@ -11,10 +11,19 @@ const ProfilePost = ({ userId }) => {
         GetProfilePosts(userId)
     }, [userId])
 
+
+
+    if (profileposts?.length < 1) {
+        return (
+            <h1 className='w-full flex justify-center items-center font-semibold opacity-70'>Your feed is empty. Share your first post!</h1>
+        )
+    }
+
+
     return (
         <div className='flex flex-col w-[100%] justify-between gap-2.5' >
             {
-                profileposts?.map((data, index) => {
+                profileposts && profileposts?.map((data, index) => {
                     return (
                         <PostBox
                             data={data}

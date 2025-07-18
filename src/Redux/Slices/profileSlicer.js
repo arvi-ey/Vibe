@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Upload } from "lucide-react";
 
 const initialState = {
     profileInfo: null,
@@ -21,7 +22,7 @@ const profileSlice = createSlice({
         DeleteProfilePost: (state, action) => {
             const { postid } = action.payload
             state.profileposts = state.profileposts.filter(data => data.postid !== postid)
-        }
+        },
     }
 })
 

@@ -77,6 +77,7 @@ const CreateProfilePost = ({ userId }) => {
                     setOpenPostModal={setOpenPostModal}
                     setUploadpost={setUploadpost}
                     clickedicon={clickedicon}
+                    postType="Feed"
                 />
             }
             <Alert

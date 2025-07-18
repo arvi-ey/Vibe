@@ -115,7 +115,7 @@ const Navbar = () => {
     return (
         <div className={styles.Layout_container}>
             <div className={styles.navdiv1}>
-                <img src={Logo} alt='Logo' className={`cursor-pointer ${styles.Logo_Image}`} />
+                <img src={Logo} alt='Logo' className={`cursor-pointer ${styles.Logo_Image}`} onClick={() => navigate("/")} />
                 <input
                     type='text'
                     placeholder='Search Vibe ...'

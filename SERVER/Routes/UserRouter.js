@@ -4,7 +4,7 @@ const { GetUser, UpdateUser, UploadImage, GetProfiledata } = require("../Control
 
 Router.get("/getuser/:uid", GetUser)
 Router.patch("/updateuser/:uid", UpdateUser)
-Router.patch("/uploadImage/:uid", UploadImage)
+Router.post("/uploadImage", UploadImage)
 Router.get("/getprofileData/:uid", GetProfiledata)
 
 module.exports = Router

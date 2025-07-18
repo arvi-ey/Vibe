@@ -72,15 +72,18 @@ const PostBox = ({ data, key }) => {
                 <div className={styles.postDiv1} >
                     <img src={data?.profile_image || DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} />
                     <div className={styles.user_name}>
-                        <span>
-                            {`${data?.first_name}  ${data?.last_name}`}
-                        </span>
-                        <span>
+                        <div className='flex gap-2  items-center'>
+                            <p className='text-sm'>
+                                {`${data?.first_name}  ${data?.last_name}`}
+                            </p>
+                            <p className='text-xs font-medium opacity-70'>{data?.post_type == "profile_image" ? "Updated profile photo" : data?.post_type == "cover_photo" ? "Updated cover photo" : ""}</p>
+                        </div>
+                        <p>
                             {data?.time}
-                        </span>
+                        </p>
                     </div>
                     <div className={styles.postOption} >
-                        {user.uid == data?.userid &&
+                        {user?.uid == data?.userid &&
                             <MoreHorizIcon style={{ cursor: "pointer", }} onClick={HandleOpenMenu} />
                         }
                         {/* <CloseIcon style={{ cursor: "pointer", }} /> */}

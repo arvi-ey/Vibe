@@ -3,8 +3,8 @@ const { MissingData, SuccessResponse, SuccessMultiResponse, ErrorResponse } = re
 
 
 exports.UploadPost = async (req, res) => {
-    const { type, time, userId } = req.body
-    if (!type || !time || !userId) MissingData(res)
+    const { time, userid, post_type } = req.body
+    if (!time || !userid || !post_type) return MissingData(res)
     try {
         let update_obj = req.body
         if (req.files && req.files.image) {
@@ -24,7 +24,7 @@ exports.UploadPost = async (req, res) => {
 
 exports.GetHomePosts = async (req, res) => {
     const { country } = req.body
-    if (!country) MissingData(res)
+    if (!country) return MissingData(res)
     try {
         const result = await GetHomePost(req.body, res)
         SuccessMultiResponse(res, result)
@@ -37,7 +37,8 @@ exports.GetHomePosts = async (req, res) => {
 
 exports.GetProfilePosts = async (req, res) => {
     const { uid } = req.body
-    if (!uid) MissingData(res)
+
+    if (!uid) return MissingData(res)
     try {
         const result = await GetUserPosts(uid, res)
         SuccessMultiResponse(res, result)
@@ -49,9 +50,8 @@ exports.GetProfilePosts = async (req, res) => {
 
 
 exports.DeleteUserPost = async (req, res) => {
-    console.log(req.body)
-    const { image_public_id, postid } = req.body
-    if (!image_public_id || !postid) MissingData(res)
+    const { postid, image_public_id } = req.body
+    if (!postid) return MissingData(res)
     try {
         const result = await DeletePost(image_public_id, postid, res)
         SuccessResponse(res, result)
