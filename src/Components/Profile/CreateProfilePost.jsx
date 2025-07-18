@@ -15,6 +15,7 @@ const CreateProfilePost = ({ userId }) => {
     const { user } = useSelector(state => state.user)
     const [clickedicon, setClickedIcon] = useState(null)
     const [uploadpost, setUploadpost] = useState(false)
+    const { profileInfo } = useSelector(state => state.profile)
 
     const HomePostArray = [
         {

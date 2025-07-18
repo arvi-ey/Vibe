@@ -10,14 +10,15 @@ import Skeleton from '@mui/material/Skeleton';
 const UserProfile = () => {
     const { userId } = useParams()
     const { GetUserProfileData, loading } = useProfile()
-    const { user } = useSelector(state => state.user)
+    const { profileInfo } = useSelector(state => state.profile)
+
 
 
     useEffect(() => {
         GetUserProfileData(userId)
     }, [userId])
 
-    if (loading || !user) {
+    if (loading || !profileInfo) {
         return (
             <div className='w-full h-full flex flex-col justify-center items-center' >
                 <div
@@ -39,7 +40,7 @@ const UserProfile = () => {
     }
     return (
         <div className='w-full h-full flex flex-col justify-center items-center'>
-            <ProfileCover profileInfo={user} />
+            <ProfileCover profileInfo={profileInfo} />
             <div className="w-[90%] max-w-5xl mt-6 flex h-16 items-center  gap-6 ">
                 <NavLink
                     to='.'

@@ -9,11 +9,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CreatePost from '../CreatePost/Createpost';
 import { useState } from 'react';
 import Alert from '../../Common/Alert';
+import { useSelector } from 'react-redux';
 
 const ProfileCover = ({ profileInfo }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const [uploadpost, setUploadpost] = useState(false)
     const [modalSource, setModalSource] = useState(null)
+    const { user } = useSelector(state => state.user)
 
 
     const HandleOpenPostModal = (source) => {
@@ -24,14 +26,25 @@ const ProfileCover = ({ profileInfo }) => {
         if (uploadpost) setTimeout(() => { setUploadpost(false) }, 2000)
     }, [uploadpost])
 
+
+
+
     return (
         <>
             <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
-                <img
-                    src={profileInfo?.cover_photo || Cover}
-                    alt='cover-photo'
-                    className='w-full h-full object-cover rounded-xl'
-                />
+                {
+                    user?.cover_photo || profileInfo?.cover_photo ?
+                        <img
+                            src={profileInfo?.uid == user?.uid ? user?.cover_photo : profileInfo?.cover_photo || Cover}
+                            alt='cover-photo'
+                            className='w-full h-full object-cover rounded-xl'
+                        /> :
+                        <img
+                            src={Cover}
+                            alt='cover-photo'
+                            className='w-full h-full object-cover rounded-xl'
+                        />
+                }
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-xl"></div>
                 <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4"
                     onClick={() => HandleOpenPostModal("cover_photo")}
@@ -46,11 +59,21 @@ const ProfileCover = ({ profileInfo }) => {
             <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
                 <div className={`w-40 ${styles.profilePic_box} `}>
                     <div className='absolute size-24 sm:size-32 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
-                        <img
-                            src={profileInfo?.profile_image || DemoUser}
-                            alt='profile-photo'
-                            className='h-full w-full object-cover rounded-full'
-                        />
+                        {
+                            user?.profile_image || profileInfo?.profile_image ?
+                                <img
+                                    src={profileInfo?.uid == user?.uid ? user?.profile_image : profileInfo?.profile_image || DemoUser}
+                                    alt='profile-photo'
+                                    className='h-full w-full object-cover rounded-full'
+                                />
+                                :
+                                <img
+                                    src={DemoUser}
+                                    alt='profile-photo'
+                                    className='h-full w-full object-cover rounded-full'
+                                />
+
+                        }
                         <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center"
                             onClick={() => HandleOpenPostModal("profile_image")}
                         >

@@ -7,8 +7,9 @@ import Loader from '../../Common/Loader';
 const About = () => {
     const { user } = useSelector(state => state.user)
     const { userId } = useOutletContext();
+    const { profileInfo } = useSelector(state => state.profile)
 
-    if (!user || !userId) {
+    if (!profileInfo || !userId) {
         return (
             <Loader />
         )
@@ -17,10 +18,10 @@ const About = () => {
     return (
         <div className='w-[100%] pb-11 flex-col gap-5 flex flex-wrap lg:flex-row lg:justify-between items-center lg:items-start' >
             <UserInfo
-                user={user}
+                user={profileInfo}
             />
             <UserPost
-                user={user}
+                user={profileInfo}
                 userId={userId}
 
             />

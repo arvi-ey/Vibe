@@ -20,6 +20,7 @@ import usePost from '../../../Hooks/usePost';
 import Alert from '../../../Common/Alert';
 import { useEffect } from 'react';
 import ProgressBar from '../../../Common/ProgressBar';
+import { useNavigate } from 'react-router';
 
 
 
@@ -30,6 +31,7 @@ const PostBox = ({ data, key }) => {
     const [showMenu, setShowMenu] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null);
     const [deletedpost, setDeletedPost] = useState(false)
+    const navigate = useNavigate()
 
     const HandleOpenMenu = (e) => {
         setAnchorEl(e.target)
@@ -60,6 +62,10 @@ const PostBox = ({ data, key }) => {
             }, 1000)
         }
     })
+    const HandleNavigateToProfile = () => {
+        navigate(`/profile/${data?.userid}`)
+    }
+
 
     return (
         <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={key}>
@@ -70,7 +76,12 @@ const PostBox = ({ data, key }) => {
                     <ProgressBar width="100%" />
                 }
                 <div className={styles.postDiv1} >
-                    <img src={data?.profile_image || DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} />
+                    {
+                        data.profile_image || user?.profile_image ?
+                            <img src={data?.userid == user?.uid ? user.profile_image : data.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                            :
+                            <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                    }
                     <div className={styles.user_name}>
                         <div className='flex gap-2  items-center'>
                             <p className='text-sm'>
@@ -91,9 +102,14 @@ const PostBox = ({ data, key }) => {
 
                 </div>
                 <div className={styles.PostCaption} >{data?.caption}</div>
-                <div className={styles.postDiv2}>
-                    <img src={data?.image} alt='user_posted' className={styles.user_postedPhoto} />
-                </div>
+                {
+                    data?.image ?
+                        <div className={styles.postDiv2}>
+                            <img src={data.image} alt='user_posted' className={styles.user_postedPhoto} />
+                        </div>
+                        :
+                        null
+                }
                 <div className={styles.postDiv3}>
                     <div className={styles.postOptions}>
                         <FavoriteBorderIcon className={styles.LikeIcon} fontSize='medium' />
