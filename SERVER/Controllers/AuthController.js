@@ -1,5 +1,5 @@
 const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication } = require("../Utils/UserUtil")
+const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication, GetUserByID } = require("../Utils/UserUtil")
 
 exports.CreateUser = async (req, res) => {
     try {
@@ -56,5 +56,14 @@ exports.UserSignOut = async (req, res) => {
 
 
 exports.CheckAuth = async (req, res) => {
-    await VerifyAuthentication(req, res)
+    try {
+        const user = await VerifyAuthentication(req, res)
+        if (user && user.uid) {
+            const result = await GetUserByID(user.uid)
+            SuccessResponse(res, result)
+        }
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
 }

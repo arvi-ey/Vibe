@@ -5,12 +5,15 @@ import Story from './Story/Story'
 import Posts from './Posts/Posts'
 import { useSelector } from 'react-redux'
 import usePost from '../../Hooks/usePost'
+import ScreenLoading from '../../Common/ScreenLoading'
 
 const HomeMain = () => {
     const { user } = useSelector(state => state.user)
     const { homeposts } = useSelector(state => state.post)
 
     const { GetHomePosts } = usePost()
+
+
 
     useEffect(() => {
         if (user) {
@@ -22,6 +25,16 @@ const HomeMain = () => {
             GetHomePosts(obj)
         }
     }, [user])
+
+    if (!user) {
+        return (
+            <ScreenLoading />
+        )
+    }
+
+
+
+
 
 
     return (

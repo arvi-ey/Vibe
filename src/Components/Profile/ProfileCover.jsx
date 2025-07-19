@@ -12,13 +12,17 @@ import Alert from '../../Common/Alert';
 import { useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SendIcon from '@mui/icons-material/Send';
+import useFriends from '../../Hooks/useFriend';
 
 const ProfileCover = ({ profileInfo }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const [uploadpost, setUploadpost] = useState(false)
     const [modalSource, setModalSource] = useState(null)
     const { user } = useSelector(state => state.user)
+    const { AddToFriend, loading } = useFriends()
 
+
+    console.log(user)
 
     const HandleOpenPostModal = (source) => {
         setOpenPostModal(true)
@@ -28,8 +32,16 @@ const ProfileCover = ({ profileInfo }) => {
         if (uploadpost) setTimeout(() => { setUploadpost(false) }, 2000)
     }, [uploadpost])
 
-
-
+    const SendRequest = async () => {
+        console.log()
+        const payloadObj = {
+            sender: user?.uid,
+            receiver: profileInfo?.uid,
+            status: "sent",
+            sent_time: Date.now()
+        }
+        const result = await AddToFriend(payloadObj)
+    }
 
     return (
         <>
@@ -99,7 +111,9 @@ const ProfileCover = ({ profileInfo }) => {
                         profileInfo?.uid !== user?.uid ?
                             <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
 
-                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                                    onClick={SendRequest}
+                                >
                                     <PersonAddIcon fontSize="small" sx={{ opacity: "0.8" }} />
                                     <p className="text-xs font-bold whitespace-nowrap  sm:block">
                                         Add friend

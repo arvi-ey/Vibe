@@ -11,16 +11,13 @@ import ScreenLoading from '../../Common/ScreenLoading'
 
 
 const Home = () => {
-    const { userId } = useSelector(state => state.auth)
     const { user } = useSelector(state => state.user)
-    const { GetUserByID, loading, error } = useUser()
-
-    useEffect(() => {
-        GetUserByID(userId)
-    }, [userId])
 
 
-    if (loading || !userId) {
+
+
+
+    if (!user) {
         return (
             <ScreenLoading />
         )

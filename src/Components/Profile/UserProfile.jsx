@@ -11,6 +11,7 @@ const UserProfile = () => {
     const { userId } = useParams()
     const { GetUserProfileData, loading } = useProfile()
     const { profileInfo } = useSelector(state => state.profile)
+    const { user } = useSelector(state => state.user)
 
 
 
@@ -18,7 +19,9 @@ const UserProfile = () => {
         GetUserProfileData(userId)
     }, [userId])
 
-    if (loading || !profileInfo) {
+    // console.log(user)
+
+    if (loading || !profileInfo || !user) {
         return (
             <div className='w-full h-full flex flex-col justify-center items-center' >
                 <div

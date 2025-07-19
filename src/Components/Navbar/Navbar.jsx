@@ -104,7 +104,6 @@ const Navbar = () => {
         if (title == "Log out") {
             const signOutResponse = await UserSignOut()
             if (signOutResponse?.statuCode == 200) {
-                dispatch(AddUserID(null))
                 dispatch(AddUserdata(null))
                 navigate("/signin")
             }

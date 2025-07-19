@@ -12,7 +12,8 @@ import useSignIn from '../../Hooks/useSignIn';
 import Loader from '../../Common/Loader';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { AddUserID } from '../../Redux/Slices/authSlicer';
+// import { AddUserID } from '../../Redux/Slices/authSlicer';
+import { AddUserdata } from "../../Redux/Slices/userSlicer";
 const Signin = () => {
     const navigate = useNavigate()
     const { error, loading, UserSignIn } = useSignIn()
@@ -44,7 +45,7 @@ const Signin = () => {
                 setErrorText(SignInResponse.message)
             }
             else if (SignInResponse?.statusCode == 200 && SignInResponse?.data?.uid) {
-                dispatch(AddUserID(SignInResponse.data.uid))
+                dispatch(AddUserdata(SignInResponse.data))
                 navigate("/")
             }
         }
