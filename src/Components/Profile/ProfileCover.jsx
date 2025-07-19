@@ -10,6 +10,8 @@ import CreatePost from '../CreatePost/Createpost';
 import { useState } from 'react';
 import Alert from '../../Common/Alert';
 import { useSelector } from 'react-redux';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SendIcon from '@mui/icons-material/Send';
 
 const ProfileCover = ({ profileInfo }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
@@ -46,14 +48,17 @@ const ProfileCover = ({ profileInfo }) => {
                         />
                 }
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-xl"></div>
-                <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4"
-                    onClick={() => HandleOpenPostModal("cover_photo")}
-                >
-                    <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
-                    <p className="text-xs font-bold whitespace-nowrap hidden sm:block">
-                        {profileInfo?.cover_photo ? "Edit cover photo" : "Add cover photo"}
-                    </p>
-                </div>
+                {
+                    profileInfo?.uid == user?.uid &&
+                    <div className="cursor-pointer absolute bottom-2 right-2 rounded-md h-7 gap-2 bg-amber-50 hover:bg-[#E6E8EA] w-auto min-w-[2.5rem] sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                        onClick={() => HandleOpenPostModal("cover_photo")}
+                    >
+                        <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                        <p className="text-xs font-bold whitespace-nowrap hidden sm:block">
+                            {profileInfo?.cover_photo ? "Edit cover photo" : "Add cover photo"}
+                        </p>
+                    </div>
+                }
             </div>
 
             <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
@@ -74,11 +79,14 @@ const ProfileCover = ({ profileInfo }) => {
                                 />
 
                         }
-                        <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center"
-                            onClick={() => HandleOpenPostModal("profile_image")}
-                        >
-                            <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
-                        </div>
+                        {
+                            profileInfo?.uid == user?.uid &&
+                            <div className="cursor-pointer absolute bottom-1 -right-1 rounded-full bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] h-7 w-7 flex justify-center items-center"
+                                onClick={() => HandleOpenPostModal("profile_image")}
+                            >
+                                <CameraAltIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -86,25 +94,48 @@ const ProfileCover = ({ profileInfo }) => {
                     <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10'>
                         {`${profileInfo?.first_name} ${profileInfo?.last_name}`}
                     </p>
-                    <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
-                        <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
-                            <AddIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
-                            <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
-                                Add to story
-                            </p>
-                        </div>
 
-                        <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
-                            <EditIcon fontSize="small" sx={{ opacity: "0.8" }} />
-                            <p className="text-xs font-bold whitespace-nowrap  sm:block">
-                                Edit profile
-                            </p>
-                        </div>
+                    {
+                        profileInfo?.uid !== user?.uid ?
+                            <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
 
-                        <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%] sm:h-9 sm:w-12 flex justify-center items-center px-2 sm:px-4">
-                            <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />
-                        </div>
-                    </div>
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                                    <PersonAddIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                    <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                        Add friend
+                                    </p>
+                                </div>
+                                <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
+                                    <SendIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
+                                    <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                        Message
+                                    </p>
+                                </div>
+
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%] sm:h-9 sm:w-12 flex justify-center items-center px-2 sm:px-4">
+                                    <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                </div>
+                            </div> :
+                            <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
+                                <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
+                                    <AddIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
+                                    <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                        Add to story
+                                    </p>
+                                </div>
+
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                                    <EditIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                    <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                        Edit profile
+                                    </p>
+                                </div>
+
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%] sm:h-9 sm:w-12 flex justify-center items-center px-2 sm:px-4">
+                                    <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                </div>
+                            </div>
+                    }
                 </div>
             </div>
             {openPostModal &&
