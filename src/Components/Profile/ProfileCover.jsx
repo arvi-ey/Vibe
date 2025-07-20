@@ -13,34 +13,73 @@ import { useSelector } from 'react-redux';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SendIcon from '@mui/icons-material/Send';
 import useFriends from '../../Hooks/useFriend';
+import CloseIcon from '@mui/icons-material/Close';
+import SwipeRightIcon from '@mui/icons-material/SwipeRight';
+import ScreenLoading from "../../Common/ScreenLoading"
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
 const ProfileCover = ({ profileInfo }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
     const [uploadpost, setUploadpost] = useState(false)
     const [modalSource, setModalSource] = useState(null)
     const { user } = useSelector(state => state.user)
-    const { AddToFriend, loading } = useFriends()
-
-
-    console.log(user)
+    const [friendStatus, setFriendSatus] = useState(null)
+    const { HandleFriends, loading, CheckFriend } = useFriends()
 
     const HandleOpenPostModal = (source) => {
         setOpenPostModal(true)
         setModalSource(source)
     }
+
+    useEffect(() => {
+        const checkFriend = async () => {
+            if (user?.uid && profileInfo?.uid && user?.uid != profileInfo?.uid) {
+                const requestBody = {
+                    sender: user?.uid,
+                    receiver: profileInfo?.uid
+                }
+                const result = await CheckFriend(requestBody)
+                if (result) setFriendSatus(result)
+                else setFriendSatus({ status: 'not' })
+            }
+        }
+        checkFriend()
+    }, [user?.uid, profileInfo?.uid])
+
+
     useEffect(() => {
         if (uploadpost) setTimeout(() => { setUploadpost(false) }, 2000)
     }, [uploadpost])
 
-    const SendRequest = async () => {
-        console.log()
-        const payloadObj = {
-            sender: user?.uid,
-            receiver: profileInfo?.uid,
-            status: "sent",
-            sent_time: Date.now()
+    const handleFriendRequest = async (status) => {
+
+        let payloadObj
+        if (status == 'sent') {
+            payloadObj = {
+                sender: user?.uid,
+                receiver: profileInfo?.uid,
+                status: status,
+                sent_time: Date.now()
+            }
         }
-        const result = await AddToFriend(payloadObj)
+        else {
+
+            payloadObj = {
+                id: friendStatus?.id,
+                sender: friendStatus?.sender,
+                receiver: friendStatus?.receiver,
+                status: status,
+                sent_time: Date.now()
+            }
+        }
+        const result = await HandleFriends(payloadObj)
+        if (result) setFriendSatus(result)
+    }
+
+    if (!friendStatus && profileInfo?.uid !== user?.uid) {
+        return (
+            <ScreenLoading />
+        )
     }
 
     return (
@@ -111,20 +150,58 @@ const ProfileCover = ({ profileInfo }) => {
                         profileInfo?.uid !== user?.uid ?
                             <div className={`gap-2 flex items-center ${styles.otherProfileInfo}`}>
 
-                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
-                                    onClick={SendRequest}
-                                >
-                                    <PersonAddIcon fontSize="small" sx={{ opacity: "0.8" }} />
-                                    <p className="text-xs font-bold whitespace-nowrap  sm:block">
-                                        Add friend
-                                    </p>
-                                </div>
-                                <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
-                                    <SendIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
-                                    <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
-                                        Message
-                                    </p>
-                                </div>
+                                {
+                                    friendStatus?.status == 'sent' && friendStatus?.sender == user?.uid ?
+                                        <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                                            onClick={() => handleFriendRequest('not')}
+                                        >
+                                            <CloseIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                            <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                                Cancel Request
+                                            </p>
+                                        </div>
+                                        :
+                                        friendStatus?.status == 'sent' && friendStatus?.receiver == user?.uid && friendStatus?.sender == profileInfo?.uid ?
+                                            <div className="cursor-pointer rounded-md h-10 gap-2 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                                                onClick={() => handleFriendRequest('received')}
+                                            >
+                                                <SwipeRightIcon fontSize="small" sx={{ color: "white" }} />
+                                                <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                                    Confirm
+                                                </p>
+                                            </div>
+                                            :
+                                            friendStatus?.status == 'received' ?
+                                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+
+                                                >
+                                                    <VerifiedUserIcon fontSize="small" sx={{ opacity: "0.8" }} />
+                                                    <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                                        Friends
+                                                    </p>
+                                                </div>
+                                                :
+                                                friendStatus?.status == 'not' ?
+                                                    <div className="cursor-pointer rounded-md h-10 gap-2 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                                                        onClick={() => handleFriendRequest('sent')}
+
+                                                    >
+                                                        <PersonAddIcon fontSize="small" sx={{ color: "white" }} />
+                                                        <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                                            Add friend
+                                                        </p>
+                                                    </div>
+                                                    : null
+                                }
+                                {
+                                    friendStatus?.status == 'received' &&
+                                    <div className="cursor-pointer rounded-md h-10 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] w-[70%]  sm:h-9 sm:w-30 flex justify-center items-center px-2 sm:px-4">
+                                        <SendIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
+                                        <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                            Message
+                                        </p>
+                                    </div>
+                                }
 
                                 <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%] sm:h-9 sm:w-12 flex justify-center items-center px-2 sm:px-4">
                                     <KeyboardArrowDownIcon fontSize="small" sx={{ opacity: "0.8" }} />

@@ -1,8 +1,9 @@
 const express = require("express")
 const Router = express.Router()
 
-const { SendFriendRequest } = require("../Controllers/FriendController")
+const { HandleFriendRequest, CheckIsFriend } = require("../Controllers/FriendController")
 
-Router.post("/sendrequest", SendFriendRequest)
+Router.post("/sendrequest", HandleFriendRequest)
+Router.post("/checkfriend", CheckIsFriend)
 
 module.exports = Router
