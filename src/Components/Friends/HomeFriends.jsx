@@ -68,9 +68,9 @@ const HomeFriends = () => {
                 })}
 
             </div>
-            <div className={`flex h-[100%] flex-col sm:hidden gap-2 bg z-[40] ${openMenu && 'absolute bg-[#E3E4E6] rounded-lg overflow-hidden'}`} style={{ marginTop: "50px", }} >
+            <div className={`flex h-[100%] flex-col sm:hidden gap-2 bg z-[40] ${openMenu && 'absolute h-screen bg-[#E3E4E6] rounded-lg overflow-hidden'}`} style={{ marginTop: "50px", }} >
                 <div className={`cursor-pointer  w-full  flex ${openMenu && 'justify-end mr-7'}`} style={{ marginTop: "10px", }} onClick={HandelOpenMenu}>
-                    <div className={`size-10 flex justify-center items-center rounded-full  hover:bg-[var(--HOVER-BG)]  ${openMenu && 'mr-7'}`} style={openMenu ? { marginRight: "10px" } : { marginLeft: "10px" }}>
+                    <div className={`size-10 bg-amber-400 flex justify-center items-center rounded-full  hover:bg-[var(--HOVER-BG)]  ${openMenu && 'mr-7'}`} style={openMenu ? { marginRight: "10px" } : { marginLeft: "10px" }}>
                         {
                             openMenu ?
 
