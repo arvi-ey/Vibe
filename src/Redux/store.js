@@ -3,6 +3,7 @@ import authSlice from "./Slices/authSlicer"
 import userSlice from "./Slices/userSlicer"
 import profileSlice from "./Slices/profileSlicer"
 import postSlice from "./Slices/postSlicer"
+import friendSlice from "./Slices/friendSlicer"
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         auth: authSlice,
         user: userSlice,
         profile: profileSlice,
-        post: postSlice
+        post: postSlice,
+        friend: friendSlice
     },
 });

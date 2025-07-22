@@ -6,6 +6,7 @@ const Button = ({
     return (
         <div className={ButtonStyle} style={{ cursor: "pointer", minWidth: "70px", minHeight: "30px", display: "flex", justifyContent: "center", alignItems: 'center' }} onClick={Click} >
             <span className={TextStyle} style={{ backgroundColor: 'transparent' }} >{Text}</span>
+
         </div>
     )
 }

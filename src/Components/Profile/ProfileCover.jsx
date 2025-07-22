@@ -173,7 +173,7 @@ const ProfileCover = ({ profileInfo }) => {
                                             :
                                             friendStatus?.status == 'received' ?
                                                 <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
-
+                                                    onClick={() => handleFriendRequest('not')}
                                                 >
                                                     <VerifiedUserIcon fontSize="small" sx={{ opacity: "0.8" }} />
                                                     <p className="text-xs font-bold whitespace-nowrap  sm:block">

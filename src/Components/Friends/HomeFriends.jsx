@@ -12,18 +12,7 @@ import useFriends from '../../Hooks/useFriend';
 import { useSelector } from 'react-redux';
 const HomeFriends = () => {
     const [openMenu, setOpenmenu] = useState(false)
-    const { user } = useSelector(state => state.user)
-    const { GetUserFriends } = useFriends()
-    useEffect(() => {
-        const getFriends = async () => {
-            const payload = {
-                uid: user?.uid
-            }
-            const result = await GetUserFriends(payload)
-            console.log(result)
-        }
-        getFriends()
-    }, [user?.uid])
+
     const FriendsNavArr = [
         {
             path: ".",
@@ -125,7 +114,7 @@ const HomeFriends = () => {
                     </div>
                 }
             </div>
-            <div className='sm:w-96 w-screen h-screen'>
+            <div className='sm:w-96 w-screen h-screen' style={{ marginTop: "60px" }}>
                 <Outlet />
             </div>
         </div >
