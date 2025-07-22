@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams, NavLink, Outlet } from 'react-router-dom';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -8,8 +8,22 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import useFriends from '../../Hooks/useFriend';
+import { useSelector } from 'react-redux';
 const HomeFriends = () => {
     const [openMenu, setOpenmenu] = useState(false)
+    const { user } = useSelector(state => state.user)
+    const { GetUserFriends } = useFriends()
+    useEffect(() => {
+        const getFriends = async () => {
+            const payload = {
+                uid: user?.uid
+            }
+            const result = await GetUserFriends(payload)
+            console.log(result)
+        }
+        getFriends()
+    }, [user?.uid])
     const FriendsNavArr = [
         {
             path: ".",
@@ -36,7 +50,7 @@ const HomeFriends = () => {
         setOpenmenu(!openMenu)
     }
     return (
-        <div className='flex gap-10'>
+        <div className={`flex gap-10 ${openMenu && 'overflow-hidden'}`}>
             <div className=' sm:w-60 hidden  w-screen sm:h-screen  sm:flex flex-col gap-5' style={{ marginTop: "60px" }} >
                 {FriendsNavArr?.map((data, index) => {
                     return (
@@ -44,10 +58,10 @@ const HomeFriends = () => {
                             to={data?.path}
                             end
                             className={({ isActive }) =>
-                                isActive ? 'font-bold  rounded-lg' : 'pb-2 font-semibold'
+                                isActive ? 'font-bold  rounded-lg  w-[90%] bg-[var(--HOVER-BG)] ' : 'pb-2 font-semibold w-[90%] hover:bg-[var(--HOVER-BG)] rounded-lg'
                             }
-                            style={{ paddingLeft: "10px" }}>
-                            <div className={`w-full sm:h-12 flex items-center justify-between rounded-lg hover:bg-[var(--HOVER-BG)] ${({ isActive }) => isActive && 'bg-[var(--HOVER-BG)]'} `} style={{ paddingLeft: "10px" }}>
+                            style={{ marginLeft: "10px" }}>
+                            <div className={`w-full sm:h-12 flex items-center justify-between rounded-lg`} style={{ paddingLeft: "10px" }} >
                                 <div className='flex w-[90%]  gap-3 items-center'>
                                     <div className='size-8 bg-[#E6E8EA] rounded-full flex justify-center items-center' >
                                         {data?.icon}
@@ -56,7 +70,7 @@ const HomeFriends = () => {
                                         {data?.title}
                                     </p>
                                 </div>
-                                <div className='sm:block hidden'>
+                                <div className='sm:block hidden' style={{ marginRight: "10px" }}>
                                     <ArrowForwardIosIcon sx={{ opacity: "0.7 !important", fontSize: 'small' }} />
                                 </div>
                             </div>
@@ -65,7 +79,7 @@ const HomeFriends = () => {
                 })}
 
             </div>
-            <div className={`flex flex-col sm:hidden gap-2 bg z-[40] ${openMenu && 'absolute bg-[#E3E4E6] rounded-lg'}`} style={{ marginTop: "50px", }} >
+            <div className={`flex h-[100%] flex-col sm:hidden gap-2 bg z-[40] ${openMenu && 'absolute bg-[#E3E4E6] rounded-lg overflow-hidden'}`} style={{ marginTop: "50px", }} >
                 <div className={`cursor-pointer  w-full  flex ${openMenu && 'justify-end mr-7'}`} style={{ marginTop: "10px", }} onClick={HandelOpenMenu}>
                     <div className={`size-10 flex justify-center items-center rounded-full  hover:bg-[var(--HOVER-BG)]  ${openMenu && 'mr-7'}`} style={openMenu ? { marginRight: "10px" } : { marginLeft: "10px" }}>
                         {

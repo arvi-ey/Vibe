@@ -1,5 +1,5 @@
-const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { AddFriend, CheckFriendExists, CancelFriend, AcceptFriendRequest } = require("../Utils/FriendUtil")
+const { MissingData, SuccessResponse, ErrorResponse, SuccessMultiResponse } = require("../Utils/Response")
+const { AddFriend, CheckFriendExists, CancelFriend, AcceptFriendRequest, GetFriends } = require("../Utils/FriendUtil")
 
 exports.HandleFriendRequest = async (req, res) => {
     const { sender, receiver, status, sent_time } = req.body
@@ -16,7 +16,17 @@ exports.HandleFriendRequest = async (req, res) => {
     }
 
 }
-
+exports.GetAllFriends = async (req, res) => {
+    const { uid } = req.body
+    if (!uid) return MissingData(res)
+    try {
+        const result = await GetFriends(uid)
+        SuccessMultiResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res.error)
+    }
+}
 
 exports.CheckIsFriend = async (req, res) => {
     const { sender, receiver } = req.body
