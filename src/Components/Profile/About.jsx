@@ -15,6 +15,8 @@ const About = () => {
         )
     }
 
+    console.log(profileInfo)
+
     return (
         <div className='w-[100%] pb-11 flex-col gap-5 flex flex-wrap lg:flex-row lg:justify-between items-center lg:items-start' >
             <UserInfo
