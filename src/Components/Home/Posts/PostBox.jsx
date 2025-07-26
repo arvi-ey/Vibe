@@ -111,9 +111,9 @@ const PostBox = ({ data, key }) => {
                 <div className={styles.postDiv1} >
                     {
                         data?.userinfo?.profile_image || user?.profile_image ?
-                            <img src={data?.userinfo?.uid == user?.uid ? user.profile_image : data.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                            <img src={data?.userinfo?.uid == user?.uid ? user.profile_image : data.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} loading='lazy' />
                             :
-                            <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                            <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} loading='lazy' />
                     }
                     <div className={styles.user_name}>
                         <div className='flex gap-2  items-center'>
