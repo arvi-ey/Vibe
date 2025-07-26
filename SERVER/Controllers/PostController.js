@@ -1,6 +1,6 @@
 const { CreatePost, ImageUpLoad, GetHomePost, GetUserPosts, DeletePost } = require("../Utils/PostUtil")
 const { MissingData, SuccessResponse, SuccessMultiResponse, ErrorResponse } = require("../Utils/Response")
-
+const { GetReactionsById } = require('../Utils/ReactionUtil')
 
 exports.UploadPost = async (req, res) => {
     const { time, userid, post_type } = req.body
@@ -14,6 +14,18 @@ exports.UploadPost = async (req, res) => {
         }
         const result = await CreatePost(update_obj)
         SuccessResponse(res, result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
+}
+
+exports.GetpostReactions = async (req, res) => {
+    const { postid } = req.body
+    if (!postid) return MissingData(res)
+    try {
+        const result = await GetReactionsById(postid)
+        SuccessMultiResponse(res, result)
     }
     catch (error) {
         ErrorResponse(res, error)

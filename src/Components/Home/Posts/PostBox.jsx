@@ -21,16 +21,19 @@ import Alert from '../../../Common/Alert';
 import { useEffect } from 'react';
 import ProgressBar from '../../../Common/ProgressBar';
 import { useNavigate } from 'react-router';
-
+import useReact from '../../../Hooks/useReact';
 
 
 
 const PostBox = ({ data, key }) => {
     const { user } = useSelector(state => state.user)
-    const { DeletePost, loading } = usePost()
+    const { DeletePost, loading, GetPostReaction } = usePost()
+    const { HandleReaction } = useReact()
     const [showMenu, setShowMenu] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null);
     const [deletedpost, setDeletedPost] = useState(false)
+    const [react, setReact] = useState()
+    const [reactions, setReactions] = useState([])
     const navigate = useNavigate()
 
     const HandleOpenMenu = (e) => {
@@ -44,6 +47,20 @@ const PostBox = ({ data, key }) => {
         },
     ]
 
+    useEffect(() => {
+        if (data?.likes) {
+            setReactions(data?.likes)
+        }
+    }, [data.likes])
+
+    useEffect(() => {
+        if (reactions?.length > 0) {
+            const result = reactions.find((data) => data.user_id == user?.uid)
+            if (result) setReact(true)
+        }
+    }, [reactions])
+
+
     const OnClickMenu = async (title) => {
         if (title == "Delete") {
             const { image_public_id, postid } = data
@@ -55,6 +72,7 @@ const PostBox = ({ data, key }) => {
         }
     }
 
+
     useEffect(() => {
         if (deletedpost) {
             setTimeout(() => {
@@ -64,6 +82,21 @@ const PostBox = ({ data, key }) => {
     })
     const HandleNavigateToProfile = () => {
         navigate(`/profile/${data?.userid}`)
+    }
+    const HandleReact = async (value) => {
+        setReact(value)
+        let obj = {
+            post_id: data?.postid,
+            user_id: user.uid,
+            time: Date.now(),
+            type: value ? "set" : "remove",
+        }
+        const result = await HandleReaction(obj)
+        if (value) setReactions([...reactions, result])
+        else {
+            const newReactions = reactions?.filter(data => data.reaction_id != result?.reaction_id)
+            setReactions(newReactions)
+        }
     }
 
 
@@ -77,15 +110,15 @@ const PostBox = ({ data, key }) => {
                 }
                 <div className={styles.postDiv1} >
                     {
-                        data.profile_image || user?.profile_image ?
-                            <img src={data?.userid == user?.uid ? user.profile_image : data.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                        data?.userinfo?.profile_image || user?.profile_image ?
+                            <img src={data?.userinfo?.uid == user?.uid ? user.profile_image : data.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                             :
                             <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                     }
                     <div className={styles.user_name}>
                         <div className='flex gap-2  items-center'>
                             <p className='text-sm'>
-                                {`${data?.first_name}  ${data?.last_name}`}
+                                {`${data?.userinfo?.first_name}  ${data?.userinfo?.last_name}`}
                             </p>
                             <p className='text-xs font-medium opacity-70'>{data?.post_type == "profile_image" ? "Updated profile photo" : data?.post_type == "cover_photo" ? "Updated cover photo" : ""}</p>
                         </div>
@@ -94,10 +127,9 @@ const PostBox = ({ data, key }) => {
                         </p>
                     </div>
                     <div className={styles.postOption} >
-                        {user?.uid == data?.userid &&
+                        {user?.uid == data?.userinfo?.uid &&
                             <MoreHorizIcon style={{ cursor: "pointer", }} onClick={HandleOpenMenu} />
                         }
-                        {/* <CloseIcon style={{ cursor: "pointer", }} /> */}
                     </div>
 
                 </div>
@@ -112,8 +144,13 @@ const PostBox = ({ data, key }) => {
                 }
                 <div className={styles.postDiv3}>
                     <div className={styles.postOptions}>
-                        <FavoriteBorderIcon className={styles.LikeIcon} fontSize='medium' />
-                        <span className={styles.PostInfo}>40 Likes</span>
+                        {
+                            react ?
+                                <FavoriteIcon className={styles.LikeIcon} style={{ color: "red" }} fontSize='medium' onClick={() => HandleReact(false)} />
+                                :
+                                <FavoriteBorderIcon className={styles.LikeIcon} fontSize='medium' onClick={() => HandleReact(true)} />
+                        }
+                        <span className={styles.PostInfo}>{reactions?.length} {`${reactions?.length > 1 ? "Likes" : "Like"}`}</span>
                     </div>
                     <div className={styles.postOptions}>
                         <MessageCircle className={styles.CommentIcon} />
