@@ -151,18 +151,21 @@ const PostBox = ({ data, key }) => {
                         null
                 }
                 <div className={styles.postDiv3}>
-                    <div className={styles.postOptions}>
+                    <div className={styles.postOptions1}>
                         {
                             react ?
                                 <FavoriteIcon className={styles.LikeIcon} style={{ color: "red" }} fontSize='medium' onClick={() => HandleReact(false)} />
                                 :
                                 <FavoriteBorderIcon className={styles.LikeIcon} fontSize='medium' onClick={() => HandleReact(true)} />
                         }
-                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("reaction")}>{reactions?.length} {`${reactions?.length > 1 ? "Likes" : "Like"}`}</span>
+                        {
+                            reactions?.length > 0 &&
+                            <span className={styles.PostInfo} onClick={() => HandleOpenModal("reaction")}>{reactions?.length} {`${reactions?.length > 1 ? "Likes" : "Like"}`}</span>
+                        }
                     </div>
-                    <div className={styles.postOptions}>
-                        <MessageCircle className={styles.CommentIcon} />
-                        <span className={styles.PostInfo}> 30 Comments</span>
+                    <div className={styles.postOptions2}>
+                        <MessageCircle className={styles.CommentIcon} onClick={() => HandleOpenModal("comments")} />
+                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("comments")}> 30 Comments</span>
                     </div>
                     <div className={styles.postOptions}>
                         <BookmarkBorderIcon className={styles.shareIcon} />
@@ -191,6 +194,7 @@ const PostBox = ({ data, key }) => {
                     setOpenModal={setOpenModal}
                     type={modalType}
                     userArray={modalType == 'reaction' ? reactions : comments}
+                // userArray={modalType == 'comments' ? reactions : comments}
                 />
             }
 

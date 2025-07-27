@@ -6,10 +6,15 @@ import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useSelector } from 'react-redux';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function ReactionBox({ openModal, setOpenModal, type, userArray }) {
 
+    console.log(type)
+    const [comment, setComment] = useState()
     const handleClose = () => setOpenModal(false);
+    const { user } = useSelector(state => state.user)
 
     return (
         <div>
@@ -47,28 +52,64 @@ export default function ReactionBox({ openModal, setOpenModal, type, userArray }
                         </span>
 
                     </div>
-                    <div className='w-[100%] flex flex-col gap-3'>
+                    <div className='w-[100%] relative flex flex-col gap-3 overflow-auto'>
                         {
                             userArray?.map((data, index) => {
                                 return (
-                                    <div className='w-[100%] flex gap-4' key={data?.user_id}>
+                                    <div className='w-[100%] flex gap-4 relative' key={data?.user_id}>
                                         <div className='flex justify-center items-center relative'>
-                                            <img src={data?.profile_image} alt="user-image" className='h-10 w-10 rounded-full cursor-pointer' />
-                                            <FavoriteIcon className='absolute -bottom-1 -right-1' style={{ color: "red" }} fontSize='small' />
+                                            <img src={data?.profile_image} alt="user-image" className='sm:size-10 size-8  rounded-full cursor-pointer' />
+                                            {type == 'reaction' &&
+                                                <FavoriteIcon className='absolute -bottom-1 -right-1' style={{ color: "red" }} fontSize='small' />
+                                            }
                                         </div>
-                                        <div>
-                                            <p className='font-bold text-black opacity-90 cursor-pointer'>{data?.first_name} {data?.last_name}</p>
-                                            <p className='text-xs text-black opacity-70'>{data?.time}</p>
-                                        </div>
+                                        {
+                                            type == 'reaction' &&
+                                            <div>
+                                                <p className='font-bold text-black opacity-90 cursor-pointer'>{data?.first_name} {data?.last_name}</p>
+                                                <p className='text-xs text-black opacity-70'>{data?.time}</p>
+                                            </div>
+                                        }
+                                        {
+                                            type == 'comments' &&
+                                            <div className='lg:w-[300px] mt-3 sm:w-[250px] flex flex-col h-auto py-2 rounded-xl bg-[var(--HOVER-BG)] break-normal'>
+                                                <p className='text-xs font-semibold text-black opacity-90 cursor-pointer pl-[7px] pr-[5px]'>{data?.first_name} {data?.last_name}</p>
+                                                <p className='text-xs  pl-[7px]'>Unfollowing you for being this photogenic 😤📸</p>
+                                                {/* <p className='text-xs text-black opacity-70'>{data?.time}</p> */}
+                                            </div>
+                                        }
+
                                     </div>
                                 )
                             })
                         }
+                        {
+                            type == 'comments' &&
+                            <div className='w-[100%] flex gap-3  items-center fixed bottom-2 z-50'>
+                                <img src={user?.profile_image} alt="user-image" className='sm:size-8 size-6 rounded-full cursor-pointer' />
+                                <div className='bg-[var(--HOVER-BG)]  flex gap-2 w-[80%] px-3 py-4 rounded-2xl'>
+                                    <textarea
+                                        name='Comment'
+                                        rows={comment?.length > 43 ? 2 : 1}
+                                        style={{
+                                            overflowY: 'scroll',
+                                            scrollbarWidth: 'none',
+                                            msOverflowStyle: 'none',
+                                            resize: 'vertical'
+                                        }}
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        className='overflow-y-auto w-[90%] placeholder:text-sm outline-0'
+                                        placeholder={`Comment as,${user?.first_name} ${user?.last_name}`}
+
+                                    />
+                                    <div className='h-[50px] flex flex-col justify-end cursor-pointer' onClick={() => console.log(comment?.length)}>
+                                        <SendIcon style={comment?.length > 0 ? { opacity: "0.7" } : { opacity: "0.2" }} />
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
-
-
-
-
                 </div>
             </Modal>
         </div>

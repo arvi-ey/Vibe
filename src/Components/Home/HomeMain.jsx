@@ -40,7 +40,7 @@ const HomeMain = () => {
     return (
         <div className={styles.HomeMainContainer} >
             <HomePost />
-            <Story />
+            {/* <Story /> */}
             <Posts
                 homeposts={homeposts}
             />
