@@ -22,6 +22,7 @@ import { useEffect } from 'react';
 import ProgressBar from '../../../Common/ProgressBar';
 import { useNavigate } from 'react-router';
 import useReact from '../../../Hooks/useReact';
+import ReactionBox from '../../../Common/ReactionBox';
 
 
 
@@ -34,7 +35,10 @@ const PostBox = ({ data, key }) => {
     const [deletedpost, setDeletedPost] = useState(false)
     const [react, setReact] = useState()
     const [reactions, setReactions] = useState([])
+    const [comments, setComments] = useState([])
     const navigate = useNavigate()
+    const [openModal, setOpenModal] = useState(false)
+    const [modalType, setModalType] = useState("")
 
     const HandleOpenMenu = (e) => {
         setAnchorEl(e.target)
@@ -98,6 +102,10 @@ const PostBox = ({ data, key }) => {
             setReactions(newReactions)
         }
     }
+    const HandleOpenModal = (type) => {
+        setOpenModal(!openModal)
+        setModalType(type)
+    }
 
 
     return (
@@ -150,7 +158,7 @@ const PostBox = ({ data, key }) => {
                                 :
                                 <FavoriteBorderIcon className={styles.LikeIcon} fontSize='medium' onClick={() => HandleReact(true)} />
                         }
-                        <span className={styles.PostInfo}>{reactions?.length} {`${reactions?.length > 1 ? "Likes" : "Like"}`}</span>
+                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("reaction")}>{reactions?.length} {`${reactions?.length > 1 ? "Likes" : "Like"}`}</span>
                     </div>
                     <div className={styles.postOptions}>
                         <MessageCircle className={styles.CommentIcon} />
@@ -176,6 +184,16 @@ const PostBox = ({ data, key }) => {
                 message="Post deleted successfully."
                 open={deletedpost}
             />
+            {
+                openModal && <ReactionBox
+
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                    type={modalType}
+                    userArray={modalType == 'reaction' ? reactions : comments}
+                />
+            }
+
         </Card>
     )
 }

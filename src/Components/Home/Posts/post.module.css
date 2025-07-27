@@ -133,10 +133,16 @@
 }
 
 .PostInfo {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 12px;
+    cursor: pointer;
     /* opacity: 0.8; */
 }
+
+/* .PostInfo:hover {
+    font-weight: 550;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.474);
+} */
 
 @media(max-width:300px) {
     .postOptions {
