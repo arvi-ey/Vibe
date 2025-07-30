@@ -23,6 +23,7 @@ import ProgressBar from '../../../Common/ProgressBar';
 import { useNavigate } from 'react-router';
 import useReact from '../../../Hooks/useReact';
 import ReactionBox from '../../../Common/ReactionBox';
+import useComment from '../../../Hooks/useComment';
 
 
 
@@ -39,6 +40,10 @@ const PostBox = ({ data, key }) => {
     const navigate = useNavigate()
     const [openModal, setOpenModal] = useState(false)
     const [modalType, setModalType] = useState("")
+    const [commentext, setCommentText] = useState("")
+    const { AddComment, GetPostComments } = useComment()
+    const [addCommentLoading, setAddcommentLoading] = useState(false)
+    const [commentsoading, setCommentsLoading] = useState(false)
 
     const HandleOpenMenu = (e) => {
         setAnchorEl(e.target)
@@ -64,6 +69,34 @@ const PostBox = ({ data, key }) => {
         }
     }, [reactions])
 
+
+    const AddToComment = async () => {
+
+        try {
+            setAddcommentLoading(true)
+            const payload = {
+                comenter: user?.uid,
+                time: Date.now(),
+                post_id: data?.postid,
+                comment_text: commentext || " ",
+            }
+            const result = await AddComment(payload)
+            if (result?.comment_id) {
+                const commentObj = { ...result, first_name: user?.first_name, last_name: user?.last_name, profile_image: user?.profile_image }
+                setComments([commentObj, ...comments])
+                // await GetPostComments({ postid: data?.postid })
+            }
+
+        }
+        catch (error) {
+            Alert(error.message)
+        }
+        finally {
+            setAddcommentLoading(false)
+            setCommentText("")
+        }
+
+    }
 
     const OnClickMenu = async (title) => {
         if (title == "Delete") {
@@ -102,9 +135,22 @@ const PostBox = ({ data, key }) => {
             setReactions(newReactions)
         }
     }
-    const HandleOpenModal = (type) => {
+    const HandleOpenModal = async (type) => {
         setOpenModal(!openModal)
         setModalType(type)
+        if (data?.comments?.length == 0) return
+        setCommentsLoading(true)
+        try {
+            await GetPostComments({ postid: data?.postid })
+            const result = await GetPostComments({ postid: data?.postid })
+            setComments(result)
+        }
+        catch (error) {
+            Alert(error.message)
+        }
+        finally {
+            setCommentsLoading(false)
+        }
     }
 
 
@@ -165,7 +211,7 @@ const PostBox = ({ data, key }) => {
                     </div>
                     <div className={styles.postOptions2}>
                         <MessageCircle className={styles.CommentIcon} onClick={() => HandleOpenModal("comments")} />
-                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("comments")}> 30 Comments</span>
+                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("comments")}>{comments?.length || data?.comments?.length}</span>
                     </div>
                     <div className={styles.postOptions}>
                         <BookmarkBorderIcon className={styles.shareIcon} />
@@ -193,7 +239,12 @@ const PostBox = ({ data, key }) => {
                     openModal={openModal}
                     setOpenModal={setOpenModal}
                     type={modalType}
+                    commentext={commentext}
+                    setCommentText={setCommentText}
+                    AddToComment={AddToComment}
                     userArray={modalType == 'reaction' ? reactions : comments}
+                    addCommentLoading={addCommentLoading}
+                    commentsoading={commentsoading}
                 // userArray={modalType == 'comments' ? reactions : comments}
                 />
             }

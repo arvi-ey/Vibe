@@ -8,13 +8,19 @@ import CloseIcon from '@mui/icons-material/Close';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useSelector } from 'react-redux';
 import SendIcon from '@mui/icons-material/Send';
+import CircularProgress from '@mui/material/CircularProgress';
+import Skeleton from '@mui/material/Skeleton';
+export default function ReactionBox({ commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
 
-export default function ReactionBox({ openModal, setOpenModal, type, userArray }) {
-
-    console.log(type)
-    const [comment, setComment] = useState()
     const handleClose = () => setOpenModal(false);
     const { user } = useSelector(state => state.user)
+
+
+
+    if (commentsoading) {
+
+    }
+
 
     return (
         <div>
@@ -52,11 +58,32 @@ export default function ReactionBox({ openModal, setOpenModal, type, userArray }
                         </span>
 
                     </div>
-                    <div className='w-[100%] relative flex flex-col gap-3 overflow-auto'>
+                    <div className='w-[100%] relative flex flex-col gap-3 overflow-auto h-[100%]'>
+                        {
+                            (
+
+                                (type == "comments" && commentsoading && !userArray.length > 0) &&
+                                Array.from({ length: 3 }).map((_, index) => {
+                                    return (
+                                        <div className={`w-[100%]  flex items-center  gap-4 relative`} key={index}>
+                                            <div className='flex justify-center items-center '>
+                                                <Skeleton variant="circular" width={40} height={40} animation="wave" />
+                                            </div>
+
+                                            <div className='lg:w-[300px] sm:w-[250px]  py-2 flex rounded-xl items-center  break-normal'>
+                                                <Skeleton variant="rounded" width={210} height={40} animation="wave" />
+                                            </div>
+
+                                        </div>
+                                    )
+                                })
+
+                            )
+                        }
                         {
                             userArray?.map((data, index) => {
                                 return (
-                                    <div className='w-[100%] flex gap-4 relative' key={data?.user_id}>
+                                    <div className={`w-[100%] flex gap-4 relative`} key={index}>
                                         <div className='flex justify-center items-center relative'>
                                             <img src={data?.profile_image} alt="user-image" className='sm:size-10 size-8  rounded-full cursor-pointer' />
                                             {type == 'reaction' &&
@@ -74,7 +101,7 @@ export default function ReactionBox({ openModal, setOpenModal, type, userArray }
                                             type == 'comments' &&
                                             <div className='lg:w-[300px] mt-3 sm:w-[250px] flex flex-col h-auto py-2 rounded-xl bg-[var(--HOVER-BG)] break-normal'>
                                                 <p className='text-xs font-semibold text-black opacity-90 cursor-pointer pl-[7px] pr-[5px]'>{data?.first_name} {data?.last_name}</p>
-                                                <p className='text-xs  pl-[7px]'>Unfollowing you for being this photogenic 😤📸</p>
+                                                <p className='text-xs  pl-[7px]'>{data?.comment_text}</p>
                                                 {/* <p className='text-xs text-black opacity-70'>{data?.time}</p> */}
                                             </div>
                                         }
@@ -85,26 +112,31 @@ export default function ReactionBox({ openModal, setOpenModal, type, userArray }
                         }
                         {
                             type == 'comments' &&
-                            <div className='w-[100%] flex gap-3  items-center fixed bottom-2 z-50'>
+                            <div className='w-[100%] flex gap-3 bg-[var(--BACKGROUND-COLOR)]  items-center fixed bottom-2 z-50'>
                                 <img src={user?.profile_image} alt="user-image" className='sm:size-8 size-6 rounded-full cursor-pointer' />
                                 <div className='bg-[var(--HOVER-BG)]  flex gap-2 w-[80%] px-3 py-4 rounded-2xl'>
                                     <textarea
                                         name='Comment'
-                                        rows={comment?.length > 43 ? 2 : 1}
+                                        rows={commentext?.length > 43 ? 2 : 1}
                                         style={{
                                             overflowY: 'scroll',
                                             scrollbarWidth: 'none',
                                             msOverflowStyle: 'none',
                                             resize: 'vertical'
                                         }}
-                                        value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
+                                        value={commentext}
+                                        onChange={(e) => setCommentText(e.target.value)}
                                         className='overflow-y-auto w-[90%] placeholder:text-sm outline-0'
                                         placeholder={`Comment as,${user?.first_name} ${user?.last_name}`}
 
                                     />
-                                    <div className='h-[50px] flex flex-col justify-end cursor-pointer' onClick={() => console.log(comment?.length)}>
-                                        <SendIcon style={comment?.length > 0 ? { opacity: "0.7" } : { opacity: "0.2" }} />
+
+                                    <div className='h-[50px] flex flex-col justify-end cursor-pointer' onClick={AddToComment}>
+                                        {
+                                            addCommentLoading ?
+                                                <CircularProgress size={20} /> :
+                                                <SendIcon style={commentext?.length > 0 ? { opacity: "0.7" } : { opacity: "0.2" }} />
+                                        }
                                     </div>
                                 </div>
                             </div>
