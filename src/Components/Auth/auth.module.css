@@ -2,21 +2,39 @@
 
 .AuthContainer {
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 20vmin
+    gap: 10vmin;
 }
 
+
 .AuthLogoINfo {
-    /* width: 50vw; */
-    /* height: 80vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 50px;
-    /* background-color: antiquewhite; */
+    align-items: center;
+    padding-left: 10px;
+}
+
+.AuthLogoINfo h3 {
+    word-break: break-word;
+    width: 95%;
+
+}
+
+.AuthLogoINfo h1 {
+    align-self: flex-start;
+    width: 100%;
+
+}
+
+@media only screen and (max-width:1240px) {
+    .AuthContainer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .VibeHeading {
@@ -34,17 +52,22 @@
 
 .AuthBoxDiv {
     display: flex;
-    /* width: 50%; */
-    /* background-color: aqua; */
+    width: 30%;
     justify-content: center;
     align-items: center;
 }
 
 .AuthBox {
-    /* width: 60vmin; */
-    /* background-color: aqua; */
+    width: 100%;
 
 }
+
+@media only screen and (max-width:1240px) {
+    .AuthBoxDiv {
+        width: 50vmax;
+    }
+}
+
 
 .AuthBoxContainer {
     min-height: 70vmin;
@@ -54,11 +77,17 @@
     justify-content: space-evenly;
     align-items: center;
     background-color: var(--BACKGROUND-COLOR);
+    width: 90%;
 }
 
+@media only screen and (max-width:600px) {
+    .AuthBoxContainer {
+        height: 70vmax;
+    }
+}
 
 .AuthInputBox {
-    width: 50vmin;
+    width: 100%;
 }
 
 .ButtonStyle {
@@ -96,6 +125,7 @@
     width: 50%;
     height: 3em;
     border-radius: 7px;
+    padding: 0px 5px 0px 5px
 }
 
 .OptionButton:hover {
@@ -103,7 +133,15 @@
 }
 
 .OptionButtontext {
-    font-size: small;
+    font-size: 1vmax;
     font-weight: 700;
     color: black;
+}
+
+
+@media only screen and (max-width:800px) {
+    .OptionButtontext {
+        font-size: 1.5vmax;
+        font-weight: 700;
+    }
 }

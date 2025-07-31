@@ -60,11 +60,11 @@ const Signin = () => {
     return (
         <div className={styles.AuthContainer}  >
             <div className={styles.AuthLogoINfo} >
-                <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
-                <h3 className={`text-lg w-110`} >Stay connected with your circle and discover what’s happening around the world.</h3>
+                <h1 className={` xl:text-7xl lg:text-6xl sm:text-5xl text-5xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
+                <h3 className={`text-xs xl:text-xl lg:text-lg sm:text-sm`} >Stay connected with your circle and discover what’s happening around the world.</h3>
             </div>
             <div className={styles.AuthBoxDiv} >
-                <Card sx={{ minWidth: 275 }} className={styles.AuthBox} >
+                <Card sx={{ width: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center' }} className={styles.AuthBox} >
                     <CardContent className={styles.AuthBoxContainer}>
                         <TextField
                             id="email"

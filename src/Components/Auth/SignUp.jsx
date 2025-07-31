@@ -97,7 +97,7 @@ const SignUp = () => {
         <div className={styles.AuthContainer}>
             <div className={` h-full w-full flex flex-col justify-center items-center gap-2.5 `}  >
                 <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
-                <Card sx={{ minWidth: 280, }} className={` h-[80%] w-[60%] ${styles.AuthBox}`} >
+                <Card sx={{ minWidth: 280, }} className={` h-[90%] w-[60%] ${styles.AuthBox}`} >
                     <CardContent className={`flex flex-col items-center justify-evenly h-full`}>
                         <div className='w-full flex flex-col sm:flex-row gap-4'>
                             <TextField
@@ -151,6 +151,7 @@ const SignUp = () => {
                             <FormControl fullWidth>
                                 <Autocomplete
                                     id="country"
+                                    autoFocus={false}
                                     options={countryList}
                                     getOptionLabel={(option) => option.name}
                                     onChange={(event, value) => {
