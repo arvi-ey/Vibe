@@ -84,7 +84,6 @@ const PostBox = ({ data, key }) => {
             if (result?.comment_id) {
                 const commentObj = { ...result, first_name: user?.first_name, last_name: user?.last_name, profile_image: user?.profile_image }
                 setComments([commentObj, ...comments])
-                // await GetPostComments({ postid: data?.postid })
             }
 
         }
@@ -122,34 +121,50 @@ const PostBox = ({ data, key }) => {
     }
     const HandleReact = async (value) => {
         setReact(value)
+        const LikedObj = {
+            post_id: data?.postid,
+            user_id: user.uid,
+            time: Date.now(),
+            type: value ? "set" : "remove",
+            first_name: user?.first_name,
+            last_name: user?.last_name,
+            profile_image: user?.profile_image
+        }
+        if (value) setReactions([LikedObj, ...reactions])
+        else {
+            const newReactions = reactions?.filter(data => data.user_id != user?.uid)
+            setReactions(newReactions)
+        }
         let obj = {
             post_id: data?.postid,
             user_id: user.uid,
             time: Date.now(),
             type: value ? "set" : "remove",
         }
-        const result = await HandleReaction(obj)
-        if (value) setReactions([...reactions, result])
-        else {
-            const newReactions = reactions?.filter(data => data.reaction_id != result?.reaction_id)
-            setReactions(newReactions)
+        try {
+            await HandleReaction(obj)
+        }
+        catch (error) {
+            Alert(error)
         }
     }
     const HandleOpenModal = async (type) => {
         setOpenModal(!openModal)
         setModalType(type)
         if (data?.comments?.length == 0) return
-        setCommentsLoading(true)
-        try {
-            await GetPostComments({ postid: data?.postid })
-            const result = await GetPostComments({ postid: data?.postid })
-            setComments(result)
-        }
-        catch (error) {
-            Alert(error.message)
-        }
-        finally {
-            setCommentsLoading(false)
+        if (type == "comments") {
+            setCommentsLoading(true)
+            try {
+                await GetPostComments({ postid: data?.postid })
+                const result = await GetPostComments({ postid: data?.postid })
+                setComments(result)
+            }
+            catch (error) {
+                Alert(error.message)
+            }
+            finally {
+                setCommentsLoading(false)
+            }
         }
     }
 

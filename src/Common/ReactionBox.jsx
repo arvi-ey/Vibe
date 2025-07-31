@@ -10,6 +10,9 @@ import { useSelector } from 'react-redux';
 import SendIcon from '@mui/icons-material/Send';
 import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
+import Lottie from 'lottie-react';
+// import Empty_comment from "../../assets/Animation/empty_comment.json"
+import Empty_comment from "../assets/Animation/empty_comment.json"
 export default function ReactionBox({ commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
 
     const handleClose = () => setOpenModal(false);
@@ -81,6 +84,18 @@ export default function ReactionBox({ commentsoading, addCommentLoading, comment
                             )
                         }
                         {
+                            userArray?.length == 0 &&
+                            <div className='w-[100%] flex flex-col  items-center  h-[100%]'>
+                                <p className='font-bold opacity-70'> {type == "comments" ? "No Comments yet" : "No Reaction yet"}</p>
+                                <Lottie
+                                    animationData={Empty_comment}
+                                    loop
+                                    autoplay
+                                    style={{ width: '250px', height: '250px', }}
+                                />
+                            </div>
+                        }
+                        {
                             userArray?.map((data, index) => {
                                 return (
                                     <div className={`w-[100%] flex gap-4 relative`} key={index}>
@@ -99,10 +114,16 @@ export default function ReactionBox({ commentsoading, addCommentLoading, comment
                                         }
                                         {
                                             type == 'comments' &&
-                                            <div className='lg:w-[300px] mt-3 sm:w-[250px] flex flex-col h-auto py-2 rounded-xl bg-[var(--HOVER-BG)] break-normal'>
-                                                <p className='text-xs font-semibold text-black opacity-90 cursor-pointer pl-[7px] pr-[5px]'>{data?.first_name} {data?.last_name}</p>
-                                                <p className='text-xs  pl-[7px]'>{data?.comment_text}</p>
-                                                {/* <p className='text-xs text-black opacity-70'>{data?.time}</p> */}
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='lg:w-auto mt-2 sm:w-[250px] flex flex-col h-auto py-2 px-2 rounded-xl bg-[var(--HOVER-BG)] break-normal'>
+                                                    <p className='text-xs font-semibold text-black opacity-90 cursor-pointer pl-[7px] pr-[5px]'>{data?.first_name} {data?.last_name}</p>
+                                                    <p className='text-xs  pl-[7px]'>{data?.comment_text}</p>
+                                                </div>
+                                                <div className='flex gap-4 pl-3'>
+                                                    <p className='text-xs font-bold opacity-60' >22h</p>
+                                                    <p className='text-xs font-bold opacity-60 cursor-pointer hover:opacity-70' >Like</p>
+                                                    <p className='text-xs font-bold opacity-60 cursor-pointer hover:opacity-70' >Reply</p>
+                                                </div>
                                             </div>
                                         }
 
