@@ -14,35 +14,6 @@ const Posts = () => {
     const { loading } = usePost()
     const isMobile = useMediaQuery('(max-width:600px)');
 
-    if (loading) {
-        return (
-            <div className={styles.postContainer}>
-                {Array.from({ length: 5 }).map((_, index) => (
-                    <Stack
-                        key={index}
-                        className={styles.postBox}
-                        sx={{
-                            width: '100%',
-                            padding: '1em',
-                            boxSizing: 'border-box',
-                        }}
-                    >
-
-
-                        <Skeleton
-                            variant="rectangular"
-                            width="100%"
-                            height={isMobile ? 200 : 400}
-                            sx={{ borderRadius: "8px" }}
-                        />
-
-                        <Skeleton variant="text" width="100%" height={40} />
-                    </Stack>
-                ))}
-            </div>
-        );
-    }
-
 
     return (
         <div className={styles.postContainer} >

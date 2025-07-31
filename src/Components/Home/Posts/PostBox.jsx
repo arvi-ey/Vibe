@@ -117,7 +117,7 @@ const PostBox = ({ data, key }) => {
         }
     })
     const HandleNavigateToProfile = () => {
-        navigate(`/profile/${data?.userid}`)
+        navigate(`/profile/${data?.userinfo?.uid}`)
     }
     const HandleReact = async (value) => {
         setReact(value)
@@ -169,6 +169,8 @@ const PostBox = ({ data, key }) => {
     }
 
 
+
+
     return (
         <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={key}>
             <CardContent className={`shadow-2xl ${styles.postContainer}`} >
@@ -206,7 +208,7 @@ const PostBox = ({ data, key }) => {
                 {
                     data?.image ?
                         <div className={styles.postDiv2}>
-                            <img src={data.image} alt='user_posted' className={styles.user_postedPhoto} />
+                            <img src={data.image} alt='user_posted' className={styles.user_postedPhoto} loading='lazy' />
                         </div>
                         :
                         null
@@ -260,6 +262,7 @@ const PostBox = ({ data, key }) => {
                     userArray={modalType == 'reaction' ? reactions : comments}
                     addCommentLoading={addCommentLoading}
                     commentsoading={commentsoading}
+                    commentLength={data?.comments?.length}
                 // userArray={modalType == 'comments' ? reactions : comments}
                 />
             }

@@ -13,16 +13,10 @@ import Skeleton from '@mui/material/Skeleton';
 import Lottie from 'lottie-react';
 // import Empty_comment from "../../assets/Animation/empty_comment.json"
 import Empty_comment from "../assets/Animation/empty_comment.json"
-export default function ReactionBox({ commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
+export default function ReactionBox({ commentLength, commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
 
     const handleClose = () => setOpenModal(false);
     const { user } = useSelector(state => state.user)
-
-
-
-    if (commentsoading) {
-
-    }
 
 
     return (
@@ -84,7 +78,7 @@ export default function ReactionBox({ commentsoading, addCommentLoading, comment
                             )
                         }
                         {
-                            userArray?.length == 0 &&
+                            commentLength == 0 &&
                             <div className='w-[100%] flex flex-col  items-center  h-[100%]'>
                                 <p className='font-bold opacity-70'> {type == "comments" ? "No Comments yet" : "No Reaction yet"}</p>
                                 <Lottie

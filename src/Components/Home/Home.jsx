@@ -17,12 +17,6 @@ const Home = () => {
 
 
 
-    if (!user) {
-        return (
-            <ScreenLoading />
-        )
-    }
-
     return (
         <div className={styles.HomeContainer} >
             <HomeOptions />
