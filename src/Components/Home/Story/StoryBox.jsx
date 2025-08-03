@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { useSelector } from 'react-redux';
+
 const StoryBox = ({ data }) => {
     const { user } = useSelector(state => state.user)
     const [open, setOpen] = useState(false);
