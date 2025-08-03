@@ -77,6 +77,32 @@
     opacity: 0.8;
 }
 
+.StoryLeftScrollIcon {
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.8;
+}
+
+.StoryRightScrollIcon {
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.8;
+}
+
 .LeftScrollIconHide {
     display: none;
 }

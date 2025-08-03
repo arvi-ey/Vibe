@@ -8,6 +8,7 @@ const PostRouter = require("./Routes/PostRouter")
 const FriendRouter = require("./Routes/FriendsRoute")
 const ReactionRouter = require("./Routes/ReactRouter")
 const CommentRouter = require("./Routes/CommentRouter")
+const StoryRouter = require("./Routes/StoryRouter")
 const corsoptions = require("./Corsoption")
 const fileUpload = require('express-fileupload');
 
@@ -34,6 +35,7 @@ app.use("/post", PostRouter)
 app.use("/friend", FriendRouter)
 app.use('/react', ReactionRouter)
 app.use('/comment', CommentRouter)
+app.use('/story', StoryRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT :${PORT}`);

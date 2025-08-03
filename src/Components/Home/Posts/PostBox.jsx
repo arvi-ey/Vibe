@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router';
 import useReact from '../../../Hooks/useReact';
 import ReactionBox from '../../../Common/ReactionBox';
 import useComment from '../../../Hooks/useComment';
+import ScreenLoading from '../../../Common/ScreenLoading';
 
 
 
@@ -100,6 +101,8 @@ const PostBox = ({ data, key }) => {
     const OnClickMenu = async (title) => {
         if (title == "Delete") {
             const { image_public_id, postid } = data
+            console.log(image_public_id, "image_public_id")
+            console.log(postid, "postid")
             setAnchorEl(null)
             const result = await DeletePost({ image_public_id, postid })
             if (result && result?.postid && !loading) {
@@ -176,15 +179,14 @@ const PostBox = ({ data, key }) => {
             <CardContent className={`shadow-2xl ${styles.postContainer}`} >
                 {
                     loading &&
-
                     <ProgressBar width="100%" />
                 }
                 <div className={styles.postDiv1} >
                     {
-                        data?.userinfo?.profile_image || user?.profile_image ?
-                            <img src={data?.userinfo?.uid == user?.uid ? user.profile_image : data.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} loading='lazy' />
+                        data?.userinfo?.profile_image ?
+                            <img src={data?.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                             :
-                            <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} loading='lazy' />
+                            <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                     }
                     <div className={styles.user_name}>
                         <div className='flex gap-2  items-center'>
@@ -198,7 +200,7 @@ const PostBox = ({ data, key }) => {
                         </p>
                     </div>
                     <div className={styles.postOption} >
-                        {user?.uid == data?.userinfo?.uid &&
+                        {user?.uid == data.userinfo?.uid &&
                             <MoreHorizIcon style={{ cursor: "pointer", }} onClick={HandleOpenMenu} />
                         }
                     </div>

@@ -15,10 +15,13 @@ import 'react-image-crop/dist/ReactCrop.css';
 import DemoUser from "../../assets/demo-user.png"
 import ProgressBar from '../../Common/ProgressBar';
 import Alert from '../../Common/Alert';
-
+import useStory from '../../Hooks/useStory';
 export default function CreatePost({ openModal, setOpenPostModal, setUploadpost, clickedicon, postType }) {
-    const handleClose = () => setOpenPostModal(false);
+    const handleClose = () => {
+        setOpenPostModal(false);
+    }
     const { UploadPost, loading, UploadUserImage } = usePost()
+    const { AddToStory, storyloading } = useStory()
     const { postdata } = useSelector(state => state.post)
     const { user } = useSelector(state => state.user)
     const inputRef = useRef();
@@ -139,7 +142,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
     };
 
     const AddNewPost = async () => {
-
         const formData = new FormData()
         if (imageFile) formData.append("image", imageFile)
         formData.append("userid", user?.uid)
@@ -156,7 +158,6 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
         else {
             const result = await UploadUserImage(formData)
             if (result?.postid) {
-                console.log("HELLo")
                 setOpenPostModal(false)
                 setUploadpost(true)
             }
@@ -164,6 +165,18 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
         }
     }
 
+    const AddNewStory = async () => {
+        const formData = new FormData()
+        if (imageFile) formData.append("image", imageFile)
+        formData.append("uploader", user?.uid)
+        formData.append("caption", desc || "")
+        formData.append("time", Date.now())
+        const result = await AddToStory(formData)
+        if (result?.storyid) {
+            setOpenPostModal(false)
+            setUploadpost(true)
+        }
+    }
 
 
     useEffect(() => {
@@ -239,7 +252,7 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
 
                                         postType == "cover_photo" ?
                                             <p className='font-bold opacity-80' >Upload Cover Photo</p> :
-                                            <p className='font-bold opacity-80' >Create post</p>
+                                            <p className='font-bold opacity-80' >{postType}</p>
                                 }
                                 {(clickedicon && clickedicon == "Live Video") &&
                                     <p className='font-semibold text-xs text-[var(--PRIMARY-COLOR)]' >The live video feature is not currently available, but photo uploads are fully supported.</p>
@@ -308,7 +321,7 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
                             }
                             <div className='h-10 w-full flex justify-center items-center'>
                                 {
-                                    loading ?
+                                    loading || storyloading ?
                                         <div className='w-full flex justify-center items-center flex-col'>
                                             <ProgressBar
                                                 width="90%"
@@ -318,9 +331,9 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
                                         :
                                         <Button
                                             ButtonStyle={`w-[90%] bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] rounded-md`}
-                                            Text='Post'
+                                            Text={postType == "Story" ? "Upload Story" : "post"}
                                             TextStyle={`text-[var(--BACKGROUND-COLOR)] font-bold text-sm`}
-                                            Click={AddNewPost}
+                                            Click={postType == "Story" ? AddNewStory : AddNewPost}
                                         />
                                 }
                             </div>

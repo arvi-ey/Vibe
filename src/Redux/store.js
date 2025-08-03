@@ -4,6 +4,7 @@ import userSlice from "./Slices/userSlicer"
 import profileSlice from "./Slices/profileSlicer"
 import postSlice from "./Slices/postSlicer"
 import friendSlice from "./Slices/friendSlicer"
+import storySlice from "./Slices/storySlicer"
 
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
         user: userSlice,
         profile: profileSlice,
         post: postSlice,
-        friend: friendSlice
+        friend: friendSlice,
+        story: storySlice
     },
 });
