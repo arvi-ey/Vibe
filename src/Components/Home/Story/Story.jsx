@@ -11,8 +11,8 @@ import Stack from '@mui/material/Stack';
 const Story = () => {
     const { user } = useSelector(state => state.user)
     const boxref = useRef(null)
-    const { homeStories } = useSelector(state => state.story)
-    const { GetHomeStories, storyloading } = useStory()
+    const { homeStories, UserStories } = useSelector(state => state.story)
+    const { GetHomeStories, storyloading, Userstoryloading, FetchUserStories } = useStory()
 
     const [hideLeft, setHideLeft] = useState(true)
     const [hideRight, setHideRight] = useState(false)
@@ -22,9 +22,11 @@ const Story = () => {
     useEffect(() => {
         if (user) {
             GetHomeStories({ uid: user?.uid })
+            FetchUserStories({ uid: user?.uid })
         }
     }, [user])
 
+    console.log(UserStories[0])
 
 
 
@@ -68,7 +70,7 @@ const Story = () => {
     }, [homeStories])
 
 
-    if (storyloading) {
+    if (storyloading || Userstoryloading) {
         return (
             <div className={styles.storyContainer} ref={boxref} >
                 <CreateStory />
@@ -86,6 +88,7 @@ const Story = () => {
         )
     }
 
+
     return (
         <div style={{ position: "relative", width: "90vmin", backgroundColor: "transparent" }}>
             <div className={`${hideLeft ? styles.LeftScrollIconHide : styles.LeftScrollIcon}`} onClick={ScrollLeft}>
@@ -95,6 +98,9 @@ const Story = () => {
 
             <div className={styles.storyContainer} ref={boxref} >
                 <CreateStory />
+                <StoryBox
+                    data={UserStories[0]}
+                />
                 {
                     homeStories?.map((data, index) => {
                         return (

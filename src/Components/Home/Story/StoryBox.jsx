@@ -28,7 +28,7 @@ const StoryBox = ({ data }) => {
             xl: '40vw'  // extra large devices
         },
         height: 600,
-        bgcolor: 'background.paper',
+        // bgcolor: '#000000',
         boxShadow: 24,
         borderRadius: 2,
         overflow: "hidden"
@@ -54,6 +54,7 @@ const StoryBox = ({ data }) => {
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
+                    sx={{}}
                 >
                     <Box sx={style}>
                         <div className='w-[100%] h-[100%] flex items-center justify-around relative bg-black' >
@@ -87,7 +88,7 @@ const StoryBox = ({ data }) => {
                 <img src={data?.stories[data?.stories.length - 1].image} alt="Storyimage" className={styles.userStory} />
                 <img src={data?.profile_image} alt='UploaderProfileimage' className={styles.UploaderProfileimage} />
                 {
-                    user?.uid == data.uid ?
+                    user?.uid == data?.uid ?
                         <div className={styles.UserName} >Your Story</div>
                         :
                         <div className={styles.UserName} >{`${data?.first_name} ${data?.last_name}`}</div>
