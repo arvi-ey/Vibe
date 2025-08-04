@@ -28,7 +28,7 @@ const StoryBox = ({ data }) => {
             xl: '40vw'  // extra large devices
         },
         height: 600,
-        // bgcolor: '#000000',
+        bgcolor: '#000000',
         boxShadow: 24,
         borderRadius: 2,
         overflow: "hidden"
@@ -57,7 +57,11 @@ const StoryBox = ({ data }) => {
                     sx={{}}
                 >
                     <Box sx={style}>
-                        <div className='w-[100%] h-[100%] flex items-center justify-around relative bg-black' >
+                        <div className=' h-[100%] flex items-center justify-around relative bg-black' >
+                            <div className='flex h-auto absolute  items-center top-2 left-2 w-[100%] gap-5 '>
+                                <img src={data?.profile_image} alt='UploaderProfileimage' className='size-10 rounded-full' />
+                                <div className='text-amber-50 font-bold' >{`${data?.first_name} ${data?.last_name}`}</div>
+                            </div>
                             <span className='absolute right-2 top-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
                                 <CloseIcon fontSize='small' />
                             </span>
@@ -66,13 +70,12 @@ const StoryBox = ({ data }) => {
                                     <KeyboardArrowLeftIcon sx={{ backgroundColor: 'transparent', fontSize: 'large' }} />
                                 </div>
                             </div>
-                            <img src={data?.stories[nextImage].image} alt="Storyimage" className='h-[90%] w-[70%] rounded-2xl object-cover' />
+                            <img src={data?.stories[nextImage].image} alt="Storyimage" className='h-[100%] w-[70%] rounded-xl  object-cover' />
                             <div className='w-[8%] h-[100%] flex justify-center items-center'>
                                 <div className={`${(data?.stories.length > 0 && nextImage < data?.stories.length - 1) ? styles.StoryRightScrollIcon : styles.RightScrollIconHide}`} onClick={() => OnImageChange("Next")} >
                                     <KeyboardArrowRightIcon sx={{ backgroundColor: 'transparent', fontSize: 'large' }} />
                                 </div>
                             </div>
-
                         </div>
                     </Box>
                 </Modal>

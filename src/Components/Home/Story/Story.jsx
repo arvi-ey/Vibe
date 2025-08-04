@@ -98,9 +98,11 @@ const Story = () => {
 
             <div className={styles.storyContainer} ref={boxref} >
                 <CreateStory />
-                <StoryBox
-                    data={UserStories[0]}
-                />
+                {UserStories?.length > 0 &&
+                    <StoryBox
+                        data={UserStories[0]}
+                    />
+                }
                 {
                     homeStories?.map((data, index) => {
                         return (
