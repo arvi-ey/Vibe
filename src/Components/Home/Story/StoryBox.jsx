@@ -15,32 +15,33 @@ const StoryBox = ({ data }) => {
     const [open, setOpen] = useState(false);
     const [nextImage, setnextImage] = useState(0)
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: {
-            xs: '90vw', // phones
-            sm: '80vw', // tablets
-            md: '50vw', // small laptops
-            lg: '40vw', //desktops
-            xl: '40vw'  // extra large devices
-        },
-        height: 600,
-        bgcolor: '#000000',
-        boxShadow: 24,
-        borderRadius: 2,
-        overflow: "hidden"
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        setnextImage(0)
-    }
 
 
     const StoryModal = () => {
+        const style = {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: {
+                xs: '90vw', // phones
+                sm: '80vw', // tablets
+                md: '50vw', // small laptops
+                lg: '40vw', //desktops
+                xl: '40vw'  // extra large devices
+            },
+            height: 600,
+            bgcolor: '#000000',
+            boxShadow: 24,
+            borderRadius: 2,
+            overflow: "hidden"
+        };
+
+        const handleClose = () => {
+            setOpen(false);
+            setnextImage(0)
+        }
+
         const OnImageChange = (direction) => {
             if (data?.stories.length > 0) {
                 if (direction == "Next") setnextImage(nextImage + 1)
