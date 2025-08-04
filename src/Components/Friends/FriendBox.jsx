@@ -9,13 +9,14 @@ import SendIcon from '@mui/icons-material/Send';
 import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
+import useDate from '../../Hooks/useDate';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: 160,
     height: 240,
     [theme.breakpoints.up('sm')]: {
         width: 200,
-        height: 280
+        height: 300
     },
     display: 'flex',
     flexDirection: 'column',
@@ -28,15 +29,21 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 const FriendBox = ({ data, keyValue }) => {
     const { user } = useSelector(state => state.user)
+    const { DateForMat } = useDate()
     return (
         <StyledCard sx={{ cursor: 'pointer' }}>
-            <CardContent sx={{ flexGrow: 1, }} key={keyValue}>
+            <CardContent sx={{ flexGrow: 1, display: 'flex', height: "100%", flexDirection: 'column', justifyContent: "space-between" }} key={keyValue}>
                 <img src={data?.profile_image} alt="profile_image" className="w-full rounded-lg h-[80%]  object-cover" />
                 <p className='font-bold w-full flex justify-center items-center'>{data?.first_name} {data?.last_name} </p>
                 {
+                    (data?.status == 'sent') &&
+
+                    <p className='text-xs font-semibold flex justify-center items-center'>{DateForMat(data?.sent_time)} ago</p>
+                }
+                {
                     data?.status == 'sent' && user.uid == data?.sender ? (
 
-                        <div className="cursor-pointer rounded-md h-7 gap-1 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] sm:h-8 w-[95%] flex justify-center items-center px-2 sm:px-4">
+                        <div className="mt-2 cursor-pointer rounded-md h-7 gap-1 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] sm:h-8 w-[95%] flex justify-center items-center px-2 sm:px-4">
                             <CloseIcon fontSize="small" sx={{ opacity: "0.8" }} />
                             <p className="text-xs font-bold whitespace-nowrap  sm:block">
                                 Cancel Request
@@ -54,7 +61,7 @@ const FriendBox = ({ data, keyValue }) => {
                         )
                             : (
 
-                                <div className="cursor-pointer rounded-md h-8 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4">
+                                <div className="mt-2 cursor-pointer rounded-md h-8 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4">
                                     <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
                                         Accept Request
                                     </p>

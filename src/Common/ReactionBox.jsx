@@ -13,10 +13,27 @@ import Skeleton from '@mui/material/Skeleton';
 import Lottie from 'lottie-react';
 // import Empty_comment from "../../assets/Animation/empty_comment.json"
 import Empty_comment from "../assets/Animation/empty_comment.json"
-export default function ReactionBox({ commentLength, commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import useDate from '../Hooks/useDate';
+import DeleteIcon from '@mui/icons-material/Delete';
+import useComment from '../Hooks/useComment';
+import { useEffect } from 'react';
+export default function ReactionBox({ deleteCommentloading, HandleDeleteComment, setComments, commentLength, commentsoading, addCommentLoading, commentext, AddToComment, setCommentText, openModal, setOpenModal, type, userArray }) {
 
     const handleClose = () => setOpenModal(false);
+    const { DateForMat } = useDate()
     const { user } = useSelector(state => state.user)
+    const [visibleDelete, setVisibleDelete] = useState(false)
+    const [hoveredeId, setHoveredId] = useState()
+
+
+    const HandleHover = (comment_id, hover) => {
+
+        setHoveredId(comment_id)
+        setVisibleDelete(hover)
+    }
+
+
 
 
     return (
@@ -78,9 +95,9 @@ export default function ReactionBox({ commentLength, commentsoading, addCommentL
                             )
                         }
                         {
-                            commentLength == 0 &&
+                            (type == "comments" && userArray?.length < 1 && !commentsoading) &&
                             <div className='w-[100%] flex flex-col  items-center  h-[100%]'>
-                                <p className='font-bold opacity-70'> {type == "comments" ? "No Comments yet" : "No Reaction yet"}</p>
+                                <p className='font-bold opacity-70'> No Comments yet</p>
                                 <Lottie
                                     animationData={Empty_comment}
                                     loop
@@ -90,9 +107,9 @@ export default function ReactionBox({ commentLength, commentsoading, addCommentL
                             </div>
                         }
                         {
-                            userArray?.map((data, index) => {
+                            userArray?.length > 0 && userArray?.map((data, index) => {
                                 return (
-                                    <div className={`w-[100%] flex gap-4 relative`} key={index}>
+                                    <div className={`w-[100%] flex gap-4 relative`} key={index} onMouseOver={(e) => HandleHover(data.comment_id, true)} onMouseLeave={(e) => HandleHover(data.comment_id, false)} >
                                         <div className='flex justify-center items-center relative'>
                                             <img src={data?.profile_image} alt="user-image" className='sm:size-10 size-8  rounded-full cursor-pointer' />
                                             {type == 'reaction' &&
@@ -103,22 +120,40 @@ export default function ReactionBox({ commentLength, commentsoading, addCommentL
                                             type == 'reaction' &&
                                             <div>
                                                 <p className='font-bold text-black opacity-90 cursor-pointer'>{data?.first_name} {data?.last_name}</p>
-                                                <p className='text-xs text-black opacity-70'>{data?.time}</p>
+                                                <p className='text-xs text-black opacity-70'>{DateForMat(data?.time)}</p>
                                             </div>
                                         }
                                         {
                                             type == 'comments' &&
                                             <div className='flex flex-col gap-2'>
-                                                <div className='lg:w-auto mt-2 sm:w-[250px] flex flex-col h-auto py-2 px-2 rounded-xl bg-[var(--HOVER-BG)] break-normal'>
+                                                <div className={` ${data?.comment_text.length > 26 ? 'lg:w-[310px] break-all' : 'lg:w-auto'} mt-2  sm:w-[250px] flex flex-col h-auto py-2 px-2 rounded-xl bg-[var(--HOVER-BG)] break-normal`}>
                                                     <p className='text-xs font-semibold text-black opacity-90 cursor-pointer pl-[7px] pr-[5px]'>{data?.first_name} {data?.last_name}</p>
                                                     <p className='text-xs  pl-[7px]'>{data?.comment_text}</p>
                                                 </div>
-                                                <div className='flex gap-4 pl-3'>
-                                                    <p className='text-xs font-bold opacity-60' >22h</p>
+                                                <div className='flex gap-4 pl-3 items-center'>
+                                                    <p className='text-xs font-bold opacity-60' >{DateForMat(data?.time)}</p>
                                                     <p className='text-xs font-bold opacity-60 cursor-pointer hover:opacity-70' >Like</p>
-                                                    <p className='text-xs font-bold opacity-60 cursor-pointer hover:opacity-70' >Reply</p>
+                                                    <p className='text-xs font-bold opacity-60 cursor-pointer hover:opacity-70' >Reply  </p>
                                                 </div>
                                             </div>
+                                        }
+
+                                        {
+                                            (hoveredeId == data?.comment_id && data?.comenter == user?.uid && visibleDelete) ?
+                                                <div className='text-xs h-[80%]  flex items-center font-bold opacity-60 cursor-pointer hover:opacity-70' onClick={() => HandleDeleteComment(data?.comment_id)}>
+                                                    {
+                                                        deleteCommentloading ?
+                                                            <CircularProgress size={20} sx={{ opacity: "0.7", fontSize: '15px' }} />
+                                                            :
+
+                                                            <span className='size-6 rounded-full flex justify-center items-center hover:bg-[#DCDCDC]'>
+                                                                <DeleteIcon fontSize='small' sx={{ opacity: "0.7", fontSize: '15px' }} />
+                                                            </span>
+                                                    }
+                                                </div>
+
+                                                :
+                                                null
                                         }
 
                                     </div>
@@ -157,6 +192,7 @@ export default function ReactionBox({ commentLength, commentsoading, addCommentL
                             </div>
                         }
                     </div>
+
                 </div>
             </Modal>
         </div>

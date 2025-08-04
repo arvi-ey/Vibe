@@ -1,5 +1,5 @@
 const { MissingData, SuccessResponse, SuccessMultiResponse, ErrorResponse } = require("../Utils/Response")
-const { PlaceComment, GetCommentByPostId } = require("../Utils/CommentUtil")
+const { PlaceComment, GetCommentByPostId, DeleteCommentById } = require("../Utils/CommentUtil")
 
 exports.AddComment = async (req, res) => {
     const { comenter, time, post_id, comment_text } = req.body
@@ -21,5 +21,17 @@ exports.GetComments = async (req, res) => {
     }
     catch (error) {
         ErrorResponse(res, error)
+    }
+}
+
+exports.DeleteComment = async (req, res) => {
+    const { comment_id } = req.body
+    if (!comment_id) MissingData(res)
+    try {
+        const result = await DeleteCommentById(comment_id)
+        SuccessResponse(res, result)
+    }
+    catch (error) {
+        throw error
     }
 }

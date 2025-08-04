@@ -22,7 +22,7 @@ const Posts = () => {
                     return (
                         <PostBox
                             data={data}
-                            key={index}
+                            keyValue={index}
 
                         />
                     )

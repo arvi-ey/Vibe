@@ -25,12 +25,14 @@ import useReact from '../../../Hooks/useReact';
 import ReactionBox from '../../../Common/ReactionBox';
 import useComment from '../../../Hooks/useComment';
 import ScreenLoading from '../../../Common/ScreenLoading';
+import useDate from '../../../Hooks/useDate';
 
 
 
-const PostBox = ({ data, key }) => {
+const PostBox = ({ data, keyValue }) => {
     const { user } = useSelector(state => state.user)
     const { DeletePost, loading, GetPostReaction } = usePost()
+    const { DateForMat } = useDate()
     const { HandleReaction } = useReact()
     const [showMenu, setShowMenu] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null);
@@ -42,10 +44,10 @@ const PostBox = ({ data, key }) => {
     const [openModal, setOpenModal] = useState(false)
     const [modalType, setModalType] = useState("")
     const [commentext, setCommentText] = useState("")
-    const { AddComment, GetPostComments } = useComment()
+    const { AddComment, GetPostComments, DeleteComment } = useComment()
     const [addCommentLoading, setAddcommentLoading] = useState(false)
     const [commentsoading, setCommentsLoading] = useState(false)
-
+    const [deleteCommentloading, setDeleteCommentLoading] = useState(false)
     const HandleOpenMenu = (e) => {
         setAnchorEl(e.target)
         setShowMenu(true)
@@ -111,6 +113,22 @@ const PostBox = ({ data, key }) => {
         }
     }
 
+    const HandleDeleteComment = async (comment_id) => {
+        try {
+            setDeleteCommentLoading(true)
+            const result = await DeleteComment({ comment_id })
+            const newCommentArray = comments.filter(data => data.comment_id !== result.comment_id)
+            setComments(newCommentArray)
+        }
+        catch (error) {
+            console.log(error)
+        }
+        finally {
+            setDeleteCommentLoading(false)
+        }
+    };
+
+
 
     useEffect(() => {
         if (deletedpost) {
@@ -158,7 +176,6 @@ const PostBox = ({ data, key }) => {
         if (type == "comments") {
             setCommentsLoading(true)
             try {
-                await GetPostComments({ postid: data?.postid })
                 const result = await GetPostComments({ postid: data?.postid })
                 setComments(result)
             }
@@ -175,7 +192,7 @@ const PostBox = ({ data, key }) => {
 
 
     return (
-        <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={key}>
+        <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={keyValue}>
             <CardContent className={`shadow-2xl ${styles.postContainer}`} >
                 {
                     loading &&
@@ -195,8 +212,8 @@ const PostBox = ({ data, key }) => {
                             </p>
                             <p className='text-xs font-medium opacity-70'>{data?.post_type == "profile_image" ? "Updated profile photo" : data?.post_type == "cover_photo" ? "Updated cover photo" : ""}</p>
                         </div>
-                        <p>
-                            {data?.time}
+                        <p className='opacity-80'>
+                            {DateForMat(data?.time)}
                         </p>
                     </div>
                     <div className={styles.postOption} >
@@ -264,7 +281,10 @@ const PostBox = ({ data, key }) => {
                     userArray={modalType == 'reaction' ? reactions : comments}
                     addCommentLoading={addCommentLoading}
                     commentsoading={commentsoading}
-                    commentLength={data?.comments?.length}
+                    commentLength={comments?.length || data?.comments?.length}
+                    setComments={setComments}
+                    HandleDeleteComment={HandleDeleteComment}
+                    deleteCommentloading={deleteCommentloading}
                 // userArray={modalType == 'comments' ? reactions : comments}
                 />
             }

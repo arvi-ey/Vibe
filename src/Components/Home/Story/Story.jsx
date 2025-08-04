@@ -21,12 +21,10 @@ const Story = () => {
 
     useEffect(() => {
         if (user) {
-            GetHomeStories({ uid: user?.uid })
             FetchUserStories({ uid: user?.uid })
+            GetHomeStories({ uid: user?.uid })
         }
     }, [user])
-
-    console.log(UserStories[0])
 
 
 
