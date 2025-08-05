@@ -39,17 +39,19 @@ const UserProfile = () => {
                             borderRadius: '0.75rem'
                         }}
                     />
+                    <div className='absolute size-55 flex justify-center items-center -bottom-30 left-6 bg-white rounded-full'>
+                        <div className='size-50 rounded-full bg-[#E3E3E3]'>
+                        </div>
+                    </div>
 
                 </div>
                 <div
-                    className='h-96 w-[90%] flex min-w-4xs justify-between max-w-5xl rounded-xl overflow-hidden relative'
+                    className='h-50 w-[90%] flex min-w-4xs justify-end max-w-5xl rounded-xl gap-10 overflow-hidden relative'
                 >
-
-
                     <Skeleton
                         variant="rectangular"
-                        width="40%"
-                        height="100%"
+                        width="20%"
+                        height="20%"
                         style={{
                             display: 'inline-block',
                             borderRadius: '0.75rem'
@@ -57,15 +59,24 @@ const UserProfile = () => {
                     />
                     <Skeleton
                         variant="rectangular"
-                        width="50%"
-                        height="40%"
+                        width="20%"
+                        height="20%"
+                        style={{
+                            display: 'inline-block',
+                            borderRadius: '0.75rem'
+                        }}
+                    />
+                    <Skeleton
+                        variant="rectangular"
+                        width="20%"
+                        height="20%"
                         style={{
                             display: 'inline-block',
                             borderRadius: '0.75rem'
                         }}
                     />
                 </div>
-            </div>
+            </div >
         )
     }
     return (

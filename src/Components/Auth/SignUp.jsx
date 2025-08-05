@@ -53,10 +53,7 @@ const SignUp = () => {
 
     }, [])
 
-    const HandleCountryChange = (e) => {
-        formik.setFieldValue("country", e.target.value)
 
-    }
 
     const HandleSignUp = async () => {
         formik.setTouched({
@@ -95,10 +92,10 @@ const SignUp = () => {
 
     return (
         <div className={styles.AuthContainer}>
-            <div className={` h-full w-full flex flex-col justify-center items-center gap-2.5 `}  >
+            <div className={` h-full w-[90%] flex flex-col justify-center items-center gap-2.5 `}  >
                 <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
                 <Card sx={{ minWidth: 280, }} className={` h-[90%] w-[60%] ${styles.AuthBox}`} >
-                    <CardContent className={`flex flex-col items-center justify-evenly h-full`}>
+                    <CardContent className={`flex flex-col items-center justify-evenly gap-2 h-full`}>
                         <div className='w-full flex flex-col sm:flex-row gap-4'>
                             <TextField
                                 fullWidth
@@ -152,7 +149,7 @@ const SignUp = () => {
                                 <Autocomplete
                                     id="country"
                                     autoFocus={false}
-                                    options={countryList}
+                                    options={countryList || []}
                                     getOptionLabel={(option) => option.name}
                                     onChange={(event, value) => {
                                         formik.setFieldValue("country", value?.name || "");
@@ -160,8 +157,8 @@ const SignUp = () => {
                                     onBlur={formik.handleBlur}
                                     renderOption={(props, option) => (
                                         <li {...props} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]" style={{ marginLeft: "10px", padding: "10px", marginTop: "2px" }}>
-                                            <img src={option.flag} alt="flag" className="w-6 h-6 rounded-sm" />
-                                            {option.name}
+                                            <img src={option?.flag} alt="flag" className="w-6 h-6 rounded-sm" />
+                                            {option?.name}
                                         </li>
                                     )}
                                     renderInput={(params) => (
@@ -207,7 +204,7 @@ const SignUp = () => {
                             />
                         </div>
                         {loading ? <Loader /> :
-                            <div className='w-full h-18 flex justify-between items-center flex-col' >
+                            <div className='lg:w-[20%] md:w-[40%] sm:w-[40%] w-[100%] h-18 flex justify-between items-center flex-col' >
                                 <Button
                                     ButtonStyle={styles.ButtonStyle}
                                     TextStyle={styles.TextStyle}

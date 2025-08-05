@@ -81,15 +81,6 @@ const ProfileCover = ({ profileInfo }) => {
     return (
         <>
             <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
-                {/* {
-                    user?.cover_photo || profileInfo?.cover_photo ?
-                        <img
-                            src={profileInfo?.uid == user?.uid ? user?.cover_photo : profileInfo?.cover_photo}
-                            alt='cover-photo'
-                            className='w-full h-full object-cover rounded-xl'
-                        /> :
-                        <div></div>
-                } */}
                 {
                     (user?.uid == profileInfo.uid && user?.cover_photo) &&
                     <img
@@ -128,7 +119,7 @@ const ProfileCover = ({ profileInfo }) => {
 
             <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
                 <div className={`w-40 ${styles.profilePic_box} `}>
-                    <div className='absolute size-24 sm:size-32 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
+                    <div className='absolute size-24 sm:size-42 flex justify-center items-center border-white border-[5px] rounded-full -top-20 sm:-top-20 left-3 sm:left-6 bg-white '>
                         {
                             user?.profile_image || profileInfo?.profile_image ?
                                 <img
@@ -155,8 +146,8 @@ const ProfileCover = ({ profileInfo }) => {
                     </div>
                 </div>
 
-                <div className={`w-full h-full  ${styles.Profile_pic_content}`}>
-                    <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10'>
+                <div className={`w-full h-full ${styles.Profile_pic_content}`}>
+                    <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10 sm:ml-10'>
                         {`${profileInfo?.first_name} ${profileInfo?.last_name}`}
                     </p>
 
