@@ -13,7 +13,6 @@ exports.CreateUser = async (req, res) => {
             const HashedPassword = await Hashedpassword(body.password)
             if (HashedPassword) body.password = HashedPassword
             const result = await RegisterUser(body)
-            console.log(result)
             SuccessResponse(res, result)
         }
     }

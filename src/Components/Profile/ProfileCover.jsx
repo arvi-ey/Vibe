@@ -76,27 +76,41 @@ const ProfileCover = ({ profileInfo }) => {
         if (result) setFriendSatus(result)
     }
 
-    if (!friendStatus && profileInfo?.uid !== user?.uid) {
-        return (
-            <ScreenLoading />
-        )
-    }
+
 
     return (
         <>
             <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
-                {
+                {/* {
                     user?.cover_photo || profileInfo?.cover_photo ?
                         <img
-                            src={profileInfo?.uid == user?.uid ? user?.cover_photo : profileInfo?.cover_photo || Cover}
+                            src={profileInfo?.uid == user?.uid ? user?.cover_photo : profileInfo?.cover_photo}
                             alt='cover-photo'
                             className='w-full h-full object-cover rounded-xl'
                         /> :
-                        <img
-                            src={Cover}
-                            alt='cover-photo'
-                            className='w-full h-full object-cover rounded-xl'
-                        />
+                        <div></div>
+                } */}
+                {
+                    (user?.uid == profileInfo.uid && user?.cover_photo) &&
+                    <img
+                        src={user?.cover_photo}
+                        alt='cover-photo'
+                        className='w-full h-full object-cover rounded-xl'
+                    />
+                }
+                {
+                    (user?.uid !== profileInfo.uid) &&
+                    <img
+                        src={profileInfo?.cover_photo}
+                        alt='cover-photo'
+                        className='w-full h-full object-cover rounded-xl'
+                    />
+                }
+                {
+                    (user?.uid == profileInfo.uid && !user?.cover_photo) &&
+                    <div
+                        className='h-full w-full'
+                    ></div>
                 }
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-xl"></div>
                 {

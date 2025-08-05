@@ -68,9 +68,9 @@
 
 .user_postedPhoto {
     max-width: 100%;
-    max-height: 450px;
+    /* max-height: 450px; */
     height: auto;
-    width: auto;
+    width: 100%;
     object-fit: contain;
     border-radius: 8px;
 }

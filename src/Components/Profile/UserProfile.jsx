@@ -22,16 +22,43 @@ const UserProfile = () => {
     // console.log(user)
 
     if (loading || !profileInfo || !user) {
+        // if (true) {
         return (
-            <div className='w-full h-full flex flex-col justify-center items-center' >
+            <div className='w-full h-full flex gap-8 flex-col justify-center items-center' >
                 <div
-                    className='h-96 w-[90%] min-w-4xs max-w-5xl rounded-xl overflow-hidden relative'
+                    className='h-96 w-[90%] min-w-4xs max-w-5xl rounded-xl  relative'
                     style={{ marginTop: "60px" }}
                 >
                     <Skeleton
                         variant="rectangular"
                         width="100%"
                         height="100%"
+                        animation="wave"
+                        style={{
+                            display: 'inline-block',
+                            borderRadius: '0.75rem'
+                        }}
+                    />
+
+                </div>
+                <div
+                    className='h-96 w-[90%] flex min-w-4xs justify-between max-w-5xl rounded-xl overflow-hidden relative'
+                >
+
+
+                    <Skeleton
+                        variant="rectangular"
+                        width="40%"
+                        height="100%"
+                        style={{
+                            display: 'inline-block',
+                            borderRadius: '0.75rem'
+                        }}
+                    />
+                    <Skeleton
+                        variant="rectangular"
+                        width="50%"
+                        height="40%"
                         style={{
                             display: 'inline-block',
                             borderRadius: '0.75rem'

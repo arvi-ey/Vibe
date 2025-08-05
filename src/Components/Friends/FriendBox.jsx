@@ -10,6 +10,7 @@ import { styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import useDate from '../../Hooks/useDate';
+import Demo from "../../assets/demo-user.png"
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: 160,
@@ -26,6 +27,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
         boxShadow: theme.shadows[6]
     }
 }));
+// console.log(data?.profile_image)
 
 const FriendBox = ({ data, keyValue }) => {
     const { user } = useSelector(state => state.user)
@@ -33,7 +35,7 @@ const FriendBox = ({ data, keyValue }) => {
     return (
         <StyledCard sx={{ cursor: 'pointer' }}>
             <CardContent sx={{ flexGrow: 1, display: 'flex', height: "100%", flexDirection: 'column', justifyContent: "space-between" }} key={keyValue}>
-                <img src={data?.profile_image} alt="profile_image" className="w-full rounded-lg h-[80%]  object-cover" />
+                <img src={data?.profile_image || Demo} alt="profile_image" className="w-full rounded-lg h-[80%]  object-cover" />
                 <p className='font-bold w-full flex justify-center items-center'>{data?.first_name} {data?.last_name} </p>
                 {
                     (data?.status == 'sent') &&
