@@ -9,11 +9,14 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { useSelector } from 'react-redux';
+import useDate from '../../../Hooks/useDate';
+
 
 const StoryBox = ({ data }) => {
     const { user } = useSelector(state => state.user)
     const [open, setOpen] = useState(false);
     const [nextImage, setnextImage] = useState(0)
+    const { DateForMat } = useDate()
 
 
 
@@ -61,7 +64,11 @@ const StoryBox = ({ data }) => {
                         <div className=' h-[100%] flex items-center justify-around relative bg-black' >
                             <div className='flex h-auto absolute  items-center top-2 left-2 w-[100%] gap-5 '>
                                 <img src={data?.profile_image} alt='UploaderProfileimage' className='size-10 rounded-full' />
-                                <div className='text-amber-50 font-bold' >{`${data?.first_name} ${data?.last_name}`}</div>
+                                <div className='flex flex-col'>
+                                    <div className='text-amber-50 font-bold' >{`${data?.first_name} ${data?.last_name}`}</div>
+                                    <div className='text-amber-50 font-bold text-xs opacity-80' >{DateForMat(data.stories[nextImage].time)}</div>
+
+                                </div>
                             </div>
                             <span className='absolute right-2 top-2 h-7 w-7 rounded-3xl bg-[#E2E5E9] flex justify-center items-center cursor-pointer hover:bg-[#d4d6d6]' onClick={handleClose}>
                                 <CloseIcon fontSize='small' />

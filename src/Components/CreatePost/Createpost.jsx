@@ -157,6 +157,7 @@ export default function CreatePost({ openModal, setOpenPostModal, setUploadpost,
         }
         else {
             const result = await UploadUserImage(formData)
+            console.log(result)
             if (result?.postid) {
                 setOpenPostModal(false)
                 setUploadpost(true)

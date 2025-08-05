@@ -192,14 +192,6 @@ const PostBox = ({ data, keyValue }) => {
             }
         }
     }
-    useEffect(() => {
-        if (data?.userinfo?.first_name == "Tuhin") {
-            console.log(defaultCommentLength, "defaultCommentLength")
-            console.log(comments.length, "length")
-        }
-
-    }, [defaultCommentLength, comments])
-
 
     return (
         <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={keyValue}>

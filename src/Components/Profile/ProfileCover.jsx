@@ -141,7 +141,7 @@ const ProfileCover = ({ profileInfo }) => {
                     </div>
                 </div>
 
-                <div className={`w-full h-full lg:pb-20  ${styles.Profile_pic_content}`}>
+                <div className={`w-full h-full  ${styles.Profile_pic_content}`}>
                     <p className='font-bold text-3xl sm:text-3xl mt-6 sm:mt-10'>
                         {`${profileInfo?.first_name} ${profileInfo?.last_name}`}
                     </p>
