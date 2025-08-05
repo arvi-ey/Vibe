@@ -48,6 +48,7 @@ const PostBox = ({ data, keyValue }) => {
     const [addCommentLoading, setAddcommentLoading] = useState(false)
     const [commentsoading, setCommentsLoading] = useState(false)
     const [deleteCommentloading, setDeleteCommentLoading] = useState(false)
+    const [defaultCommentLength, setDefaultCommentLength] = useState()
     const HandleOpenMenu = (e) => {
         setAnchorEl(e.target)
         setShowMenu(true)
@@ -63,7 +64,10 @@ const PostBox = ({ data, keyValue }) => {
         if (data?.likes) {
             setReactions(data?.likes)
         }
-    }, [data.likes])
+        if (data?.comments) {
+            setDefaultCommentLength(data?.comments.length)
+        }
+    }, [data.likes, data?.comments])
 
     useEffect(() => {
         if (reactions?.length > 0) {
@@ -119,6 +123,7 @@ const PostBox = ({ data, keyValue }) => {
             const result = await DeleteComment({ comment_id })
             const newCommentArray = comments.filter(data => data.comment_id !== result.comment_id)
             setComments(newCommentArray)
+            setDefaultCommentLength(defaultCommentLength - 1)
         }
         catch (error) {
             console.log(error)
@@ -187,8 +192,13 @@ const PostBox = ({ data, keyValue }) => {
             }
         }
     }
+    useEffect(() => {
+        if (data?.userinfo?.first_name == "Tuhin") {
+            console.log(defaultCommentLength, "defaultCommentLength")
+            console.log(comments.length, "length")
+        }
 
-
+    }, [defaultCommentLength, comments])
 
 
     return (
@@ -247,7 +257,7 @@ const PostBox = ({ data, keyValue }) => {
                     </div>
                     <div className={styles.postOptions2}>
                         <MessageCircle className={styles.CommentIcon} onClick={() => HandleOpenModal("comments")} />
-                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("comments")}>{comments?.length || data?.comments?.length}</span>
+                        <span className={styles.PostInfo} onClick={() => HandleOpenModal("comments")}>{comments?.length > 0 ? comments?.length : defaultCommentLength > 0 ? defaultCommentLength : "0"}</span>
                     </div>
                     <div className={styles.postOptions}>
                         <BookmarkBorderIcon className={styles.shareIcon} />
@@ -281,7 +291,7 @@ const PostBox = ({ data, keyValue }) => {
                     userArray={modalType == 'reaction' ? reactions : comments}
                     addCommentLoading={addCommentLoading}
                     commentsoading={commentsoading}
-                    commentLength={comments?.length || data?.comments?.length}
+                    commentLength={comments?.length || defaultCommentLength}
                     setComments={setComments}
                     HandleDeleteComment={HandleDeleteComment}
                     deleteCommentloading={deleteCommentloading}
