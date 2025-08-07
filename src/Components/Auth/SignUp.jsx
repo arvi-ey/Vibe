@@ -40,192 +40,201 @@ const SignUp = () => {
         validateOnBlur: true
     });
 
-    useEffect(() => {
-        fetch('https://restcountries.com/v3.1/all?fields=name,flags')
-            .then(res => res.json())
-            .then(data => {
-                const countries = data.map(c => ({
-                    name: c.name.common,
-                    flag: c.flags.png
-                }));
-                setCountryList(countries);
-            });
-
-    }, [])
 
 
 
     const HandleSignUp = async () => {
-        formik.setTouched({
-            first_name: true,
-            last_name: true,
-            mobile: true,
-            email: true,
-            password: true,
-            confirm_password: true,
-            country: true
-        });
-        const errors = await formik.validateForm()
-        if (Object.keys(errors).length > 0) return
-        else {
-            const values = {
-                first_name: formik?.values?.first_name,
-                last_name: formik?.values?.last_name,
-                mobile: formik?.values?.mobile,
-                email: formik?.values?.email,
-                country: formik?.values?.country,
-                password: formik?.values?.password
-            }
-            const signUpres = await UserSignUp(values)
-            if (signUpres?.statusCode == 400) setErrortext(signUpres?.message)
-            else if (signUpres?.statusCode == 200 && signUpres?.data.uid) {
-                setAlertOpen(true)
-                setAlertText("Account created successfully.")
-                setTimeout(() => {
-                    navigate("/signin")
-                    setAlertOpen(false)
-                }, 1500)
-            }
+
+
+        const values = {
+            first_name: formik?.values?.first_name,
+            last_name: formik?.values?.last_name,
+            mobile: formik?.values?.mobile,
+            email: formik?.values?.email,
+            country: formik?.values?.country,
+            password: formik?.values?.password
         }
+        const signUpres = await UserSignUp(values)
+        console.log(signUpres)
+
     }
+
+    // const HandleSignUp = async () => {
+    //     formik.setTouched({
+    //         first_name: true,
+    //         last_name: true,
+    //         mobile: true,
+    //         email: true,
+    //         password: true,
+    //         confirm_password: true,
+    //         country: true
+    //     });
+    //     const errors = await formik.validateForm()
+    //     if (Object.keys(errors).length > 0) return
+    //     else {
+    //         const values = {
+    //             first_name: formik?.values?.first_name,
+    //             last_name: formik?.values?.last_name,
+    //             mobile: formik?.values?.mobile,
+    //             email: formik?.values?.email,
+    //             country: formik?.values?.country,
+    //             password: formik?.values?.password
+    //         }
+    //         const signUpres = await UserSignUp(values)
+    //         if (signUpres?.statusCode == 400) setErrortext(signUpres?.message)
+    //         else if (signUpres?.statusCode == 200 && signUpres?.data.uid) {
+    //             setAlertOpen(true)
+    //             setAlertText("Account created successfully.")
+    //             setTimeout(() => {
+    //                 navigate("/signin")
+    //                 setAlertOpen(false)
+    //             }, 1500)
+    //         }
+    //     }
+    // }
 
 
     return (
-        <div className={styles.AuthContainer}>
-            <div className={` h-full w-[90%] flex flex-col justify-center items-center gap-2.5 `}  >
-                <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
-                <Card sx={{ minWidth: 280, }} className={` h-[90%] w-[60%] ${styles.AuthBox}`} >
-                    <CardContent className={`flex flex-col items-center justify-evenly gap-2 h-full`}>
-                        <div className='w-full flex flex-col sm:flex-row gap-4'>
-                            <TextField
-                                fullWidth
-                                id="first_name"
-                                name='first_name'
-                                label="FirstName"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.first_name && formik.touched.first_name}
-                                helperText={(formik?.errors?.first_name && formik.touched.first_name) ? formik?.errors?.first_name : null}
-                            />
-                            <TextField
-                                fullWidth
-                                id="last_name"
-                                name='last_name'
-                                label="LastName"
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.last_name && formik.touched.last_name}
-                                helperText={(formik?.errors?.last_name && formik.touched.last_name) ? formik?.errors?.last_name : null}
-                            />
-                            <TextField
-                                fullWidth
-                                id="email"
-                                name='email'
-                                label="Email address"
-                                variant="outlined"
-                                // className={` w-full`}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.email && formik.touched.email}
-                                helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
-                            />
-                        </div>
-                        <div className='w-full flex flex-col sm:flex-row gap-4'>
-                            <TextField
-                                fullWidth
-                                id="mobile"
-                                name='mobile'
-                                label="Phone number"
-                                variant="outlined"
-                                type='number'
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.mobile && formik.touched.mobile}
-                                helperText={(formik?.errors?.mobile && formik.touched.mobile) ? formik?.errors?.mobile : null}
-                            />
-                            <FormControl fullWidth>
-                                <Autocomplete
-                                    id="country"
-                                    autoFocus={false}
-                                    options={countryList || []}
-                                    getOptionLabel={(option) => option.name}
-                                    onChange={(event, value) => {
-                                        formik.setFieldValue("country", value?.name || "");
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                    renderOption={(props, option) => (
-                                        <li {...props} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]" style={{ marginLeft: "10px", padding: "10px", marginTop: "2px" }}>
-                                            <img src={option?.flag} alt="flag" className="w-6 h-6 rounded-sm" />
-                                            {option?.name}
-                                        </li>
-                                    )}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label="Select your Country"
-                                            variant="outlined"
-                                            error={formik?.errors?.country && formik.touched.country}
-                                            helperText={
-                                                formik?.errors?.country && formik.touched.country
-                                                    ? formik.errors.country
-                                                    : null
-                                            }
-                                        />
-                                    )}
-                                />
-                            </FormControl>
-                        </div>
-                        <div className='w-full flex flex-col sm:flex-row gap-4'>
-                            <TextField
-                                id="password"
-                                name='password'
-                                label="Create password"
-                                variant="outlined"
-                                type='password'
-                                className={` w-full`}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.password && formik.touched.password}
-                                helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
-                            />
-                            <TextField
-                                id="confirm_password"
-                                name='confirm_password'
-                                label="Re enter password"
-                                variant="outlined"
-                                type='password'
-                                className={` w-full`}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik?.errors?.confirm_password && formik.touched.confirm_password}
-                                helperText={(formik?.errors?.confirm_password && formik.touched.confirm_password) ? formik?.errors?.confirm_password : null}
-                            />
-                        </div>
-                        {loading ? <Loader /> :
-                            <div className='lg:w-[20%] md:w-[40%] sm:w-[40%] w-[100%] h-18 flex justify-between items-center flex-col' >
-                                <Button
-                                    ButtonStyle={styles.ButtonStyle}
-                                    TextStyle={styles.TextStyle}
-                                    Text='Sign UP'
-                                    Click={HandleSignUp}
-                                />
-                                <span className='text-red-600 font-medium font text-xs' >{errortext}</span>
-                            </div>
-                        }
-                        <Devider />
-                        <span
-                            onClick={() => navigate("/signin")}
-                            className='text-[var(--PRIMARY-COLOR)] text-sm cursor-pointer hover:text-[var(--SECONDARY-cOLOR)]' >Already have an account? go to login</span>
-                    </CardContent>
-                </Card>
+        // <div className={styles.AuthContainer}>
+        //     <div className={` h-full w-[90%] flex flex-col justify-center items-center gap-2.5 `}  >
+        //         <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
+        //         <Card sx={{ minWidth: 280, }} className={` h-[90%] w-[60%] ${styles.AuthBox}`} >
+        //             <CardContent className={`flex flex-col items-center justify-evenly gap-2 h-full`}>
+        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
+        //                     <TextField
+        //                         fullWidth
+        //                         id="first_name"
+        //                         name='first_name'
+        //                         label="FirstName"
+        //                         variant="outlined"
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.first_name && formik.touched.first_name}
+        //                         helperText={(formik?.errors?.first_name && formik.touched.first_name) ? formik?.errors?.first_name : null}
+        //                     />
+        //                     <TextField
+        //                         fullWidth
+        //                         id="last_name"
+        //                         name='last_name'
+        //                         label="LastName"
+        //                         variant="outlined"
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.last_name && formik.touched.last_name}
+        //                         helperText={(formik?.errors?.last_name && formik.touched.last_name) ? formik?.errors?.last_name : null}
+        //                     />
+        //                     <TextField
+        //                         fullWidth
+        //                         id="email"
+        //                         name='email'
+        //                         label="Email address"
+        //                         variant="outlined"
+        //                         // className={` w-full`}
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.email && formik.touched.email}
+        //                         helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
+        //                     />
+        //                 </div>
+        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
+        //                     <TextField
+        //                         fullWidth
+        //                         id="mobile"
+        //                         name='mobile'
+        //                         label="Phone number"
+        //                         variant="outlined"
+        //                         type='number'
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.mobile && formik.touched.mobile}
+        //                         helperText={(formik?.errors?.mobile && formik.touched.mobile) ? formik?.errors?.mobile : null}
+        //                     />
+        //                     <FormControl fullWidth>
+        //                         <Autocomplete
+        //                             id="country"
+        //                             autoFocus={false}
+        //                             options={countryList || []}
+        //                             getOptionLabel={(option) => option.name}
+        //                             onChange={(event, value) => {
+        //                                 formik.setFieldValue("country", value?.name || "");
+        //                             }}
+        //                             onBlur={formik.handleBlur}
+        //                             renderOption={(props, option) => (
+        //                                 <li {...props} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]" style={{ marginLeft: "10px", padding: "10px", marginTop: "2px" }}>
+        //                                     <img src={option?.flag} alt="flag" className="w-6 h-6 rounded-sm" />
+        //                                     {option?.name}
+        //                                 </li>
+        //                             )}
+        //                             renderInput={(params) => (
+        //                                 <TextField
+        //                                     {...params}
+        //                                     label="Select your Country"
+        //                                     variant="outlined"
+        //                                     error={formik?.errors?.country && formik.touched.country}
+        //                                     helperText={
+        //                                         formik?.errors?.country && formik.touched.country
+        //                                             ? formik.errors.country
+        //                                             : null
+        //                                     }
+        //                                 />
+        //                             )}
+        //                         />
+        //                     </FormControl>
+        //                 </div>
+        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
+        //                     <TextField
+        //                         id="password"
+        //                         name='password'
+        //                         label="Create password"
+        //                         variant="outlined"
+        //                         type='password'
+        //                         className={` w-full`}
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.password && formik.touched.password}
+        //                         helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
+        //                     />
+        //                     <TextField
+        //                         id="confirm_password"
+        //                         name='confirm_password'
+        //                         label="Re enter password"
+        //                         variant="outlined"
+        //                         type='password'
+        //                         className={` w-full`}
+        //                         onChange={formik.handleChange}
+        //                         onBlur={formik.handleBlur}
+        //                         error={formik?.errors?.confirm_password && formik.touched.confirm_password}
+        //                         helperText={(formik?.errors?.confirm_password && formik.touched.confirm_password) ? formik?.errors?.confirm_password : null}
+        //                     />
+        //                 </div>
+        //                 {/* {loading ? <Loader /> : */}
+        //                 <div className='lg:w-[20%] md:w-[40%] sm:w-[40%] w-[100%] h-18 flex justify-between items-center flex-col' >
+        //                     <Button
+        //                         ButtonStyle={styles.ButtonStyle}
+        //                         TextStyle={styles.TextStyle}
+        //                         Text='Sign UP'
+        //                         Click={HandleSignUp}
+        //                     />
+        //                     <span className='text-red-600 font-medium font text-xs' >{errortext}</span>
+        //                 </div>
+        //                 {/* } */}
+        //                 <Devider />
+        //                 <span
+        //                     onClick={() => navigate("/signin")}
+        //                     className='text-[var(--PRIMARY-COLOR)] text-sm cursor-pointer hover:text-[var(--SECONDARY-cOLOR)]' >Already have an account? go to login</span>
+        //             </CardContent>
+        //         </Card>
+        //     </div>
+        //     <Alert
+        //         message={alertText}
+        //         open={alertOpen}
+        //     />
+        // </div >
+        <div className='w-full h-[100%] bg-amber-700 flex justify-center items-center'>
+            <div className='sm:w-[600px] lg:w-[700px] w-[200px] sm:h-50 bg-amber-400' >
+
             </div>
-            <Alert
-                message={alertText}
-                open={alertOpen}
-            />
-        </div >
+        </div>
     )
 }
 

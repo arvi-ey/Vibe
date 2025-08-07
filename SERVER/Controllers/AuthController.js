@@ -1,25 +1,73 @@
 const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication, GetUserByID } = require("../Utils/UserUtil")
+const { VerifyUserEmail, CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication, GetUserByID, CheckEmailExists, SendEmail } = require("../Utils/UserUtil")
 
-exports.CreateUser = async (req, res) => {
+
+
+
+
+
+
+exports.RequestEmailVerification = async (req, res) => {
+    const { email } = req.body
     try {
-        const body = req.body;
-        const userExists = await CheckUserExists(req, res)
+        const userExists = await CheckEmailExists(email)
         if (userExists?.length > 0) return res.status(200).json({
-            message: "The provided email or mobile number is already associated with an existing account.",
+            message: "The provided email is already associated with an existing account.",
             statusCode: 400
         })
         else {
-            const HashedPassword = await Hashedpassword(body.password)
-            if (HashedPassword) body.password = HashedPassword
-            const result = await RegisterUser(body)
-            SuccessResponse(res, result)
+            const sentEmailInfo = await SendEmail(email)
+            res.status(200).json({
+                message: "Email sent successfully",
+                info: sentEmailInfo.info.response,
+                email: sentEmailInfo.insertObj.email,
+                uid: sentEmailInfo.insertObj.uid,
+                data: sentEmailInfo.insertObj,
+                statusCode: 200
+            });
         }
+
     }
     catch (error) {
-        res.status(500).json({ message: 'Server error during registration' });
+    }
 
-        // ErrorResponse(res, error)
+}
+
+
+exports.CreateUser = async (req, res) => {
+    // try {
+    //     const body = req.body;
+    //     const userExists = await CheckUserExists(req, res)
+    //     if (userExists?.length > 0) return res.status(200).json({
+    //         message: "The provided email or mobile number is already associated with an existing account.",
+    //         statusCode: 400
+    //     })
+    //     else {
+    //         const HashedPassword = await Hashedpassword(body.password)
+    //         if (HashedPassword) body.password = HashedPassword
+    //         const result = await RegisterUser(body)
+    //         SuccessResponse(res, result)
+    //     }
+    // }
+    // catch (error) {
+    //     res.status(500).json({ message: 'Server error during registration' });
+
+    //     // ErrorResponse(res, error)
+    // }
+
+
+
+}
+
+exports.VerifyEmail = async (req, res) => {
+    const { uid, code } = req.body
+    if (!uid || !code) return MissingData(res)
+    try {
+        const result = await VerifyUserEmail(uid, code)
+        res.status(200).json(result)
+    }
+    catch (error) {
+        ErrorResponse(res, error)
     }
 }
 

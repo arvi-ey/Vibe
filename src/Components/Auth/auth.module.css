@@ -9,6 +9,161 @@
 }
 
 
+.requestEmailbox {
+    height: 450px;
+    box-shadow: 0px 10px 21px 0px rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width:650px) {
+    .requestEmailbox {
+        height: 400px;
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width:420px) {
+    .requestEmailbox {
+        height: 400px;
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width:650px) {
+    .requestEmailbox {
+        height: 450px;
+        width: 90%;
+    }
+}
+
+.VerifyEmailButtonDiv {}
+
+.verifyEmailButton {}
+
+@media only screen and (max-width:650px) {
+    .VerifyEmailButtonDiv {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .verifyEmailButton {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width:357px) {
+    .VerifyEmailButtonDiv {
+        margin-top: 2px;
+    }
+
+    .verifyEmailButton {
+        font-size: small;
+        /* width: 80%; */
+    }
+}
+
+@media only screen and (max-width:300px) {
+    .VerifyEmailButtonDiv {
+        margin-top: 2px;
+    }
+
+    .verifyEmailButton {
+        font-size: x-small;
+        /* width: 80%; */
+    }
+}
+
+@media only screen and (max-width:250px) {
+    .VerifyEmailButtonDiv {
+        margin-top: 2px;
+    }
+
+    .verifyEmailButton {
+        font-size: xx-small;
+        /* width: 80%; */
+    }
+}
+
+.VeriFicationCodetext {
+    /* margin-top: 30px; */
+    opacity: 0.8;
+}
+
+@media only screen and (max-width:480px) {
+    .VeriFicationCodetext {
+        font-size: large;
+    }
+}
+
+@media only screen and (max-width:380px) {
+    .VeriFicationCodetext {
+        font-size: medium;
+    }
+}
+
+@media only screen and (max-width:300px) {
+    .VeriFicationCodetext {
+        font-size: small;
+    }
+}
+
+.input_verifycode {
+    width: 60px;
+}
+
+@media only screen and (max-width:619px) {
+    .input_verifycode {
+        width: 50px;
+        height: 60px;
+    }
+}
+
+@media only screen and (max-width:460px) {
+    .input_verifycode {
+        width: 40px;
+        height: 60px;
+    }
+}
+
+@media only screen and (max-width:390px) {
+    .input_verifycode {
+        width: 35px;
+        height: 50px;
+    }
+}
+
+@media only screen and (max-width:320px) {
+    .input_verifycode {
+        width: 25px;
+        height: 40px;
+    }
+}
+
+@media only screen and (max-width:240px) {
+    .input_verifycode {
+        width: 25px;
+        height: 30px;
+    }
+}
+
+.verifyButton {
+    width: 40%;
+    border-radius: 5px;
+
+}
+
+@media (max-width:300px) {
+    .verifyButton {
+        width: 60%;
+    }
+}
+
+@media (max-width:200px) {
+    .verifyButton {
+        width: 80%;
+    }
+}
+
+
 .AuthLogoINfo {
     display: flex;
     flex-direction: column;

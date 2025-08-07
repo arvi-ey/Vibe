@@ -17,6 +17,7 @@ import AllFriends from './Components/Friends/AllFriends';
 import FriendRequests from './Components/Friends/FriendRequests';
 import SentFriendRequests from './Components/Friends/SentFriendRequests';
 import Birthdays from './Components/Friends/Birthdays';
+import VerifyEmail from './Components/Auth/VerifyEmail';
 function App() {
 
   const router = createBrowserRouter([
@@ -58,7 +59,11 @@ function App() {
       element: <Signin />,
     },
     {
-      path: "/signup",
+      path: "/auth/verifyemail",
+      element: <VerifyEmail />,
+    },
+    {
+      path: "/auth/signup",
       element: <SignUp />,
     },
   ]);
