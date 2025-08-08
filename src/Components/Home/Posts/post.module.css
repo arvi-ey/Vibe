@@ -8,6 +8,12 @@
     /* background-color: rgb(125, 231, 25) !important; */
 }
 
+@media (max-width:700px) {
+    .postContainer {
+        width: 90vmin;
+    }
+}
+
 .postBox {
     width: 100%;
     display: flex;
@@ -16,6 +22,46 @@
     gap: 0.5em;
     align-items: center;
 }
+
+.NoPostAnimation {
+    width: 450px;
+    /* height: 2; */
+}
+
+@media(max-width:444px) {
+    .NoPostAnimation {
+        width: 400px;
+    }
+}
+
+@media(max-width:347px) {
+    .NoPostAnimation {
+        width: 350px;
+    }
+}
+
+.NoPostText {
+    font-size: 18px;
+    opacity: 0.8;
+    font-weight: bold;
+}
+
+@media(max-width:291px) {
+    .NoPostAnimation {
+        width: 300px;
+    }
+
+    .NoPostText {
+        font-size: 15px;
+    }
+}
+
+@media(max-width:271px) {
+    .NoPostAnimation {
+        width: 250px;
+    }
+}
+
 
 
 
@@ -67,10 +113,9 @@
 }
 
 .user_postedPhoto {
-    max-width: 100%;
     /* max-height: 450px; */
     height: auto;
-    width: 100%;
+    width: 90%;
     object-fit: contain;
     border-radius: 8px;
 }

@@ -7,6 +7,8 @@ import usePost from '../../../Hooks/usePost';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Lottie from 'lottie-react';
+import NoPost from "../../../assets/Animation/NoPost.json"
 
 
 const Posts = () => {
@@ -28,6 +30,18 @@ const Posts = () => {
                     )
                 })
 
+            }
+            {
+                homeposts?.length == 0 &&
+                <div className={`h-[100%] w-[100%] flex justify-center flex-col items-center`} >
+                    <Lottie
+                        animationData={NoPost}
+                        loop
+                        autoplay
+                        className={styles.NoPostAnimation}
+                    />
+                    <h1 className={`${styles.NoPostText}`} >No post available right now...</h1>
+                </div>
             }
         </div>
     )

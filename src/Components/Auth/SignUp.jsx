@@ -1,241 +1,272 @@
-import React, { useEffect, useState } from 'react'
+
+import React, { useState } from "react";
+import BG from "../../assets/SignUpBg.jpg"
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router";
+import ScreenLoading from "../../Common/ScreenLoading";
+import toast, { Toaster } from 'react-hot-toast';
 import styles from "./auth.module.css"
-import Button from '../../Common/Button';
-import Devider from '../../Common/Devider';
-import { useNavigate } from 'react-router';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import { useFormik } from 'formik';
-import { RegisterValidationSchema } from '../../Validations/AuthValidationSchema';
-import useSignup from '../../Hooks/useSignup';
-import Loader from '../../Common/Loader';
-import Alert from '../../Common/Alert';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Autocomplete from '@mui/material/Autocomplete';
-
-const SignUp = () => {
-    const navigate = useNavigate()
-    const { UserSignUp, error, loading } = useSignup()
-    const [errortext, setErrortext] = useState(null)
-    const [alertOpen, setAlertOpen] = useState(false)
-    const [alertText, setAlertText] = useState("")
-    const [countryList, setCountryList] = useState()
-    const formik = useFormik({
-        initialValues: {
-            first_name: '',
-            last_name: '',
-            mobile: '',
-            email: '',
-            country: "",
-            password: '',
-            confirm_password: '',
-        },
-        validationSchema: RegisterValidationSchema,
-        enableReinitialize: true,
-        validateOnChange: true,
-        validateOnBlur: true
+import useSignup from "../../Hooks/useSignup";
+import CircularProgress from '@mui/material/CircularProgress';
+import Lottie from 'lottie-react';
+import SuccessFull from "../../assets/Animation/Successfull.json"
+export default function SignUp() {
+    const location = useLocation()
+    const Navigate = useNavigate()
+    const { UserSignUp } = useSignup()
+    const locationstate = location.state || {}
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        country: "",
+        gender: "",
+        password: "",
+        confirmPassword: "",
     });
+    const [countryList, setCountryList] = useState([])
+    const [loading, setLoading] = useState()
+    const [createdAccount, setcrreatedAccount] = useState(false)
+
+
+    useEffect(() => {
+        fetch('https://restcountries.com/v3.1/all?fields=name')
+            .then(res => res.json())
+            .then(data => {
+                const countries = data.map(c => ({
+                    name: c.name.common,
+                }));
+                setCountryList(countries);
+            });
+
+    }, [])
+
+
+
+    useEffect(() => {
+        if (!locationstate.uid) Navigate(`/auth/verifyemail`)
+
+    }, [locationstate])
 
 
 
 
-    const HandleSignUp = async () => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
 
-        const values = {
-            first_name: formik?.values?.first_name,
-            last_name: formik?.values?.last_name,
-            mobile: formik?.values?.mobile,
-            email: formik?.values?.email,
-            country: formik?.values?.country,
-            password: formik?.values?.password
+
+    useEffect(() => {
+        if (createdAccount) {
+            setTimeout(() => {
+                setcrreatedAccount(false)
+                Navigate("/signin")
+            }, 1800)
         }
-        const signUpres = await UserSignUp(values)
-        console.log(signUpres)
+    }, [createdAccount])
 
+
+    if (!locationstate || countryList?.length == 0) {
+        return (
+            <ScreenLoading />
+        )
     }
+    const handleSubmit = async () => {
+        const { first_name, last_name, password, country, gender } = formData
+        let missingFields = [];
+        if (!first_name) missingFields.push("First Name");
+        if (!last_name) missingFields.push("Last Name");
+        if (!password) missingFields.push("Password");
+        if (!country) missingFields.push("Country");
+        if (!gender) missingFields.push("Gender");
+        if (missingFields.length > 0) {
+            toast(`Please enter ${missingFields.join(", ")}`, {
+                icon: '😄',
+                style: {
+                    borderRadius: '10px',
+                    fontWeight: "bold"
 
-    // const HandleSignUp = async () => {
-    //     formik.setTouched({
-    //         first_name: true,
-    //         last_name: true,
-    //         mobile: true,
-    //         email: true,
-    //         password: true,
-    //         confirm_password: true,
-    //         country: true
-    //     });
-    //     const errors = await formik.validateForm()
-    //     if (Object.keys(errors).length > 0) return
-    //     else {
-    //         const values = {
-    //             first_name: formik?.values?.first_name,
-    //             last_name: formik?.values?.last_name,
-    //             mobile: formik?.values?.mobile,
-    //             email: formik?.values?.email,
-    //             country: formik?.values?.country,
-    //             password: formik?.values?.password
-    //         }
-    //         const signUpres = await UserSignUp(values)
-    //         if (signUpres?.statusCode == 400) setErrortext(signUpres?.message)
-    //         else if (signUpres?.statusCode == 200 && signUpres?.data.uid) {
-    //             setAlertOpen(true)
-    //             setAlertText("Account created successfully.")
-    //             setTimeout(() => {
-    //                 navigate("/signin")
-    //                 setAlertOpen(false)
-    //             }, 1500)
-    //         }
-    //     }
-    // }
+                },
+            })
+            return
+        }
+        else if (password.length < 8) {
+            toast(` Password length must be 8 characters or longer.`, {
+                icon: '🔐',
+                style: {
+                    borderRadius: '10px',
+                    fontWeight: "bold"
 
+                },
+            })
+            return
+
+        }
+        else if (password != formData.confirmPassword) {
+            toast(`Password and confirm password must match.`, {
+                icon: '😄',
+                style: {
+                    borderRadius: '10px',
+                    fontWeight: "bold"
+
+                },
+            })
+            return
+        }
+        else {
+            setLoading(true)
+            try {
+                const locationstate = location.state || {}
+                const payload = { first_name, last_name, password, country, gender, uid: locationstate.uid }
+                const Result = await UserSignUp(payload)
+                if (Result.data.uid) {
+                    setcrreatedAccount(true)
+                }
+
+            }
+            catch (error) {
+                toast.error(error.message)
+
+            }
+            finally {
+                setLoading(false)
+            }
+        }
+
+    };
 
     return (
-        // <div className={styles.AuthContainer}>
-        //     <div className={` h-full w-[90%] flex flex-col justify-center items-center gap-2.5 `}  >
-        //         <h1 className={` text-7xl font-bold text-[var(--PRIMARY-COLOR)] font-rubik`}>Vibe</h1>
-        //         <Card sx={{ minWidth: 280, }} className={` h-[90%] w-[60%] ${styles.AuthBox}`} >
-        //             <CardContent className={`flex flex-col items-center justify-evenly gap-2 h-full`}>
-        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
-        //                     <TextField
-        //                         fullWidth
-        //                         id="first_name"
-        //                         name='first_name'
-        //                         label="FirstName"
-        //                         variant="outlined"
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.first_name && formik.touched.first_name}
-        //                         helperText={(formik?.errors?.first_name && formik.touched.first_name) ? formik?.errors?.first_name : null}
-        //                     />
-        //                     <TextField
-        //                         fullWidth
-        //                         id="last_name"
-        //                         name='last_name'
-        //                         label="LastName"
-        //                         variant="outlined"
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.last_name && formik.touched.last_name}
-        //                         helperText={(formik?.errors?.last_name && formik.touched.last_name) ? formik?.errors?.last_name : null}
-        //                     />
-        //                     <TextField
-        //                         fullWidth
-        //                         id="email"
-        //                         name='email'
-        //                         label="Email address"
-        //                         variant="outlined"
-        //                         // className={` w-full`}
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.email && formik.touched.email}
-        //                         helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
-        //                     />
-        //                 </div>
-        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
-        //                     <TextField
-        //                         fullWidth
-        //                         id="mobile"
-        //                         name='mobile'
-        //                         label="Phone number"
-        //                         variant="outlined"
-        //                         type='number'
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.mobile && formik.touched.mobile}
-        //                         helperText={(formik?.errors?.mobile && formik.touched.mobile) ? formik?.errors?.mobile : null}
-        //                     />
-        //                     <FormControl fullWidth>
-        //                         <Autocomplete
-        //                             id="country"
-        //                             autoFocus={false}
-        //                             options={countryList || []}
-        //                             getOptionLabel={(option) => option.name}
-        //                             onChange={(event, value) => {
-        //                                 formik.setFieldValue("country", value?.name || "");
-        //                             }}
-        //                             onBlur={formik.handleBlur}
-        //                             renderOption={(props, option) => (
-        //                                 <li {...props} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]" style={{ marginLeft: "10px", padding: "10px", marginTop: "2px" }}>
-        //                                     <img src={option?.flag} alt="flag" className="w-6 h-6 rounded-sm" />
-        //                                     {option?.name}
-        //                                 </li>
-        //                             )}
-        //                             renderInput={(params) => (
-        //                                 <TextField
-        //                                     {...params}
-        //                                     label="Select your Country"
-        //                                     variant="outlined"
-        //                                     error={formik?.errors?.country && formik.touched.country}
-        //                                     helperText={
-        //                                         formik?.errors?.country && formik.touched.country
-        //                                             ? formik.errors.country
-        //                                             : null
-        //                                     }
-        //                                 />
-        //                             )}
-        //                         />
-        //                     </FormControl>
-        //                 </div>
-        //                 <div className='w-full flex flex-col sm:flex-row gap-4'>
-        //                     <TextField
-        //                         id="password"
-        //                         name='password'
-        //                         label="Create password"
-        //                         variant="outlined"
-        //                         type='password'
-        //                         className={` w-full`}
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.password && formik.touched.password}
-        //                         helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
-        //                     />
-        //                     <TextField
-        //                         id="confirm_password"
-        //                         name='confirm_password'
-        //                         label="Re enter password"
-        //                         variant="outlined"
-        //                         type='password'
-        //                         className={` w-full`}
-        //                         onChange={formik.handleChange}
-        //                         onBlur={formik.handleBlur}
-        //                         error={formik?.errors?.confirm_password && formik.touched.confirm_password}
-        //                         helperText={(formik?.errors?.confirm_password && formik.touched.confirm_password) ? formik?.errors?.confirm_password : null}
-        //                     />
-        //                 </div>
-        //                 {/* {loading ? <Loader /> : */}
-        //                 <div className='lg:w-[20%] md:w-[40%] sm:w-[40%] w-[100%] h-18 flex justify-between items-center flex-col' >
-        //                     <Button
-        //                         ButtonStyle={styles.ButtonStyle}
-        //                         TextStyle={styles.TextStyle}
-        //                         Text='Sign UP'
-        //                         Click={HandleSignUp}
-        //                     />
-        //                     <span className='text-red-600 font-medium font text-xs' >{errortext}</span>
-        //                 </div>
-        //                 {/* } */}
-        //                 <Devider />
-        //                 <span
-        //                     onClick={() => navigate("/signin")}
-        //                     className='text-[var(--PRIMARY-COLOR)] text-sm cursor-pointer hover:text-[var(--SECONDARY-cOLOR)]' >Already have an account? go to login</span>
-        //             </CardContent>
-        //         </Card>
-        //     </div>
-        //     <Alert
-        //         message={alertText}
-        //         open={alertOpen}
-        //     />
-        // </div >
-        <div className='w-full h-[100%] bg-amber-700 flex justify-center items-center'>
-            <div className='sm:w-[600px] lg:w-[700px] w-[200px] sm:h-50 bg-amber-400' >
+        <div className="flex h-screen bg-cover bg-center justify-center items-center min-h-screen bg-gradient-to-br  px-4"
+        // style={{ backgroundImage: `url(${BG})` }}
+        >
+            {
+                !createdAccount &&
+                <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-600 text-center mb-2">Create Account</h2>
 
-            </div>
+                    <div className="space-y-5">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="first_name"
+                                required
+                                value={formData.first_name}
+                                onChange={handleChange}
+                                placeholder="First Name*"
+                                className="peer w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            />
+                        </div>
+
+                        <div className="relative">
+                            <input
+                                type="text"
+                                name="last_name"
+                                value={formData.last_name}
+                                onChange={handleChange}
+                                placeholder="Last Name*"
+                                className="peer w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            />
+                        </div>
+                        <div className="relative">
+                            <select
+                                name="country"
+                                value={formData.country}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all bg-white"
+                            >
+                                <option value="">Select Country*</option>
+                                {countryList?.map((c, i) => {
+                                    return (
+                                        <option key={i} value={c.name} className="flex items-center gap-4 cursor-pointer rounded-xl hover:bg-[aliceblue]">
+                                            {c?.name}
+                                        </option>
+                                    )
+                                }
+                                )}
+                            </select>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <label className="flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Male"
+                                    onChange={handleChange}
+                                    className="accent-blue-500"
+                                />
+                                <span>Male</span>
+                            </label>
+                            <label className="flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Female"
+                                    onChange={handleChange}
+                                    className="accent-blue-500"
+                                />
+                                <span>Female</span>
+                            </label>
+                            <label className="flex items-center space-x-2">
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Other"
+                                    onChange={handleChange}
+                                    className="accent-blue-500"
+                                />
+                                <span>Other</span>
+                            </label>
+                        </div>
+                        <div className="relative">
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Password*"
+                                className="peer w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            />
+                        </div>
+                        <div className="relative">
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                placeholder="Confirm Password*"
+                                className="peer w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            />
+                        </div>
+
+                        <div className={`bg-[var(--PRIMARY-COLOR)] ${!loading && "cursor-pointer"} w-full cursor-pointer flex justify-center items-center text-white py-3 rounded-lg hover:bg-blue-600 transition-all`}
+                            onClick={handleSubmit}
+                        >
+                            {loading ?
+                                <CircularProgress size={20} color='white' /> :
+                                <span>Submit</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            {
+                createdAccount &&
+                <div className={`h-[100%] w-[100%] flex justify-center flex-col items-center`} >
+                    <Lottie
+                        animationData={SuccessFull}
+                        loop
+                        autoplay
+                        className={styles.verifyEmailAnimation}
+                    />
+                    <h1 className={`${styles.emailVerifiedText}`} >Account created successfully.</h1>
+                </div>
+            }
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
         </div>
-    )
+    );
 }
-
-export default SignUp

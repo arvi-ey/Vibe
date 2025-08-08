@@ -110,6 +110,10 @@ const Story = () => {
                         )
                     })
                 }
+                {
+                    (homeStories?.length == 0 && UserStories?.length == 0) &&
+                    <h1 className={`text-sm sm:text-lg font-bold opacity-70`} > No stories yet..</h1>
+                }
             </div>
             <div className={`${(hideRight || homeStories?.length < 4) ? styles.RightScrollIconHide : styles.RightScrollIcon}`} onClick={ScrollRight}>
                 <KeyboardArrowRightIcon sx={{ backgroundColor: 'transparent' }} />

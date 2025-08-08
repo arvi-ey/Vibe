@@ -16,7 +16,7 @@
     gap: 1vmax;
     margin-top: 80px;
     padding-top: 10px;
-    background-color: var(--BACKGROUND-COLOR);
+    /* background-color: var(--BACKGROUND-COLOR); */
 }
 
 @media (max-width: 700px) {
@@ -65,6 +65,18 @@
 
 }
 
+@media (max-width:700px) {
+    .HomePostContainer {
+        width: 90%;
+    }
+
+    .HomeMainContainer {
+        margin-left: 0;
+    }
+
+
+}
+
 .HomepostuserImage {
     width: 40px;
     height: 40px;
@@ -103,14 +115,15 @@
     gap: 0.5em;
     width: 80%;
     align-items: center;
-    padding: 7px;
+    padding: 8px;
     border-radius: 10px;
     cursor: pointer;
-    background-color: var(--BACKGROUND-COLOR);
+    /* background-color: var(--BACKGROUND-COLOR); */
 }
 
 .iconBox:hover {
-    background-color: aliceblue;
+    background-color: rgb(240, 241, 243);
+    /* background-color: rgb(237, 239, 245); */
 }
 
 .iconImage {
@@ -121,9 +134,32 @@
 }
 
 .titleText {
-    font-weight: 600;
+    font-size: large;
+    /* font-weight: 600; */
     opacity: 0.8;
     background-color: transparent;
+}
+
+@media (max-width:840px) {
+    .titleText {
+        display: none;
+    }
+
+    .iconImage {
+        height: 40px;
+        width: 40px;
+        border-radius: 30px;
+    }
+
+    /* .HomeMainContainer {
+        margin-left: 15vw;
+    } */
+}
+
+@media (max-width:952px) {
+    .titleText {
+        font-size: small;
+    }
 }
 
 .HomePostArrayBox {

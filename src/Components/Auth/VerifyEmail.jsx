@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "./auth.module.css"
 import sendMail from "../../assets/send-mail.png"
 import verifyMail from "../../assets/verifyEmail.png"
@@ -8,6 +8,8 @@ import API from "../../Api/Api"
 import { useNavigate } from 'react-router';
 import { useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import Verification from "../../assets/Animation/Verification.json"
+import Lottie from 'lottie-react';
 // import { ToastContainer, toast } from 'react-toastify';
 const VerifyEmail = () => {
     const navigate = useNavigate()
@@ -16,6 +18,7 @@ const VerifyEmail = () => {
     const [loading, setLoading] = useState(false)
     const [emailsent, setEmailSent] = useState(false)
     const [uid, setUid] = useState(null)
+    const [emailVerified, setEmailVerified] = useState(false)
     const [statecode, setStateCode] = useState({
         box1: "",
         box2: "",
@@ -82,6 +85,19 @@ const VerifyEmail = () => {
         if (e.target.name == "box5" && box5.current.value.length == 1) box6.current.focus()
     }
 
+    useEffect(() => {
+        if (emailVerified) {
+            setTimeout(() => {
+                navigate('/auth/signup', {
+                    state: {
+                        uid: uid
+                    }
+                })
+                setEmailVerified(false)
+            }, 1800)
+        }
+    }, [emailVerified])
+
     const HandleVerifyEmail = async () => {
         if (loading) return
         const code = Object.values(statecode).join("")
@@ -89,7 +105,8 @@ const VerifyEmail = () => {
             setLoading(true)
             const result = await API.post(`auth/verifyEmail`, { uid, code })
             if (result.data.statusCode == 200) {
-                toast.success(result.data.message);
+                // toast.success(result.data.message);
+                setEmailVerified(true)
             }
             else {
                 toast.error(result.data.message);
@@ -108,9 +125,12 @@ const VerifyEmail = () => {
 
     return (
         <div className={`w-full h-screen  flex gap-4  flex-col justify-center items-center bg-[#F3F4F6]`}>
-            <h1 className='font-bold text-7xl text-[var(--PRIMARY-COLOR)] '>Vibe</h1>
             {
-                emailsent == false &&
+                !emailVerified &&
+                <h1 className='font-bold text-7xl text-[var(--PRIMARY-COLOR)] '>Vibe</h1>
+            }
+            {
+                (emailsent == false && !emailVerified) &&
                 <div className={`sm:w-[600px] pl-10 flex gap-5 flex-col lg:w-[650px] sm:h-50  rounded-2xl ${loading && "opacity-50"}  ${styles.requestEmailbox}`} >
                     <div>
                         <img src={sendMail} className='size-20' alt='mail' />
@@ -151,8 +171,9 @@ const VerifyEmail = () => {
                 </div>
             }
             {
-                emailsent &&
+                (emailsent && !emailVerified) &&
                 <div className={`sm:w-[600px] flex gap-5 flex-col items-center lg:w-[650px] sm:h-50 rounded-2xl ${loading && "opacity-50"}  ${styles.requestEmailbox}`} >
+
                     <img src={verifyMail} className='size-20 mt-5' alt='mail' />
                     <span className={`font-bold sm:text-3xl text-2xl ${styles.VeriFicationCodetext}`} >Verify your email address</span>
                     <span className={` font-semibold text-[10px] opacity-60`} >{`Enter the 6-digit code, sent to your email, ${email}`}</span>
@@ -227,6 +248,18 @@ const VerifyEmail = () => {
                             <span>Resend code</span>
                         </div>
                     </div>
+                </div>
+            }
+            {
+                emailVerified &&
+                <div className={`h-[100%] w-[100%] flex justify-center flex-col items-center`} >
+                    <Lottie
+                        animationData={Verification}
+                        loop
+                        autoplay
+                        className={styles.verifyEmailAnimation}
+                    />
+                    <h1 className={`${styles.emailVerifiedText}`} >Your email address has been verified successfully.</h1>
                 </div>
             }
             <Toaster

@@ -35,25 +35,18 @@ exports.RequestEmailVerification = async (req, res) => {
 
 
 exports.CreateUser = async (req, res) => {
-    // try {
-    //     const body = req.body;
-    //     const userExists = await CheckUserExists(req, res)
-    //     if (userExists?.length > 0) return res.status(200).json({
-    //         message: "The provided email or mobile number is already associated with an existing account.",
-    //         statusCode: 400
-    //     })
-    //     else {
-    //         const HashedPassword = await Hashedpassword(body.password)
-    //         if (HashedPassword) body.password = HashedPassword
-    //         const result = await RegisterUser(body)
-    //         SuccessResponse(res, result)
-    //     }
-    // }
-    // catch (error) {
-    //     res.status(500).json({ message: 'Server error during registration' });
+    try {
+        const body = req.body;
+        const HashedPassword = await Hashedpassword(body.password)
+        if (HashedPassword) body.password = HashedPassword
+        const result = await RegisterUser(body)
+        console.log(result)
+        SuccessResponse(res, result)
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Server error during registration' });
 
-    //     // ErrorResponse(res, error)
-    // }
+    }
 
 
 

@@ -82,10 +82,10 @@ const HomeOptions = () => {
                             <div >
                                 <img src={data?.title == "My Account" ? (user?.profile_image || DemoUser) : data?.img}
                                     alt='homeOptionIcon'
-                                    className={styles.iconImage}
+                                    className={` rounded-full ${styles.iconImage}`}
                                 />
                             </div>
-                            <div className={styles.titleText} >
+                            <div className={`${data?.title == "My Account" ? "font-bold" : "font-semibold"} ${styles.titleText}`} >
                                 {data?.title == "My Account" ? `${user?.first_name} ${user?.last_name}` : data?.title}
 
                             </div>
