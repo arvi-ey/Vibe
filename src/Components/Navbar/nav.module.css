@@ -2,19 +2,21 @@
     display: flex;
     height: 50px;
     width: 100%;
-    box-shadow: 0px 0px 2px 0px;
+    /* box-shadow: 0px 0px 2px 0px; */
     position: fixed;
     z-index: 50;
     top: 0;
     left: 0;
     background-color: var(--BACKGROUND-COLOR);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.132);
 }
+
 
 .navdiv1 {
     display: flex;
     padding-left: 10px;
     align-items: center;
-    width: 30%;
+    width: 20%;
     height: 100%;
     gap: 15px;
 }
@@ -38,7 +40,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 40%;
+    width: 90vmin;
     height: 100%;
     /* background-color: var(--PRIMARY-COLOR); */
 }
@@ -53,6 +55,73 @@
     gap: 10px;
     padding-right: 20px;
     /* background-color: brown; */
+}
+
+.navOption {
+    width: 50%;
+    height: 100%;
+    /* display: flex; */
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-right: 20px;
+    /* background-color: brown; */
+    display: none;
+}
+
+.userImage {
+    display: none;
+}
+
+.homeOption {
+    display: none;
+}
+
+@media (max-width:658px) {
+    .homeOption {
+        width: 100%;
+        background-color: var(--BACKGROUND-COLOR);
+        display: flex;
+        position: fixed;
+        justify-content: space-around;
+        bottom: 0;
+        z-index: 50;
+        height: 50px;
+        align-items: center;
+        cursor: pointer;
+        border-top: 1px solid rgba(0, 0, 0, 0.199);
+    }
+}
+
+@media (max-width:346px) {
+    .Layout_container {
+        height: 100px;
+    }
+
+    .navdiv1 {
+        width: 60%;
+        justify-content: space-between;
+    }
+
+    .navdiv2 {
+        align-items: flex-end;
+    }
+
+    .Layout_container {
+        flex-direction: column;
+    }
+
+    .navdiv3 {
+        display: none;
+    }
+
+    .navOption {
+        display: flex;
+    }
+
+    .userImage {
+        display: block;
+    }
 }
 
 .user_icon {

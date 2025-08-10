@@ -51,53 +51,50 @@ const HomeOptions = () => {
             img: reels
 
         },
-        {
-            title: "Market Place",
-            img: marketplace
+        // {
+        //     title: "Market Place",
+        //     img: marketplace
 
-        },
-        {
-            title: "Games",
-            img: games
+        // },
+        // {
+        //     title: "Games",
+        //     img: games
 
-        },
-        {
-            title: "Event",
-            img: event
+        // },
+        // {
+        //     title: "Event",
+        //     img: event
 
-        },
-        {
-            title: "Birthday",
-            img: Birthday
+        // },
+        // {
+        //     title: "Birthday",
+        //     img: Birthday
 
-        },
+        // },
     ]
 
     return (
 
-        <div className={styles.homeOptionContainer}>
-            <div className={styles.iconBox}  >
-                <img src={Logo} alt='Logo' className={`cursor-pointer ${styles.Logo_Image}`} onClick={() => navigate("/")} />
-            </div>
-            {
-                HomeOptionArray?.map((data, index) => {
-                    return (
-                        <div className={styles.iconBox} key={index} onClick={() => navigate(data?.path)} >
-                            <div >
+        <div className=''>
+            <div className={styles.homeOptionContainer}>
+                {
+                    HomeOptionArray?.map((data, index) => {
+                        return (
+                            <div className={styles.iconBox} key={index} onClick={() => navigate(data?.path)} >
                                 <img src={data?.title == "My Account" ? (user?.profile_image || DemoUser) : data?.img}
                                     alt='homeOptionIcon'
                                     className={` rounded-full ${styles.iconImage}`}
                                 />
-                            </div>
-                            <div className={`${data?.title == "My Account" ? "font-bold" : "font-semibold"} ${styles.titleText}`} >
-                                {data?.title == "My Account" ? `${user?.first_name} ${user?.last_name}` : data?.title}
+                                <div className={`${data?.title == "My Account" ? "font-bold" : "font-semibold"} ${styles.titleText}`} >
+                                    {data?.title == "My Account" ? `${user?.first_name} ${user?.last_name}` : data?.title}
+
+                                </div>
 
                             </div>
-
-                        </div>
-                    )
-                })
-            }
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }

@@ -18,13 +18,20 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { Box } from '@mui/system';
 import useSignOut from '../../Hooks/useSignOut';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddUserID } from '../../Redux/Slices/authSlicer';
 import { useNavigate } from 'react-router-dom';
 import { AddUserdata } from '../../Redux/Slices/userSlicer';
+import DemoUser from "../../assets/demo-user.png"
+import reels from "../../assets/reels.png"
+import Saved from "../../assets/Saved.png"
+import memories from "../../assets/memories.png"
+import following from "../../assets/following.png"
+import Groups from "../../assets/Groups.png"
 const Navbar = () => {
     const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const { user } = useSelector(state => state.user)
     const { UserSignOut } = useSignOut()
     const navigate = useNavigate()
 
@@ -36,20 +43,10 @@ const Navbar = () => {
             path: "/"
         },
         {
-            title: "Marketplace",
+            title: "Shorts",
             icon: <StorefrontRoundedIcon />,
-            path: "/marketplace"
+            path: "/shorts"
         },
-        {
-            title: "Groups",
-            icon: <GroupsRoundedIcon />,
-            path: "/groups"
-        },
-        {
-            title: "Gaming",
-            icon: <SportsEsportsIcon />,
-            path: "/gaming"
-        }
     ];
 
 
@@ -86,6 +83,23 @@ const Navbar = () => {
             icon: <LogoutIcon fontSize='small' />
         }
     ]
+    const HomeOptionArray = [
+        {
+            title: "Friends",
+            img: following,
+            path: '/friends'
+
+        },
+        {
+            title: "Groups",
+            img: Groups
+
+        },
+        {
+            title: "Reels",
+            img: reels
+
+        }]
 
 
     const handleClick = (e, index, title) => {
@@ -114,27 +128,16 @@ const Navbar = () => {
     return (
         <div className={styles.Layout_container}>
             <div className={styles.navdiv1}>
-                <img src={Logo} alt='Logo' className={`cursor-pointer ${styles.Logo_Image}`} onClick={() => navigate("/")} />
-                <input
-                    type='text'
-                    placeholder='Search Vibe ...'
-                    className={styles.Search_bar}
-
-                />
-
+                <img src={user?.profile_image || DemoUser} alt='Homeuser' className={`size-10 rounded-full cursor-pointer ${styles.userImage}`} onClick={() => { navigate(`/profile/${user?.uid}`) }} />
+                <img src={Logo} alt='Logo' className={`cursor-pointer size-10 ${styles.Logo_Image}`} onClick={() => navigate("/")} />
             </div>
             <div className={styles.navdiv2}>
                 {
                     Navarray?.map((data, index) => {
                         return (
-                            <NavLink key={index} to={data.path}>
+                            <NavLink key={index} to={data.path} className={``}>
                                 {({ isActive }) =>
-                                    React.cloneElement(data.icon, {
-                                        sx: {
-                                            color: isActive ? 'var(--PRIMARY-COLOR)' : '#575F6D',
-                                            fontSize: 26
-                                        }
-                                    })
+                                    <p className={`font-bold ${isActive ? "opacity-100" : "opacity-60"} h-[50px] flex justify-center items-center p-6 hover:bg-[var(--HOVER-BG)]  ${isActive && " border-b-3 border-b-blue-700"}  `} >{data.title}</p>
                                 }
                             </NavLink >
                         )
@@ -184,6 +187,21 @@ const Navbar = () => {
                     })
                 }
             </Popover>
+            <div className={styles.homeOption}>
+                {
+                    HomeOptionArray?.map((data, index) => {
+                        return (
+                            <div className={styles.iconBox} key={index} onClick={() => navigate(data?.path)} >
+                                <img src={data?.title == "My Account" ? (user?.profile_image || DemoUser) : data?.img}
+                                    alt='homeOptionIcon'
+                                    className={` rounded-full size-8 hover:bg-[var(--HOVER-BG)]`}
+                                />
+
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div >
     )
 }

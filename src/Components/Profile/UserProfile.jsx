@@ -80,7 +80,7 @@ const UserProfile = () => {
         )
     }
     return (
-        <div className='w-full h-full flex flex-col justify-center items-center'>
+        <div className='w-full h-full flex flex-col justify-center items-center  '>
             <ProfileCover profileInfo={profileInfo} />
             <div className="w-[90%] max-w-5xl mt-6 flex h-16 items-center  gap-6 ">
                 <NavLink

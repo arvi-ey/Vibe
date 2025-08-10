@@ -38,7 +38,7 @@ const HomeMain = () => {
     return (
         // <div className='w-[100%] flex'>
 
-        <div className={styles.HomeMainContainer} >
+        <div className={` flex flex-shrink-0 self-stretch ${styles.HomeMainContainer}`} >
             <HomePost />
             <Story />
             {
@@ -71,8 +71,6 @@ const HomeMain = () => {
             <Posts />
 
         </div>
-        // <HomeDetail />
-        // </div>
     )
 }
 

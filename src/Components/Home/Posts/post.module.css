@@ -8,6 +8,7 @@
 @media (max-width:700px) {
     .postContainer {
         width: 90vmin;
+        padding-bottom: 50px;
     }
 }
 

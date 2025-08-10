@@ -80,7 +80,7 @@ const ProfileCover = ({ profileInfo }) => {
 
     return (
         <>
-            <div className='h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl' style={{ marginTop: "60px" }}>
+            <div className={`h-64 w-[90%] min-w-4xs max-w-5xl relative overflow-hidden mt-16 mx-auto rounded-xl ${styles.profileContainer}`} >
                 {
                     (user?.uid == profileInfo.uid && user?.cover_photo) &&
                     <img
