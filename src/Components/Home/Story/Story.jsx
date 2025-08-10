@@ -70,7 +70,7 @@ const Story = () => {
 
     if (storyloading || Userstoryloading) {
         return (
-            <div className={styles.storyContainer} ref={boxref} >
+            <div className={` flex-shrink-0 self-stretch ${styles.storyContainer}`} ref={boxref} >
                 <CreateStory />
                 {
                     Array.from({ length: 4 })?.map((data, index) => {
@@ -94,7 +94,7 @@ const Story = () => {
             </div>
 
 
-            <div className={styles.storyContainer} ref={boxref} >
+            <div className={`flex-shrink-0 self-stretch ${styles.storyContainer}`} ref={boxref} >
                 <CreateStory />
                 {UserStories?.length > 0 &&
                     <StoryBox

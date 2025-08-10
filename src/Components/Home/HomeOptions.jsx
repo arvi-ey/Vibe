@@ -12,6 +12,7 @@ import Birthday from "../../assets/Birthday.png"
 import Boy from "../../assets/boy.png"
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
+import Logo from "../../assets/logo.svg"
 import DemoUser from "../../assets/demo-user.png"
 
 const HomeOptions = () => {
@@ -75,6 +76,9 @@ const HomeOptions = () => {
     return (
 
         <div className={styles.homeOptionContainer}>
+            <div className={styles.iconBox}  >
+                <img src={Logo} alt='Logo' className={`cursor-pointer ${styles.Logo_Image}`} onClick={() => navigate("/")} />
+            </div>
             {
                 HomeOptionArray?.map((data, index) => {
                     return (

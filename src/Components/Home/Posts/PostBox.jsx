@@ -194,8 +194,9 @@ const PostBox = ({ data, keyValue }) => {
     }
 
     return (
-        <Card sx={{ minWidth: 200 }} className={` ${styles.postBox}`} key={keyValue}>
-            <CardContent className={`shadow-2xl ${styles.postContainer}`} >
+        <>
+
+            <div className={`shadow-amber-50  w-[90%] p-2 ${styles.postBox}`} >
                 {
                     loading &&
                     <ProgressBar width="100%" />
@@ -226,6 +227,7 @@ const PostBox = ({ data, keyValue }) => {
 
                 </div>
                 <div className={styles.PostCaption} >{data?.caption}</div>
+
                 {
                     data?.image ?
                         <div className={styles.postDiv2}>
@@ -266,7 +268,7 @@ const PostBox = ({ data, keyValue }) => {
                     />
                 }
 
-            </CardContent>
+            </div>
             <Alert
                 message="Post deleted successfully."
                 open={deletedpost}
@@ -291,7 +293,8 @@ const PostBox = ({ data, keyValue }) => {
                 />
             }
 
-        </Card>
+        </>
+
     )
 }
 

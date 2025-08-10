@@ -45,7 +45,7 @@ const HomePost = () => {
     }, [uploadpost])
 
     return (
-        <div className={styles.HomePostContainer} >
+        <div className={`flex-shrink-0 self-stretch  ${styles.HomePostContainer}`} >
             <div className={styles.HomePostDiv1}>
                 <div className={styles.HomepostuserImage} onClick={() => { navigate(`/profile/${user?.uid}`) }} >
                     <img src={user?.profile_image || DemoUser} alt='Homeuser' className={styles.HomepostuserImagelogo} />

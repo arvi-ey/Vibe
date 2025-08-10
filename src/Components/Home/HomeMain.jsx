@@ -10,8 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import postStyles from "./Posts/post.module.css"
-import useStory from '../../Hooks/useStory'
-
+import HomeDetail from './HomeDetail'
 
 const HomeMain = () => {
     const isMobile = useMediaQuery('(max-width:600px)');
@@ -37,6 +36,8 @@ const HomeMain = () => {
 
 
     return (
+        // <div className='w-[100%] flex'>
+
         <div className={styles.HomeMainContainer} >
             <HomePost />
             <Story />
@@ -70,6 +71,8 @@ const HomeMain = () => {
             <Posts />
 
         </div>
+        // <HomeDetail />
+        // </div>
     )
 }
 
