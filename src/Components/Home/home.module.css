@@ -15,6 +15,7 @@
     }
 }
 
+
 .Logo_Image {
     height: 40px;
     width: 40px;
@@ -61,6 +62,23 @@
     overflow-x: hidden;
     background-color: none;
 
+}
+
+/* width */
+.HomeMainContainer::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.HomeMainContainer::-webkit-scrollbar-track {
+    background: var(--HOVER-BG);
+}
+
+.HomeMainContainer::-webkit-scrollbar-thumb {
+    /* background: #3F5EFB;
+    background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%); */
+    border-radius: 10px;
+    background: var(--HOVER-BG);
 }
 
 @media (max-width: 500px) {

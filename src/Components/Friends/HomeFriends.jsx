@@ -39,8 +39,8 @@ const HomeFriends = () => {
         setOpenmenu(!openMenu)
     }
     return (
-        <div className={`flex gap-10 ${openMenu && 'overflow-hidden'}`}>
-            <div className=' sm:w-60 hidden  w-screen sm:h-screen  sm:flex flex-col gap-5' style={{ marginTop: "60px" }} >
+        <div className={`flex gap-10 w-[100%] overflow-x-hidden ${openMenu && 'overflow-hidden'}`}>
+            <div className=' sm:w-60 hidden  w-screen sm:h-screen sm:flex flex-col  gap-5' style={{ marginTop: "60px" }} >
                 {FriendsNavArr?.map((data, index) => {
                     return (
                         <NavLink

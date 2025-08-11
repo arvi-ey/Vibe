@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import useFriends from '../../Hooks/useFriend'
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import Lottie from 'lottie-react';
+import EmptyFriend from "../../assets/Animation/empty_friend.json"
 
 const FriendRequests = () => {
     const { user } = useSelector(state => state.user)
@@ -41,6 +43,18 @@ const FriendRequests = () => {
 
     return (
         <div className="flex flex-wrap gap-5 w-screen h-screen ">
+            {
+                friendquests.length == 0 &&
+                <div className={`h-[100%]  w-96 flex justify-center flex-col items-center`} >
+                    <Lottie
+                        animationData={EmptyFriend}
+                        loop
+                        autoplay
+                        className={`size-80`}
+                    />
+                    <h1 className={`font-bold opacity-75`} >No data Found</h1>
+                </div>
+            }
             {
                 friendquests.map((data, index) => {
                     return (
