@@ -11,13 +11,15 @@ exports.RequestEmailVerification = async (req, res) => {
     const { email } = req.body
     try {
         const userExists = await CheckEmailExists(email)
-        if (userExists?.length > 0) return res.status(200).json({
+        const userData = userExists[0]
+        if (userData && userData.verified == true) return res.status(200).json({
             message: "The provided email is already associated with an existing account.",
             statusCode: 400
         })
         else {
-            const sentEmailInfo = await SendEmail(email)
-            res.status(200).json({
+            const isExists = userData?.email ? true : false
+            const sentEmailInfo = await SendEmail(email, isExists)
+            return res.status(200).json({
                 message: "Email sent successfully",
                 info: sentEmailInfo.info.response,
                 email: sentEmailInfo.insertObj.email,
@@ -75,9 +77,23 @@ exports.UserSignIn = async (req, res) => {
             message: "The provided email address is not linked to any existing account.",
             statusCode: 400
         })
-        const validPassword = await CheckPassword(user[0].password, password)
+        const userData = user[0]
+        if (!userData.password && userData.verified) {
+            return res.status(400).json({
+                message: "Please re-verify your email to complete account setup."
+            })
+        }
+        if (!userData.verified) {
+            return res.status(400).json({
+                message: "Email is not verified"
+            })
+        }
+
+        const validPassword = await CheckPassword(userData.password, password)
         if (!validPassword) return res.status(200).json({ message: "Invalid password", statusCode: 400, })
-        await LogIn(user[0], res)
+        if (userData.verified) {
+            await LogIn(user[0], res)
+        }
     }
     catch (error) {
         ErrorResponse(res, error)

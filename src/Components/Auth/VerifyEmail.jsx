@@ -152,8 +152,8 @@ const VerifyEmail = () => {
                             <span className='text-xs font-bold -bottom-5 text-red-600 absolute' >{errortext}</span>
                         }
                     </div>
-                    <div className={`flex gap-1 mt-4 ${styles.VerifyEmailButtonDiv}`}>
-                        <div className={` ${!loading && "cursor-pointer"} w-[40%] bg-[var(--PRIMARY-COLOR)] text-white p-3 font-semibold rounded-lg hover:bg-[var(--SECONDARY-cOLOR)] flex justify-center items-center  ${styles.verifyEmailButton}`}
+                    <div className={`flex gap-1 mt-4     ${styles.VerifyEmailButtonDiv}`}>
+                        <div className={` ${!loading && "cursor-pointer"} w-[80%] bg-[var(--PRIMARY-COLOR)] text-white p-3 font-semibold rounded-lg hover:bg-[var(--SECONDARY-cOLOR)] flex justify-center items-center  ${styles.verifyEmailButton}`}
                             onClick={HandelCodeRequest}
                         >
                             {loading ?
@@ -163,9 +163,9 @@ const VerifyEmail = () => {
                                 </span>
                             }
                         </div>
-                        <div className={` ${!loading && "cursor-pointer"}  w-[40%] p-3 border-1 rounded-lg border-[var(--PRIMARY-COLOR)] text-[var(--PRIMARY-COLOR)] hover:bg-[var(--HOVER-BG)] flex justify-center items-center font-semibold hover:text-[var(--SECONDARY-cOLOR)] ${styles.verifyEmailButton}`}>
+                        {/* <div className={` ${!loading && "cursor-pointer"}  w-[40%] p-3 border-1 rounded-lg border-[var(--PRIMARY-COLOR)] text-[var(--PRIMARY-COLOR)] hover:bg-[var(--HOVER-BG)] flex justify-center items-center font-semibold hover:text-[var(--SECONDARY-cOLOR)] ${styles.verifyEmailButton}`}>
                             Already Have Code
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

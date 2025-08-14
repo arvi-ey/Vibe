@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Search } from "lucide-react";
 import styles from "./home.module.css"
 import HomeSearchBar from './HomeSearchBar';
+import useFriends from '../../Hooks/useFriend'
+import { useSelector } from 'react-redux';
+import HomeDetailFriend from './HomeDetailFriend';
 const HomeDetail = () => {
+    const { user } = useSelector(state => state.user)
+    const { GetUserRequests, loading } = useFriends()
+    const [friendquests, setfriendquests] = useState([])
+
+    useEffect(() => {
+
+        const getFriends = async () => {
+            const payload = {
+                uid: user?.uid,
+                type: "receiver"
+            }
+            const data = await GetUserRequests(payload)
+            setfriendquests(data)
+        }
+        getFriends()
+    }, [user?.uid])
+
     return (
         <div className={`flex  flex-col gap-3 items-center ${styles.home_detail_container} `}>
             <HomeSearchBar />
@@ -15,9 +35,13 @@ const HomeDetail = () => {
                     <span className={`font-semibold text-white`} >Subscribe</span>
                 </div>
             </div>
-            <div className={` pl-10 flex flex-col  w-[100%]`}>
-                <p className={` font-semibold opacity-60 `} >Suggested for you</p>
-            </div>
+            {
+                friendquests.length > 0 &&
+                <div className={` pl-10 flex flex-col  w-[100%]`}>
+                    <HomeDetailFriend friendquests={friendquests} />
+
+                </div>
+            }
         </div>
     )
 }
