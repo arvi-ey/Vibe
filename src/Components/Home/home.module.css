@@ -321,31 +321,32 @@
 
 @media (max-width:1018px) {
     .home_detail_container {
-        width: 28%;
+        width: 30%;
     }
 
     .HomeMainContainer {
-        width: 76vmin;
+        width: 70vmin;
     }
 }
 
 @media (max-width:970px) {
     .home_detail_container {
-        width: 28%;
+        width: 30%;
+        right: 0;
     }
 
     .HomeMainContainer {
-        width: 74vmin;
+        width: 70vmin;
     }
 }
 
 @media (max-width:945px) {
     .home_detail_container {
-        width: 28%;
+        width: 30%;
     }
 
     .HomeMainContainer {
-        width: 60vmin;
+        width: 7 0vmin;
     }
 }
 

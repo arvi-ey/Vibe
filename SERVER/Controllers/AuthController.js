@@ -1,5 +1,5 @@
 const { MissingData, SuccessResponse, ErrorResponse } = require("../Utils/Response")
-const { VerifyUserEmail, CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication, GetUserByID, CheckEmailExists, SendEmail } = require("../Utils/UserUtil")
+const { VerifyUserEmail, CheckUserExists, Hashedpassword, CheckPassword, RegisterUser, LogIn, Logout, VerifyAuthentication, GetUserByID, CheckEmailExists, SendEmail, CreateTestUser } = require("../Utils/UserUtil")
 
 
 
@@ -49,8 +49,19 @@ exports.CreateUser = async (req, res) => {
         res.status(500).json({ message: 'Server error during registration' });
 
     }
+}
 
 
+
+exports.Createtestuser = async (req, res) => {
+    try {
+        const result = await CreateTestUser(req.body)
+        SuccessResponse(res, result)
+    }
+    catch (err) {
+        ErrorResponse(res, err)
+
+    }
 
 }
 
@@ -88,7 +99,6 @@ exports.UserSignIn = async (req, res) => {
                 message: "Email is not verified"
             })
         }
-
         const validPassword = await CheckPassword(userData.password, password)
         if (!validPassword) return res.status(200).json({ message: "Invalid password", statusCode: 400, })
         if (userData.verified) {
