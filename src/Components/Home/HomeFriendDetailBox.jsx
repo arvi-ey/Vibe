@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import useDate from '../../Hooks/useDate'
 import useFriends from '../../Hooks/useFriend'
 
-const HomeFriendDetailBox = ({ data, type }) => {
+const HomeFriendDetailBox = ({ data, type, setFriendRequestdata }) => {
 
     const { user } = useSelector(state => state.user)
     const { DateForMat } = useDate()
@@ -26,6 +26,9 @@ const HomeFriendDetailBox = ({ data, type }) => {
     const handleFriendRequest = async (status) => {
         if (status == "received" && type == "request") {
             setFriends(true)
+        }
+        if (type == "request" && status == "not") {
+            setFriendRequestdata(prev => prev.filter(item => item.id !== data.id));
         }
         if (status == "not") {
             setSentrequest(!sentrequest)
@@ -54,9 +57,9 @@ const HomeFriendDetailBox = ({ data, type }) => {
             setuserData(prev => ({ ...prev, id: result.id, sender: result.sender, receiver: result.receiver }));
         }
 
+
     }
 
-    console.log(userData)
     return (
         <div className='flex gap-2 items-center' key={userData?.uid}>
             <img src={userData?.profile_image} className='size-10 rounded-full cursor-pointer' />

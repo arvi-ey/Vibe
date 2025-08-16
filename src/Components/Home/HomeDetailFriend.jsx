@@ -5,22 +5,17 @@ import useDate from '../../Hooks/useDate'
 import HomeFriendDetailBox from './HomeFriendDetailBox'
 
 const HomeDetailFriend = ({ friendquests, type }) => {
-
-    const { user } = useSelector(state => state.user)
-
+    const [friendRequestData, setFriendRequestdata] = useState([])
 
 
-
-
-
-
-
-
+    useEffect(() => {
+        setFriendRequestdata(friendquests)
+    }, [friendquests])
 
     return (
         <div className='w-[100%] h-auto p-5    flex flex-col gap-5'>
             {
-                friendquests.length > 0 &&
+                friendRequestData.length > 0 &&
                 <p className={` font-semibold opacity-60 flex justify-between `} >
                     <span>
 
@@ -38,11 +33,12 @@ const HomeDetailFriend = ({ friendquests, type }) => {
             }
             <div className='flex flex-col gap-5'>
 
-                {friendquests?.map((data, index) => {
+                {friendRequestData?.map((data, index) => {
                     return (
                         <HomeFriendDetailBox
                             data={data}
                             type={type}
+                            setFriendRequestdata={setFriendRequestdata}
 
                         />
                     )
