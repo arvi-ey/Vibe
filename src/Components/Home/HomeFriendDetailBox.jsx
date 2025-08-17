@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useDate from '../../Hooks/useDate'
 import useFriends from '../../Hooks/useFriend'
+import { useNavigate } from 'react-router'
 
 const HomeFriendDetailBox = ({ data, type, setFriendRequestdata }) => {
-
+    const navigate = useNavigate()
     const { user } = useSelector(state => state.user)
     const { DateForMat } = useDate()
     const { HandleFriends } = useFriends()
@@ -56,12 +57,15 @@ const HomeFriendDetailBox = ({ data, type, setFriendRequestdata }) => {
         if (status == "sent") {
             setuserData(prev => ({ ...prev, id: result.id, sender: result.sender, receiver: result.receiver }));
         }
+    }
 
 
+    const HandleUserProfile = () => {
+        navigate(`profile/${data.uid}`)
     }
 
     return (
-        <div className='flex gap-2 items-center' key={userData?.uid}>
+        <div className='flex gap-2 items-center' key={userData?.uid} onClick={HandleUserProfile}>
             <img src={userData?.profile_image} className='size-10 rounded-full cursor-pointer' />
             <div className='w-[40%]'>
                 <p className='opacity-70 font-bold text-sm cursor-pointer hover:opacity-80'>{userData?.first_name} {userData?.last_name} </p>

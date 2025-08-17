@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SwipeRightIcon from '@mui/icons-material/SwipeRight';
 import ScreenLoading from "../../Common/ScreenLoading"
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import EditProfile from './EditProfile';
 
 const ProfileCover = ({ profileInfo }) => {
     const [openPostModal, setOpenPostModal] = useState(false)
@@ -24,6 +25,9 @@ const ProfileCover = ({ profileInfo }) => {
     const [modalSource, setModalSource] = useState(null)
     const { user } = useSelector(state => state.user)
     const [friendStatus, setFriendSatus] = useState(null)
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const { HandleFriends, loading, CheckFriend } = useFriends()
 
     const HandleOpenPostModal = (source) => {
@@ -90,6 +94,13 @@ const ProfileCover = ({ profileInfo }) => {
                     />
                 }
                 {
+                    (user?.uid !== profileInfo.uid && !profileInfo?.cover_photo) &&
+                    < div
+                        className='h-full w-full'
+                    >
+                    </div>
+                }
+                {
                     (user?.uid !== profileInfo.uid) &&
                     <img
                         src={profileInfo?.cover_photo}
@@ -115,7 +126,7 @@ const ProfileCover = ({ profileInfo }) => {
                         </p>
                     </div>
                 }
-            </div>
+            </div >
 
             <div className={`w-[90%] max-w-5xl mx-auto flex ${styles.profile_image_box}`}>
                 <div className={`w-40 ${styles.profilePic_box} `}>
@@ -220,7 +231,9 @@ const ProfileCover = ({ profileInfo }) => {
                                     </p>
                                 </div>
 
-                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4">
+                                <div className="cursor-pointer rounded-md h-10 gap-2 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] w-[70%]  sm:h-9 sm:w-36 flex justify-center items-center px-2 sm:px-4"
+                                    onClick={handleOpen}
+                                >
                                     <EditIcon fontSize="small" sx={{ opacity: "0.8" }} />
                                     <p className="text-xs font-bold whitespace-nowrap  sm:block">
                                         Edit profile
@@ -234,12 +247,23 @@ const ProfileCover = ({ profileInfo }) => {
                     }
                 </div>
             </div>
-            {openPostModal &&
+            {
+                openPostModal &&
                 <CreatePost
                     openModal={openPostModal}
                     setOpenPostModal={setOpenPostModal}
                     setUploadpost={setUploadpost}
                     postType={modalSource}
+                />
+
+            }
+            {
+                open &&
+                <EditProfile
+                    open={open}
+                    setOpen={setOpen}
+                    handleClose={handleClose}
+                    handleOpen={handleOpen}
                 />
             }
             <Alert

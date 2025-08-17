@@ -18,7 +18,7 @@ const About = () => {
     return (
         <div className='w-[100%] pb-11 flex-col gap-5 flex flex-wrap lg:flex-row lg:justify-between items-center lg:items-start' >
             <UserInfo
-                user={profileInfo}
+                user={user}
             />
             <UserPost
                 user={profileInfo}
