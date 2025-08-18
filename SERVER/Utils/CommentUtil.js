@@ -18,7 +18,6 @@ exports.PlaceComment = async (obj) => {
 exports.GetCommentByPostId = async (postid) => {
     try {
         const query = `SELECT c.*,u.first_name , u.last_name , u.profile_image FROM comment c INNER JOIN "user" u on u.uid = c.comenter  WHERE post_id = $1 
-        ORDER BY c.time desc
         ;`
         const result = await pool.query(query, [postid])
         return result

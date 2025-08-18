@@ -14,7 +14,7 @@ const HomeDetail = () => {
     useEffect(() => {
 
         const getFriends = async () => {
-            const suggesition = await GetUserSuggesition({ uid: user.uid })
+            const suggesition = await GetUserSuggesition({ uid: user?.uid })
             setsuggesition(suggesition)
             const payload = {
                 uid: user?.uid,

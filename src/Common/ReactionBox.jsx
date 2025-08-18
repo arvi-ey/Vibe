@@ -109,7 +109,7 @@ export default function ReactionBox({ deleteCommentloading, HandleDeleteComment,
                         {
                             userArray?.length > 0 && userArray?.map((data, index) => {
                                 return (
-                                    <div className={`w-[100%] flex gap-4 relative`} key={index} onMouseOver={(e) => HandleHover(data.comment_id, true)} onMouseLeave={(e) => HandleHover(data.comment_id, false)} >
+                                    <div className={`w-[100%] flex gap-4 relative ${index == userArray.length - 1 && "pb-20"}`} key={index} onMouseOver={(e) => HandleHover(data.comment_id, true)} onMouseLeave={(e) => HandleHover(data.comment_id, false)} >
                                         <div className='flex justify-center items-center relative'>
                                             <img src={data?.profile_image} alt="user-image" className='sm:size-10 size-8  rounded-full cursor-pointer' />
                                             {type == 'reaction' &&

@@ -90,7 +90,7 @@ const PostBox = ({ data, keyValue }) => {
             const result = await AddComment(payload)
             if (result?.comment_id) {
                 const commentObj = { ...result, first_name: user?.first_name, last_name: user?.last_name, profile_image: user?.profile_image }
-                setComments([commentObj, ...comments])
+                setComments([...comments, commentObj])
             }
 
         }
