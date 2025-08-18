@@ -11,7 +11,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-const UserInfo = () => {
+const UserInfo = ({ userinfo }) => {
     const { user } = useSelector(state => state.user)
     const [userBio, setuserBio] = useState("")
     const [click, setClick] = useState(false)
@@ -30,8 +30,9 @@ const UserInfo = () => {
             return
         }
         try {
-            const result = await UpdateUser(user.uid, { bio: userBio })
+            const result = await UpdateUser(userinfo.uid, { bio: userBio })
             if (result.uid) {
+                setuserBio(result.bio)
                 toast.success(`Bio updated `)
                 setClick(false)
             }
@@ -59,7 +60,7 @@ const UserInfo = () => {
                 :
                 <div className='w-full flex justify-center items-center'>
                     <p className='font-semibold text-black opacity-70'>
-                        {user?.bio}
+                        {user.uid == userinfo.uid ? user.bio : userinfo?.bio}
                     </p>
                 </div>
 
@@ -76,49 +77,52 @@ const UserInfo = () => {
                                 <p className='font-semibold text-white'>Save</p>
                         }
                     </div> :
-                    <div className='w-[100%] h-10 bg-[#E6E8EA] cursor-pointer hover:bg-[#dfe1e3] flex justify-center items-center rounded-lg'
-                        onClick={() => setClick(true)}
-                    >
-                        <p className='font-semibold'>Edit Bio</p>
-                    </div>
+                    user.uid == userinfo.uid ?
+
+                        <div className='w-[100%] h-10 bg-[#E6E8EA] cursor-pointer hover:bg-[#dfe1e3] flex justify-center items-center rounded-lg'
+                            onClick={() => setClick(true)}
+                        >
+                            <p className='font-semibold'>Edit Bio</p>
+                        </div> :
+                        <div className='w-[100%] h-10  flex justify-center items-center rounded-lg'></div>
             }
 
 
             <div className={`w-full flex flex-col gap-6 ${styles.info_box} `} >
                 {
-                    user?.profession &&
+                    userinfo?.profession &&
                     <div className='w-[100%] flex gap-3 items-center'>
                         <img src={Job} alt='job-image' className={`size-5 ${styles.info_image_user} `} />
                         <div className='flex gap-2'>
-                            <p className={styles.infoTitle}>{user?.profession}</p>
-                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{user?.company_name}</p>
+                            <p className={styles.infoTitle}>{userinfo?.profession}</p>
+                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{userinfo?.company_name}</p>
                         </div>
                     </div>
                 }
                 {
-                    user?.school &&
+                    userinfo?.school &&
                     <div className='w-[100%]  flex gap-3 items-start '>
                         <img src={Graduation} alt='job-image' className={`size-5 mt-3 ${styles.info_image_user}`} style={{ marginTop: "5px" }} />
-                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>Studied at {user?.school}</p>
+                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>Studied at {userinfo?.school}</p>
                     </div>
                 }
                 {
-                    user?.relationship_status &&
+                    userinfo?.relationship_status &&
                     <div className='w-[100%] flex gap-3 items-center'>
                         <img src={Heart} alt='job-image' className={`size-5 ${styles.info_image_user} `} />
                         <div className='flex gap-2'>
                             <p className={styles.infoTitle}>Relationship</p>
-                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{user?.relationship_status}</p>
+                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{userinfo?.relationship_status}</p>
                         </div>
                     </div>
                 }
                 {
-                    user?.City &&
+                    userinfo?.City &&
                     <div className='w-[100%] flex gap-3 items-center'>
                         <img src={City} alt='job-image' className={`size-5 ${styles.info_image_user} `} />
                         <div className='flex gap-2'>
                             <p className={styles.infoTitle}>Lives in</p>
-                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{user?.city}</p>
+                            <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{userinfo?.city}</p>
                         </div>
                     </div>
                 }
@@ -126,7 +130,7 @@ const UserInfo = () => {
                     <img src={Marker} alt='job-image' className={`size-5 ${styles.info_image_user} `} />
                     <div className='flex gap-2'>
                         <p className={styles.infoTitle}>From</p>
-                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{`${user?.state || ""} ${user?.state ? "," : " "}  ${user?.country}`}</p>
+                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>{`${userinfo?.state || ""} ${userinfo?.state ? "," : " "}  ${userinfo?.country}`}</p>
                     </div>
                 </div>
             </div>

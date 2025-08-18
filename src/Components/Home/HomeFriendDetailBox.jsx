@@ -65,10 +65,10 @@ const HomeFriendDetailBox = ({ data, type, setFriendRequestdata }) => {
     }
 
     return (
-        <div className='flex gap-2 items-center' key={userData?.uid} onClick={HandleUserProfile}>
-            <img src={userData?.profile_image} className='size-10 rounded-full cursor-pointer' />
+        <div className='flex gap-2 items-center' key={userData?.uid} >
+            <img src={userData?.profile_image} className='size-10 rounded-full cursor-pointer' onClick={HandleUserProfile} />
             <div className='w-[40%]'>
-                <p className='opacity-70 font-bold text-sm cursor-pointer hover:opacity-80'>{userData?.first_name} {userData?.last_name} </p>
+                <p className='opacity-70 font-bold text-sm cursor-pointer hover:opacity-80' onClick={HandleUserProfile}>{userData?.first_name} {userData?.last_name} </p>
                 {
                     type == "request" ?
                         <p className='opacity-50 font-semibold text-xs'>{DateForMat(userData?.sent_time)} </p> :
