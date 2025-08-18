@@ -1,6 +1,6 @@
 const allowedOrigins = [
     'http://localhost:5173',
-    'vibe-binary-network.netlify.app'
+    'https://vibe-binary-network.netlify.app'
 ];
 
 const corsOptions = {
