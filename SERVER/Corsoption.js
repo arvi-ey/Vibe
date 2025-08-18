@@ -1,5 +1,6 @@
 const allowedOrigins = [
     'http://localhost:5173',
+    'vibe-binary-network.netlify.app',
     'vibe-binary-network.netlify.app'
 ];
 
