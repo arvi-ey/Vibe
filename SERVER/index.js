@@ -15,7 +15,7 @@ const fileUpload = require('express-fileupload');
 
 
 const cors = require('cors')
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 
 
 //Application Lavel middlewares
