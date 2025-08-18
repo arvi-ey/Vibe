@@ -7,19 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 .env
-
-
-#ignore entire api folder
-Api/     
-
-#ignore Hooks folder to encapsulate all custom hooks
-Hooks/
-
-# Ignore all fronntend validation logics
-Validations/ 
- 
-#Ignore the pgrotected route
-ProtectedRoute.jsx
+  
 
 node_modules
 dist
