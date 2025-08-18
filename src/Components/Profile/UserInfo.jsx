@@ -96,10 +96,10 @@ const UserInfo = () => {
                     </div>
                 }
                 {
-                    user?.high_school &&
-                    <div className='w-[100%] h-12 flex gap-3 items-start '>
+                    user?.school &&
+                    <div className='w-[100%]  flex gap-3 items-start '>
                         <img src={Graduation} alt='job-image' className={`size-5 mt-3 ${styles.info_image_user}`} style={{ marginTop: "5px" }} />
-                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>Studied at {user?.high_school}</p>
+                        <p className={`font-bold cursor-pointer ${styles.infoTitle}`}>Studied at {user?.school}</p>
                     </div>
                 }
                 {

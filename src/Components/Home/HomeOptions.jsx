@@ -75,8 +75,8 @@ const HomeOptions = () => {
 
     return (
 
-        <div className=''>
-            <div className={styles.homeOptionContainer}>
+        <div className='pr-5'>
+            <div className={`border-r-1 border-gray-200 ${styles.homeOptionContainer}`}>
                 {
                     HomeOptionArray?.map((data, index) => {
                         return (

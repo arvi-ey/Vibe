@@ -122,13 +122,6 @@ const EditProfile = ({ open, setOpen, handleClose, handleOpen }) => {
             label: "Gender"
         },
         {
-            type: "date",
-            placeholder: "Date of Birth",
-            name: "dob",
-            value: inputtext.dob,
-            label: "Date of Birth"
-        },
-        {
             type: "select",
             placeholder: "Relationship Status",
             name: "relationship_status",
@@ -191,7 +184,7 @@ const EditProfile = ({ open, setOpen, handleClose, handleOpen }) => {
                             <span className='font-bold text-xl text-gray-800'>Update Profile</span>
                             <button
                                 onClick={handleClose}
-                                className='p-1 rounded-full hover:bg-gray-100 transition-colors duration-200'
+                                className='p-1 cursor-pointer rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200'
                             >
                                 <CloseIcon className='text-gray-500 hover:text-gray-700' />
                             </button>

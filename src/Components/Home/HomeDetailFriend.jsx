@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux'
 import useFriends from '../../Hooks/useFriend'
 import useDate from '../../Hooks/useDate'
 import HomeFriendDetailBox from './HomeFriendDetailBox'
+import { useNavigate } from 'react-router'
 
 const HomeDetailFriend = ({ friendquests, type }) => {
     const [friendRequestData, setFriendRequestdata] = useState([])
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -26,8 +28,10 @@ const HomeDetailFriend = ({ friendquests, type }) => {
                         }
                     </span>
                     {
-                        type == "suggested" &&
-                        <span className='text-xs font-bold text-blue-800 hover:text-blue-600 cursor-pointer'>Show All</span>
+                        type == "request" &&
+                        <span className='text-xs font-bold text-blue-800 hover:text-blue-600 cursor-pointer'
+                            onClick={() => navigate('/friends/request')}
+                        >Show All</span>
                     }
                 </p>
             }
