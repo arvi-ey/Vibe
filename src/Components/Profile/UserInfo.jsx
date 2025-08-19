@@ -134,10 +134,6 @@ const UserInfo = ({ userinfo }) => {
                     </div>
                 </div>
             </div>
-            <Toaster
-                position="bottom-center"
-                reverseOrder={false}
-            />
         </div>
     )
 }
