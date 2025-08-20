@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -11,13 +11,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import useDate from '../../Hooks/useDate';
 import Demo from "../../assets/demo-user.png"
+import useFriends from '../../Hooks/useFriend';
+import { useState } from 'react';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     width: 160,
-    height: 240,
+    height: 340,
     [theme.breakpoints.up('sm')]: {
         width: 200,
-        height: 300
+        height: 350
     },
     display: 'flex',
     flexDirection: 'column',
@@ -27,11 +29,60 @@ const StyledCard = styled(Card)(({ theme }) => ({
         boxShadow: theme.shadows[6]
     }
 }));
-// console.log(data?.profile_image)
 
-const FriendBox = ({ data, keyValue }) => {
+
+
+const FriendBox = ({ data, keyValue, setfriendquests }) => {
     const { user } = useSelector(state => state.user)
     const { DateForMat } = useDate()
+    const { HandleFriends } = useFriends()
+    const [friends, setFriends] = useState(false)
+    const [userData, setuserData] = useState()
+    const [sentrequest, setSentrequest] = useState(false)
+
+    // console.log(data)
+    useEffect(() => {
+        setuserData(data)
+        if (data.status == "sent") {
+            setFriends(false)
+        }
+
+    }, [data])
+
+
+    const handleFriendRequest = async (status) => {
+        if (status == "received") {
+            setFriends(true)
+        }
+        if (status == "not") {
+            setfriendquests(prev => prev.filter((data) => data.id != userData.id))
+        }
+        let payloadObj
+        if (status == 'sent') {
+            setSentrequest(!sentrequest)
+            payloadObj = {
+                sender: user?.uid,
+                receiver: userData?.uid,
+                status: status,
+                sent_time: Date.now()
+            }
+        }
+        else {
+            payloadObj = {
+                id: userData?.id,
+                sender: userData?.sender,
+                receiver: userData?.receiver,
+                status: status,
+                sent_time: Date.now()
+            }
+        }
+        const result = await HandleFriends(payloadObj)
+        if (status == "sent") {
+            setuserData(prev => ({ ...prev, id: result.id, sender: result.sender, receiver: result.receiver }));
+        }
+    }
+
+
     return (
         <StyledCard sx={{ cursor: 'pointer' }}>
             <CardContent sx={{ flexGrow: 1, display: 'flex', height: "100%", flexDirection: 'column', justifyContent: "space-between" }} key={keyValue}>
@@ -45,14 +96,16 @@ const FriendBox = ({ data, keyValue }) => {
                 {
                     data?.status == 'sent' && user.uid == data?.sender ? (
 
-                        <div className="mt-2 cursor-pointer rounded-md h-7 gap-1 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] sm:h-8 w-[95%] flex justify-center items-center px-2 sm:px-4">
+                        <div className="mt-2 cursor-pointer rounded-md h-7 gap-1 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] sm:h-8 w-[95%] flex justify-center items-center px-2 sm:px-4"
+                            onClick={() => handleFriendRequest('not')}
+                        >
                             <CloseIcon fontSize="small" sx={{ opacity: "0.8" }} />
                             <p className="text-xs font-bold whitespace-nowrap  sm:block">
                                 Cancel Request
                             </p>
                         </div>
                     )
-                        : data?.status == 'received' ? (
+                        : data?.status == 'received' || friends ? (
 
                             <div className="cursor-pointer rounded-md h-8 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4">
                                 <SendIcon fontSize="small" sx={{ color: "white", opacity: 0.8 }} />
@@ -61,14 +114,26 @@ const FriendBox = ({ data, keyValue }) => {
                                 </p>
                             </div>
                         )
-                            : (
+                            : data?.status == 'sent' && data.receiver == user.uid ? (
+                                <div>
 
-                                <div className="mt-2 cursor-pointer rounded-md h-8 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4">
-                                    <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
-                                        Accept Request
-                                    </p>
+                                    <div className="mt-2 cursor-pointer rounded-md h-8 gap-1 bg-[var(--PRIMARY-COLOR)] hover:bg-[var(--SECONDARY-cOLOR)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4"
+                                        onClick={() => handleFriendRequest('received')}
+                                    >
+                                        <p className="text-xs font-bold whitespace-nowrap  sm:block text-white">
+                                            Accept Request
+                                        </p>
+                                    </div>
+                                    <div className="mt-2 cursor-pointer rounded-md h-8 gap-1 bg-[#E6E8EA] hover:bg-[hsl(180,6%,86%)] sm:h-9 w-[95%] flex justify-center items-center px-2 sm:px-4"
+                                        onClick={() => handleFriendRequest('not')}
+                                    >
+                                        <p className="text-xs font-bold whitespace-nowrap  sm:block">
+                                            Remove
+                                        </p>
+                                    </div>
                                 </div>
                             )
+                                : null
                 }
             </CardContent>
         </StyledCard>

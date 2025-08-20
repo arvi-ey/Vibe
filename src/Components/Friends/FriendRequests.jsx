@@ -62,6 +62,7 @@ const FriendRequests = () => {
                         <FriendBox
                             data={data}
                             keyValue={data.id}
+                            setfriendquests={setfriendquests}
                         />
                     )
                 })

@@ -13,6 +13,7 @@ import Loader from '../../Common/Loader';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // import { AddUserID } from '../../Redux/Slices/authSlicer';
+
 import { AddUserdata } from "../../Redux/Slices/userSlicer";
 const Signin = () => {
     const navigate = useNavigate()
@@ -22,8 +23,8 @@ const Signin = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: "",
-            password: ""
+            email: "tuhinroyand@gmail.com",
+            password: "Rohit@1234"
         },
         validationSchema: LoginvalidationSchema,
         enableReinitialize: true,
@@ -66,26 +67,28 @@ const Signin = () => {
             <div className={styles.AuthBoxDiv} >
                 <Card sx={{ width: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center' }} className={styles.AuthBox} >
                     <CardContent className={styles.AuthBoxContainer}>
+                        <p style={{ alignSelf: "flex-start", opacity: "0.8", fontWeight: '600' }} >Email</p>
                         <TextField
                             id="email"
-                            label="Enter your email id*"
                             variant="outlined"
                             className={styles.AuthInputBox}
                             autoFocus={false}
                             onChange={formik.handleChange}
+                            value={formik.values.email}
                             onBlur={formik.handleBlur}
                             autoComplete="off"
                             error={formik?.errors?.email && formik.touched.email}
                             helperText={(formik?.errors?.email && formik.touched.email) ? formik?.errors?.email : null}
                         />
+                        <p style={{ alignSelf: "flex-start", opacity: "0.8", fontWeight: '600' }} >Password</p>
                         <TextField
                             id="password"
-                            label="Enter password*"
                             variant="outlined"
                             className={styles.AuthInputBox}
                             type='password'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
+                            value={formik.values.password}
                             error={formik?.errors?.password && formik.touched.password}
                             helperText={(formik?.errors?.password && formik.touched.password) ? formik?.errors?.password : null}
                         />
