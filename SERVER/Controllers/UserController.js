@@ -1,7 +1,6 @@
 const { MissingData, SuccessResponse, ErrorResponse, SuccessMultiResponse } = require("../Utils/Response")
 const { GetUserByID, UpDateUserById, ImageUpLoad, GetProfileInfo, GetSuggestedUSer, SearchUserByletter } = require("../Utils/UserUtil")
 const { CreatePost } = require("../Utils/PostUtil")
-const { data } = require("react-router")
 exports.GetUser = async (req, res) => {
     const params = req.params
     if (!params?.uid) return MissingData(res)
