@@ -3,7 +3,8 @@ import { act } from "react";
 
 
 const initialState = {
-    user: null
+    user: null,
+    searchuser: []
 }
 
 
@@ -13,9 +14,12 @@ const userSlice = createSlice({
     reducers: {
         AddUserdata: (state, action) => {
             state.user = action.payload
+        },
+        UpdateSearchUser: (state, action) => {
+            state.searchuser = action.payload
         }
     }
 })
 
-export const { AddUserdata } = userSlice.actions
+export const { AddUserdata, UpdateSearchUser } = userSlice.actions
 export default userSlice.reducer

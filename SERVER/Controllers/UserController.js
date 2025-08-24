@@ -1,6 +1,7 @@
 const { MissingData, SuccessResponse, ErrorResponse, SuccessMultiResponse } = require("../Utils/Response")
-const { GetUserByID, UpDateUserById, ImageUpLoad, GetProfileInfo, GetSuggestedUSer } = require("../Utils/UserUtil")
+const { GetUserByID, UpDateUserById, ImageUpLoad, GetProfileInfo, GetSuggestedUSer, SearchUserByletter } = require("../Utils/UserUtil")
 const { CreatePost } = require("../Utils/PostUtil")
+const { data } = require("react-router")
 exports.GetUser = async (req, res) => {
     const params = req.params
     if (!params?.uid) return MissingData(res)
@@ -80,6 +81,42 @@ exports.GetSuggesteduser = async (req, res) => {
         const result = await GetSuggestedUSer(uid)
         SuccessMultiResponse(res, result)
 
+    }
+    catch (error) {
+        ErrorResponse(res, error)
+    }
+}
+
+
+exports.SearchUser = async (req, res) => {
+    try {
+        const { text } = req.body
+        if (!text || text.trim().length === 0) {
+            return res.status(200).json({
+                message: "Search text cannot be empty",
+                data: [],
+                statusCode: 400
+            });
+        }
+        const result = await SearchUserByletter(text)
+        if (result?.rows?.length > 0) {
+            return res.status(200).json({
+                message: "User searched",
+                data: result.rows,
+                statusCode: 200,
+            })
+        }
+        else if (result?.rows?.length == 0) {
+            return res.status(200).json({
+                message: "No data available",
+                data: result.rows,
+                statusCode: 200,
+            })
+        }
+        else return res.status(200).json({
+            data: result.rows,
+            message: "No user found"
+        })
     }
     catch (error) {
         ErrorResponse(res, error)

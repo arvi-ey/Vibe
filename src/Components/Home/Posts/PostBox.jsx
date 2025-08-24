@@ -204,7 +204,7 @@ const PostBox = ({ data, keyValue }) => {
                 <div className={styles.postDiv1} >
                     {
                         data?.userinfo?.profile_image ?
-                            <img src={data?.userinfo.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
+                            <img src={user?.uid == data.userinfo?.uid ? user.profile_image : data?.userinfo?.profile_image} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                             :
                             <img src={DemoUser} alt='profile_photo' className={styles.User_ProfilePhoto} onClick={HandleNavigateToProfile} />
                     }

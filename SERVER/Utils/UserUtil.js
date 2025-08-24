@@ -464,3 +464,39 @@ exports.CreateTestUser = async (body) => {
     // strongPassword123
 
 }
+
+
+exports.SearchUserByletter = async (text) => {
+    try {
+        const startsWith = `^${text}`;
+        const anywhere = `${text}`;
+
+        const placeholders = [startsWith, anywhere, anywhere];
+
+        const query = `
+            SELECT name, profile_image, uid
+            FROM (
+                SELECT 
+                    CONCAT(first_name, ' ', last_name) AS name,
+                    profile_image,
+                    uid,
+                    CASE
+                        WHEN first_name ~* $1 THEN 1
+                        WHEN first_name ~* $2 THEN 2
+                        WHEN last_name ~* $3 THEN 3
+                        ELSE 4
+                    END AS priority
+                FROM "user"
+                WHERE first_name ~* $1 OR first_name ~* $2 OR last_name ~* $3
+            ) AS sub
+            ORDER BY priority;
+        `;
+
+        const result = await pool.query(query, placeholders);
+        return result;
+
+    }
+    catch (error) {
+        throw error
+    }
+}

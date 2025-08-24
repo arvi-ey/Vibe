@@ -28,11 +28,15 @@ import Saved from "../../assets/Saved.png"
 import memories from "../../assets/memories.png"
 import following from "../../assets/following.png"
 import Groups from "../../assets/Groups.png"
+import HomeSearchBar from '../Home/HomeSearchBar';
+import { useState } from 'react';
 const Navbar = () => {
     const dispatch = useDispatch()
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const { user } = useSelector(state => state.user)
     const { UserSignOut } = useSignOut()
+    const [searchtext, setSearchText] = useState("")
+    const [focusSearch, setFocusSearch] = useState(false)
     const navigate = useNavigate()
 
 
@@ -130,6 +134,23 @@ const Navbar = () => {
             <div className={styles.navdiv1}>
                 <img src={user?.profile_image || DemoUser} alt='Homeuser' className={`size-10 rounded-full cursor-pointer ${styles.userImage}`} onClick={() => { navigate(`/profile/${user?.uid}`) }} />
                 <img src={Logo} alt='Logo' className={`cursor-pointer size-10 ${styles.Logo_Image}`} onClick={() => navigate("/")} />
+                {/* <div className='w-full relative flex flex-col items-center'>
+
+                    <HomeSearchBar
+                        searchtext={searchtext}
+                        setSearchText={setSearchText}
+                        setFocusSearch={setFocusSearch}
+                        focusSearch={focusSearch}
+
+
+                    />
+                    {
+                        focusSearch &&
+                        <div className={`w-[90%] p-4 rounded-lg absolute bg-[var(--HOVER-BG)] h-auto min-h-24 max-h-96 overflow-auto flex flex-col z-50 top-18`} >
+                            <p className='text-center opacity-50 '>Try Searching for people, list or keyword</p>
+                        </div>
+                    }
+                </div> */}
             </div>
             <div className={styles.navdiv2}>
                 {
